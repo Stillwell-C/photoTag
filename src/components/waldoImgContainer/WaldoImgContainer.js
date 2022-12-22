@@ -1,5 +1,8 @@
-import React, { useEffect, useState, useRef } from "react";
-import waldoSnow from "../assets/waldoSnow.jpg";
+import React, { useEffect, useState } from "react";
+import waldoSnow from "../../assets/waldoSnow.jpg";
+import odlaw from "../../assets/odlaw-face.jpg";
+import waldo from "../../assets/waldo-face.webp";
+import whitebeard from "../../assets/whitebeard-face.jpeg";
 import "./waldoImgContainer.scss";
 
 const WaldoImg1 = () => {
@@ -22,6 +25,11 @@ const WaldoImg1 = () => {
     waldo: false,
     whitebeard: false,
     odlaw: false,
+  });
+  const [charOpac, setCharOpac] = useState({
+    waldo: 1,
+    whitebeard: 1,
+    odlaw: 1,
   });
   const [gameover, setGameover] = useState(false);
   const [seconds, setSeconds] = useState(0);
@@ -71,15 +79,16 @@ const WaldoImg1 = () => {
   const handleClickCoord = (e) => {
     if (gameover) return;
     const rect = e.target.getBoundingClientRect();
+    console.log(rect);
     const rectRatio = rect.width / 100;
     const xCoord =
       Math.round(((e.clientX - rect.left) / rectRatio) * 100) / 100;
     const yCoord = Math.round(((e.clientY - rect.top) / rectRatio) * 100) / 100;
     const popupStyle = {
-      // left: `${e.clientX - rect.left - 25}px`,
-      // top: `${e.clientY - rect.top - 25}px`,
-      left: `${e.pageX - 25}px`,
-      top: `${e.pageY - 25}px`,
+      left: `${((e.clientX - rect.left - 25) * 100) / rect.width}%`,
+      top: `${((e.clientY - rect.top - 25) * 100) / rect.height}%`,
+      // left: `${e.pageX - 25}px`,
+      // top: `${e.pageY - 25}px`,
       display: "flex",
     };
     setPopupStyle(popupStyle);
@@ -99,6 +108,7 @@ const WaldoImg1 = () => {
       clickCoord.y <= charCoords[maxY]
     ) {
       setFound({ ...found, [char]: true });
+      setCharOpac({ ...charOpac, [char]: 0.5 });
       setPlayerMessage(
         `You found ${char.slice(0, 1).toUpperCase() + char.slice(1)}`
       );
@@ -109,8 +119,28 @@ const WaldoImg1 = () => {
 
   return (
     <div className='container'>
-      <h2>{timer}</h2>
-      <div className='playerMessage'>{playerMessage}</div>
+      <div className='gameInfo'>
+        <div className='timerDiv'>{timer}</div>
+        <div className='playerMessage'>{playerMessage}</div>
+        <div className='characterDisplay'>
+          <img
+            src={waldo}
+            alt='Character Waldo'
+            style={{ opacity: charOpac.waldo }}
+          />
+          <img
+            src={odlaw}
+            alt='Character Odlaw'
+            style={{ opacity: charOpac.odlaw }}
+          />
+          <img
+            src={whitebeard}
+            alt='Character Whitebeard'
+            style={{ opacity: charOpac.whitebeard }}
+          />
+        </div>
+      </div>
+
       <div className='imgDiv'>
         <img
           src={waldoSnow}
@@ -142,6 +172,8 @@ const WaldoImg1 = () => {
           </div>
         </div>
       </div>
+      <div className='modalContainer'></div>
+      <div className='overlay'></div>
     </div>
   );
 };

@@ -5,15 +5,50 @@
   align-items: center;
   justify-content: center;
 
-  .playerMessage {
-    text-align: center;
+
+  .gameInfo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
     margin-bottom: 1rem;
-    font-size: 1.5rem;
+
+    div {
+      flex: 1
+    }
+
+    .timerDiv {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      font-size: 1.5rem;
+    }
+
+    .characterDisplay {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 5px;
+
+      img {
+        height: 60px;
+        width: 60px;
+        border-radius: 50%;
+        object-fit: contain;
+        border: 1px solid #333;
+      }
+    }
+
+    .playerMessage {
+      text-align: center;
+      font-size: 1.5rem;
+    }
   }
+  
 
   .imgDiv {
     width: 90%;
-    // position: relative;
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -60,6 +95,13 @@
         }
       }
     }
+    }
+
+    .modalContainer {
+
+    }
+    .overlay {
+
     }
   }
 }
