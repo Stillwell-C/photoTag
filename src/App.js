@@ -1,10 +1,10 @@
 import "./App.scss";
-import WaldoImg1 from "./components/WaldoImg1";
+import WaldoImgContainer from "./components/WaldoImgContainer";
 
 function App() {
   return (
     <div className='App'>
-      <WaldoImg1 />
+      <WaldoImgContainer />
     </div>
   );
 }
