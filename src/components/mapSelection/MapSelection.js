@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 import cityMap from "../../assets/waldoCity.jpg";
 import snowMap from "../../assets/waldoSnow.jpg";
@@ -12,32 +13,41 @@ const MapSelection = () => {
       <h2>Map Selection</h2>
       <div className='mapList'>
         <div className='mapLine'>
-          <div className='singleMap'>
-            <div className='mapText'>
-              <p>City</p>
+          <Link to='/map/cityMap'>
+            <div className='singleMap'>
+              <div className='mapText'>
+                <p>City</p>
+              </div>
+              <img src={cityMap} alt='City map' />
             </div>
-            <img src={cityMap} alt='City map' />
-          </div>
-          <div className='singleMap'>
-            <div className='mapText'>
-              <p>Ski Slope</p>
+          </Link>
+          <Link to='/map/snowMap'>
+            <div className='singleMap'>
+              <div className='mapText'>
+                <p>Ski Slope</p>
+              </div>
+              <img src={snowMap} alt='Ski slope map' />
             </div>
-            <img src={snowMap} alt='Ski slope map' />
-          </div>
+          </Link>
         </div>
+
         <div className='mapLine'>
-          <div className='singleMap'>
-            <div className='mapText'>
-              <p>Department Store</p>
+          <Link to='/map/deptMap'>
+            <div className='singleMap'>
+              <div className='mapText'>
+                <p>Department Store</p>
+              </div>
+              <img src={deptMap} alt='Department store map' />
             </div>
-            <img src={deptMap} alt='Department store map' />
-          </div>
-          <div className='singleMap'>
-            <div className='mapText'>
-              <p>Swashbuckling Musketeers</p>
+          </Link>
+          <Link to='/map/musketeersMap'>
+            <div className='singleMap'>
+              <div className='mapText'>
+                <p>Swashbuckling Musketeers</p>
+              </div>
+              <img src={musketeersMap} alt='Swashbuckling musketeers map' />
             </div>
-            <img src={musketeersMap} alt='Swashbuckling musketeers map' />
-          </div>
+          </Link>
         </div>
       </div>
     </div>
