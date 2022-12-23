@@ -3,6 +3,7 @@ import waldoSnow from "../../assets/waldoSnow.jpg";
 import odlaw from "../../assets/odlaw-face.jpg";
 import waldo from "../../assets/waldo-face.webp";
 import whitebeard from "../../assets/whitebeard-face.jpeg";
+import loadingImg from "../../assets/loading.jpg";
 import "./waldoImgContainer.scss";
 
 const WaldoImg1 = () => {
@@ -31,6 +32,7 @@ const WaldoImg1 = () => {
     whitebeard: 1,
     odlaw: 1,
   });
+  const [loading, setLoading] = useState(false);
   const [gameover, setGameover] = useState(false);
   const [seconds, setSeconds] = useState(0);
   const [timer, setTimer] = useState("");
@@ -47,7 +49,7 @@ const WaldoImg1 = () => {
       }, 1000);
     }
     return () => clearInterval(interval);
-  }, [seconds]);
+  }, [seconds, gameover]);
 
   useEffect(() => {
     handleTime(seconds);
@@ -79,7 +81,6 @@ const WaldoImg1 = () => {
   const handleClickCoord = (e) => {
     if (gameover) return;
     const rect = e.target.getBoundingClientRect();
-    console.log(rect);
     const rectRatio = rect.width / 100;
     const xCoord =
       Math.round(((e.clientX - rect.left) / rectRatio) * 100) / 100;
@@ -87,8 +88,6 @@ const WaldoImg1 = () => {
     const popupStyle = {
       left: `${((e.clientX - rect.left - 25) * 100) / rect.width}%`,
       top: `${((e.clientY - rect.top - 25) * 100) / rect.height}%`,
-      // left: `${e.pageX - 25}px`,
-      // top: `${e.pageY - 25}px`,
       display: "flex",
     };
     setPopupStyle(popupStyle);
@@ -107,11 +106,11 @@ const WaldoImg1 = () => {
       clickCoord.y >= charCoords[minY] &&
       clickCoord.y <= charCoords[maxY]
     ) {
-      setFound({ ...found, [char]: true });
       setCharOpac({ ...charOpac, [char]: 0.5 });
       setPlayerMessage(
         `You found ${char.slice(0, 1).toUpperCase() + char.slice(1)}`
       );
+      setFound({ ...found, [char]: true });
       return;
     }
     setPlayerMessage("Keep looking");
@@ -119,61 +118,90 @@ const WaldoImg1 = () => {
 
   return (
     <div className='container'>
-      <div className='gameInfo'>
-        <div className='timerDiv'>{timer}</div>
-        <div className='playerMessage'>{playerMessage}</div>
-        <div className='characterDisplay'>
-          <img
-            src={waldo}
-            alt='Character Waldo'
-            style={{ opacity: charOpac.waldo }}
-          />
-          <img
-            src={odlaw}
-            alt='Character Odlaw'
-            style={{ opacity: charOpac.odlaw }}
-          />
-          <img
-            src={whitebeard}
-            alt='Character Whitebeard'
-            style={{ opacity: charOpac.whitebeard }}
-          />
+      {loading && (
+        <div className='loadingDiv'>
+          <img src={loadingImg} alt='Waldo for loading screen' />
+          <p className='loadingText'>Loading...</p>
         </div>
-      </div>
-
-      <div className='imgDiv'>
-        <img
-          src={waldoSnow}
-          alt='Large crowd with waldo among them'
-          onClick={handleClickCoord}
-          id='waldoPic'
-        />
-        <div className='popup' style={popupStyle}>
-          <div className='popupCircle'></div>
-          <div className='popupButtons'>
-            <button
-              disabled={!gameover ? false : true}
-              onClick={() => handleButtonClick("waldo")}
-            >
-              Waldo
-            </button>
-            <button
-              disabled={!gameover ? false : true}
-              onClick={() => handleButtonClick("whitebeard")}
-            >
-              Whitebeard
-            </button>
-            <button
-              disabled={!gameover ? false : true}
-              onClick={() => handleButtonClick("odlaw")}
-            >
-              Odlaw
-            </button>
+      )}
+      {!loading && (
+        <>
+          <div className='gameInfo'>
+            <div className='timerDiv'>{timer}</div>
+            <div className='playerMessage'>{playerMessage}</div>
+            <div className='characterDisplay'>
+              <img
+                src={waldo}
+                alt='Character Waldo'
+                style={{ opacity: charOpac.waldo }}
+              />
+              <img
+                src={odlaw}
+                alt='Character Odlaw'
+                style={{ opacity: charOpac.odlaw }}
+              />
+              <img
+                src={whitebeard}
+                alt='Character Whitebeard'
+                style={{ opacity: charOpac.whitebeard }}
+              />
+            </div>
           </div>
-        </div>
-      </div>
-      <div className='modalContainer'></div>
-      <div className='overlay'></div>
+
+          <div className='imgDiv'>
+            <img
+              src={waldoSnow}
+              alt='Large crowd with waldo among them'
+              onClick={handleClickCoord}
+              id='waldoPic'
+            />
+            <div className='popup' style={popupStyle}>
+              <div className='popupCircle'></div>
+              <div className='popupButtons'>
+                <button
+                  disabled={!gameover ? false : true}
+                  onClick={() => handleButtonClick("waldo")}
+                >
+                  Waldo
+                </button>
+                <button
+                  disabled={!gameover ? false : true}
+                  onClick={() => handleButtonClick("whitebeard")}
+                >
+                  Whitebeard
+                </button>
+                <button
+                  disabled={!gameover ? false : true}
+                  onClick={() => handleButtonClick("odlaw")}
+                >
+                  Odlaw
+                </button>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+      {gameover && (
+        <>
+          <div className='modalContainer'>
+            <div className='modalHeader'>Congratulations!</div>
+            <div className='modalBody'>
+              <div className='modalInfo'>Your time was {timer}</div>
+              <div className='modalForm'>
+                <form>
+                  <label htmlFor='name'>Submit your score:</label>
+                  <div className='inputDiv'>
+                    <input type='text' id='name' placeholder='Name' />
+                    <button type='submit'>Submit</button>
+                  </div>
+                </form>
+              </div>
+              <button className='homeButton'>Back to home</button>
+            </div>
+          </div>
+          <div className='overlay'></div>
+        </>
+      )}
     </div>
   );
 };

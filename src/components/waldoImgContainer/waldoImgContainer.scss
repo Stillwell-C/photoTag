@@ -5,6 +5,27 @@
   align-items: center;
   justify-content: center;
 
+  .loadingDiv {
+    width: 50%;
+    position: relative;;
+
+    img {
+      animation: rotation 2s infinite linear;
+      border-radius: 40%;
+      max-width: 100%;
+      opacity: .65;
+    }
+
+    .loadingText {
+      font-size: 5rem;
+      font-weight: bold;
+      color: white;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
 
   .gameInfo {
     display: flex;
@@ -68,6 +89,7 @@
         align-self: flex-start;
         justify-self: flex-start;
         border-radius: 50%;
+        //TODO: adjust size by media query
         height: 50px;
         width: 50px;
         border: 4px solid black;
@@ -96,12 +118,109 @@
       }
     }
     }
+  }
 
-    .modalContainer {
+  .modalContainer {
+    transition: 200ms ease-in-out;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border: 1px solid black;
+    border-radius: .5rem;
+    z-index: 10;
+    width: 500px;
+    max-width: 80%;
+    padding: 1rem;
+    box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
+    -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
 
+    .modalHeader {
+      width: 100%;
+      font-size: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 1rem 0;
     }
-    .overlay {
 
+    .modalBody {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+
+      .modalInfo {
+        font-size: 1.5rem;
+        margin: 1rem 0;
+      }
+
+      .modalForm {
+
+        form {
+          display: flex;
+          align-items: flex-start;
+          justify-content: center;
+          flex-direction: column;
+          gap: 5px;
+
+          .inputDiv {
+            display: flex;
+            align-items: center;
+            border: .5px solid lightgray;
+            border-radius: .5rem;
+            margin-bottom: .5rem;
+            box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.7);
+            -webkit-box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.7);
+            
+
+            input {
+              border: none;
+              outline: none;
+              
+              &::placeholder {
+                font-size: 12px;
+                padding: .5rem;
+              }
+            }
+
+            button {
+              padding: 5px 7px;
+              border-radius: 0 .5rem .5rem 0;
+              border: 1px solid grey;
+              cursor: pointer;
+            }
+          }
+        }
+      }
+      .homeButton {
+        cursor: pointer;
+        padding: 7px 12px;
+        border-radius: .25rem;
+        border: 1px solid black;
+      }
+    }
+  }
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    pointer-events: all;
+    transition: 200ms ease-in-out;
+  }
+
+  @keyframes rotation {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(359deg);
     }
   }
 }
