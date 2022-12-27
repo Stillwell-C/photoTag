@@ -103,13 +103,13 @@ const WaldoImg1 = () => {
 
   useEffect(() => {
     let interval = null;
-    if (!gameover) {
+    if (!gameover && !mapLoading && !facesLoading) {
       interval = setInterval(() => {
         setSeconds(seconds + 1);
       }, 1000);
     }
     return () => clearInterval(interval);
-  }, [seconds, gameover]);
+  }, [seconds, gameover, mapLoading, facesLoading]);
 
   useEffect(() => {
     handleTime(seconds);
