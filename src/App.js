@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { doc, getDoc } from "firebase/firestore";
 
 import "./App.scss";
@@ -9,7 +9,9 @@ import { WaldoInfoContext } from "./DataContext";
 import { dataDocRef } from "./firebase";
 
 function App() {
-  const [waldoInfo, setWaldoInfo] = useState();
+  const [waldoInfo, setWaldoInfo] = useState(null);
+
+  const memoizedWaldoInfo = useMemo(() => ({ waldoInfo }), [waldoInfo]);
 
   useEffect(() => {
     const getData = async () => {
@@ -26,7 +28,7 @@ function App() {
 
   return (
     <div className='App'>
-      <WaldoInfoContext.Provider value={{ waldoInfo, setWaldoInfo }}>
+      <WaldoInfoContext.Provider value={memoizedWaldoInfo}>
         <Routes>
           <Route path='/' element={<MapSelection />} />
           <Route path='/map/:mapID' element={<WaldoImgContainer />} />
