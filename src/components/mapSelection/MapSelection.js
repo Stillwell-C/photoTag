@@ -2,17 +2,13 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ref, getDownloadURL } from "firebase/storage";
 
-import cityMap from "../../assets/waldoCity.jpg";
-import snowMap from "../../assets/waldoSnow.jpg";
-import deptMap from "../../assets/waldoDeptStore.jpg";
-import musketeersMap from "../../assets/waldoMusketeers.jpg";
 import loadingImg from "../../assets/waldoCharLoading.jpg";
 import "./mapSelection.scss";
 import { storage } from "../../firebase";
 import { WaldoInfoContext } from "../../DataContext";
 
 const MapSelection = () => {
-  const { waldoInfo, setWaldoInfo } = useContext(WaldoInfoContext);
+  const { waldoInfo } = useContext(WaldoInfoContext);
 
   const [mapImages, setMapImages] = useState(null);
 
