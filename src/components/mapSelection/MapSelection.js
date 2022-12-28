@@ -59,6 +59,12 @@ const MapSelection = () => {
               <div className='singleMap'>
                 <div className='loadingText'>
                   <p>Loading</p>
+                  <div className='lds-ring'>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                  </div>
                 </div>
                 <img src={loadingImg} alt='loading placeholder' />
               </div>
@@ -78,6 +84,12 @@ const MapSelection = () => {
               <div className='singleMap'>
                 <div className='loadingText'>
                   <p>Loading</p>
+                  <div className='lds-ring'>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                  </div>
                 </div>
                 <img src={loadingImg} alt='loading placeholder' />
               </div>
@@ -100,6 +112,12 @@ const MapSelection = () => {
               <div className='singleMap'>
                 <div className='loadingText'>
                   <p>Loading</p>
+                  <div className='lds-ring'>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                  </div>
                 </div>
                 <img src={loadingImg} alt='loading placeholder' />
               </div>
@@ -122,6 +140,12 @@ const MapSelection = () => {
               <div className='singleMap'>
                 <div className='loadingText'>
                   <p>Loading</p>
+                  <div className='lds-ring'>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                  </div>
                 </div>
                 <img src={loadingImg} alt='loading placeholder' />
               </div>
