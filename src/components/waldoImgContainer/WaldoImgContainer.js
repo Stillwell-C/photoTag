@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { ref, getDownloadURL } from "firebase/storage";
-import { getDoc } from "firebase/firestore";
+import { collection, addDoc } from "firebase/firestore";
 
 import loadingImg from "../../assets/loading.jpg";
 import "./waldoImgContainer.scss";
 import { WaldoInfoContext } from "../../DataContext";
-import { storage, dataDocRef } from "../../firebase";
+import { storage, db } from "../../firebase";
 
 const WaldoImg1 = () => {
   const { mapID } = useParams();
@@ -36,6 +36,12 @@ const WaldoImg1 = () => {
   const [playerMessage, setPlayerMessage] = useState(
     "Click the screen to find the characters."
   );
+  const [inputVal, setInputVal] = useState("");
+  const [collectionRef, setCollectionRef] = useState();
+  const [disableSubmit, setDisableSubmit] = useState(false);
+  const [submitErrorMsg, setSubmitErrorMsg] = useState("");
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadBackgroundImg = async (mapName) => {
@@ -82,18 +88,22 @@ const WaldoImg1 = () => {
         case "snowMap":
           loadBackgroundImg("waldoSnow");
           setCharCoords(waldoInfo.coords.snowCoords);
+          setCollectionRef(collection(db, "snowLeaderboard"));
           break;
         case "cityMap":
           loadBackgroundImg("waldoCity");
           setCharCoords(waldoInfo.coords.cityCoords);
+          setCollectionRef(collection(db, "cityLeaderboard"));
           break;
         case "deptMap":
           loadBackgroundImg("waldoDeptStore");
           setCharCoords(waldoInfo.coords.deptCoords);
+          setCollectionRef(collection(db, "deptLeaderboard"));
           break;
         case "musketeersMap":
           loadBackgroundImg("waldoMusketeers");
           setCharCoords(waldoInfo.coords.muskCoords);
+          setCollectionRef(collection(db, "musketeersLeaderboard"));
           break;
         default:
           console.log("Loading Error.");
@@ -176,6 +186,24 @@ const WaldoImg1 = () => {
     setPlayerMessage("Keep looking");
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setDisableSubmit(true);
+    try {
+      setSubmitErrorMsg("");
+      await addDoc(collectionRef, {
+        name: inputVal,
+        seconds: seconds,
+        timer: timer,
+      });
+      navigate("/");
+    } catch (err) {
+      setDisableSubmit(false);
+      setSubmitErrorMsg("Submission error. Please try again.");
+      console.log(err.message);
+    }
+  };
+
   return (
     <div className='container'>
       {(facesLoading || mapLoading) && (
@@ -248,12 +276,20 @@ const WaldoImg1 = () => {
             <div className='modalBody'>
               <div className='modalInfo'>Your time was {timer}</div>
               <div className='modalForm'>
-                <form>
+                <form onSubmit={handleSubmit}>
                   <label htmlFor='name'>Submit your score:</label>
                   <div className='inputDiv'>
-                    <input type='text' id='name' placeholder='Name' />
-                    <button type='submit'>Submit</button>
+                    <input
+                      onChange={(e) => setInputVal(e.target.value)}
+                      type='text'
+                      id='name'
+                      placeholder='Name'
+                    />
+                    <button type='submit' disabled={disableSubmit}>
+                      Submit
+                    </button>
                   </div>
+                  <div className='errorMsg'>{submitErrorMsg}</div>
                 </form>
               </div>
               <Link to='/'>
