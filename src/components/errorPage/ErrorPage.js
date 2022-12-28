@@ -1,6 +1,5 @@
 import "./errorPage.scss";
 import errorImg from "../../assets/wrongPage.jpg";
-import { Link } from "react-router-dom";
 
 const ErrorPage = () => {
   return (
