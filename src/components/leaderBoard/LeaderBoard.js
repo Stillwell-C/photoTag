@@ -69,7 +69,7 @@ const LeaderBoard = () => {
           <div className='leaderboard-container'>
             <div className='leaderboard-line'>
               <div className='single-leaderboard'>
-                <h3>Ski Slope Map</h3>
+                <h3>Ski Slope</h3>
                 <div className='leaderboard-div'>
                   {leaderData.snowMap.map((entry) => (
                     <div className='entry-div' key={entry.id}>
@@ -83,10 +83,10 @@ const LeaderBoard = () => {
                 </div>
               </div>
               <div className='single-leaderboard'>
-                <h3>City Map</h3>
+                <h3>City</h3>
                 <div className='leaderboard-div'>
                   {leaderData.cityMap.map((entry) => (
-                    <div key={entry.id}>
+                    <div className='entry-div' key={entry.id}>
                       <div className='entryName'>{entry.name}</div>
                       <div className='entryTime'>{entry.timer}</div>
                     </div>
@@ -99,10 +99,10 @@ const LeaderBoard = () => {
             </div>
             <div className='leaderboard-line'>
               <div className='single-leaderboard'>
-                <h3>Deptartment Store Map</h3>
+                <h3>Deptartment Store</h3>
                 <div className='leaderboard-div'>
                   {leaderData.deptMap.map((entry) => (
-                    <div key={entry.id}>
+                    <div className='entry-div' key={entry.id}>
                       <div className='entryName'>{entry.name}</div>
                       <div className='entryTime'>{entry.timer}</div>
                     </div>
@@ -113,10 +113,10 @@ const LeaderBoard = () => {
                 </div>
               </div>
               <div className='single-leaderboard'>
-                <h3>Swashbuckling Musketeers Map</h3>
+                <h3>Swashbuckling Musketeers</h3>
                 <div className='leaderboard-div'>
                   {leaderData.muskMap.map((entry) => (
-                    <div key={entry.id}>
+                    <div className='entry-div' key={entry.id}>
                       <div className='entryName'>{entry.name}</div>
                       <div className='entryTime'>{entry.timer}</div>
                     </div>
