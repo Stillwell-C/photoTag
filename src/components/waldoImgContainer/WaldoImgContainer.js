@@ -3,10 +3,10 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { ref, getDownloadURL } from "firebase/storage";
 import { collection, addDoc } from "firebase/firestore";
 
-import loadingImg from "../../assets/loading.jpg";
 import "./waldoImgContainer.scss";
 import { WaldoInfoContext } from "../../DataContext";
 import { storage, db } from "../../firebase";
+import LoadingPage from "../loadingPage/LoadingPage";
 
 const WaldoImg1 = () => {
   const { mapID } = useParams();
@@ -206,12 +206,7 @@ const WaldoImg1 = () => {
 
   return (
     <div className='container'>
-      {(facesLoading || mapLoading) && (
-        <div className='loadingDiv'>
-          <img src={loadingImg} alt='Waldo for loading screen' />
-          <p className='loadingText'>Loading...</p>
-        </div>
-      )}
+      {(facesLoading || mapLoading) && <LoadingPage />}
       {!facesLoading && !mapLoading && (
         <>
           <div className='gameInfo'>
