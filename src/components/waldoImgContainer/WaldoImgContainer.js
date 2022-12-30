@@ -7,6 +7,7 @@ import "./waldoImgContainer.scss";
 import { WaldoInfoContext } from "../../DataContext";
 import { storage, db } from "../../firebase";
 import LoadingPage from "../loadingPage/LoadingPage";
+import Modal from "../modal/Modal";
 
 const WaldoImg1 = () => {
   const { mapID } = useParams();
@@ -265,35 +266,13 @@ const WaldoImg1 = () => {
         </>
       )}
       {gameover && (
-        <>
-          <div className='modalContainer'>
-            <div className='modalHeader'>Congratulations!</div>
-            <div className='modalBody'>
-              <div className='modalInfo'>Your time was {timer}</div>
-              <div className='modalForm'>
-                <form onSubmit={handleSubmit}>
-                  <label htmlFor='name'>Submit your score:</label>
-                  <div className='inputDiv'>
-                    <input
-                      onChange={(e) => setInputVal(e.target.value)}
-                      type='text'
-                      id='name'
-                      placeholder='Name'
-                    />
-                    <button type='submit' disabled={disableSubmit}>
-                      Submit
-                    </button>
-                  </div>
-                  <div className='errorMsg'>{submitErrorMsg}</div>
-                </form>
-              </div>
-              <Link to='/'>
-                <button className='homeButton'>Back to home</button>
-              </Link>
-            </div>
-          </div>
-          <div className='overlay'></div>
-        </>
+        <Modal
+          timer={timer}
+          handleSubmit={handleSubmit}
+          setInputVal={setInputVal}
+          disableSubmit={disableSubmit}
+          submitErrorMsg={submitErrorMsg}
+        />
       )}
     </div>
   );

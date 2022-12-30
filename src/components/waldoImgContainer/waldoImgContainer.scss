@@ -13,7 +13,7 @@
     margin-bottom: 1rem;
 
     div {
-      flex: 1
+      flex: 1;
     }
 
     .timerDiv {
@@ -43,7 +43,6 @@
       font-size: 1.5rem;
     }
   }
-  
 
   .imgDiv {
     width: 90%;
@@ -79,129 +78,23 @@
         background-color: rgba(224, 224, 224, 0.75);
         padding: 12px 17px;
         gap: 5px;
-        border-radius: .5rem;
+        border-radius: 0.5rem;
 
-      button{
-        cursor: pointer;
-        font-size: .9rem;
-        font-weight: 600;
-        padding: 5px 7px;
-        color: white;
-        background-color: rgb(72, 72, 218);
-        border: 1px solid rgb(72, 72, 218);
-        border-radius: .25rem;
+        button {
+          cursor: pointer;
+          font-size: 0.9rem;
+          font-weight: 600;
+          padding: 5px 7px;
+          color: white;
+          background-color: rgb(72, 72, 218);
+          border: 1px solid rgb(72, 72, 218);
+          border-radius: 0.25rem;
 
-        &:hover {
+          &:hover {
             background-color: rgb(62, 62, 187);
-        }
-      }
-    }
-    }
-  }
-
-  .modalContainer {
-    transition: 200ms ease-in-out;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: white;
-    border: 1px solid black;
-    border-radius: .5rem;
-    z-index: 10;
-    width: 500px;
-    max-width: 80%;
-    padding: 1rem;
-    box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
-    -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
-
-    .modalHeader {
-      width: 100%;
-      font-size: 2.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 1rem 0;
-    }
-
-    .modalBody {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-
-
-      .modalInfo {
-        font-size: 1.5rem;
-        margin: 1rem 0;
-      }
-
-      .modalForm {
-
-        form {
-          display: flex;
-          align-items: flex-start;
-          justify-content: center;
-          flex-direction: column;
-          gap: 5px;
-
-          .inputDiv {
-            display: flex;
-            align-items: center;
-            border: .5px solid lightgray;
-            border-radius: .5rem;
-            margin-bottom: .5rem;
-            box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.7);
-            -webkit-box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.7);
-            
-
-            input {
-              border: none;
-              outline: none;
-              
-              &::placeholder {
-                font-size: 12px;
-                padding: .5rem;
-              }
-            }
-
-            button {
-              padding: 5px 7px;
-              border-radius: 0 .5rem .5rem 0;
-              border: 1px solid grey;
-              cursor: pointer;
-
-              &:disabled {
-                opacity: .5;
-              }
-            }
-          }
-
-          .errorMsg {
-            color: red;
           }
         }
       }
-      .homeButton {
-        cursor: pointer;
-        padding: 7px 12px;
-        border-radius: .25rem;
-        border: 1px solid black;
-        margin-top: .5rem;
-      }
     }
   }
-  .overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    pointer-events: all;
-    transition: 200ms ease-in-out;
-  }
-
-  
 }
