@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useReducer } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { ref, getDownloadURL } from "firebase/storage";
 import { collection, addDoc } from "firebase/firestore";
@@ -9,40 +9,113 @@ import { storage, db } from "../../firebase";
 import LoadingPage from "../loadingPage/LoadingPage";
 import Modal from "../modal/Modal";
 
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "charCoords":
+      return { ...state, charCoords: action.payload };
+    case "mapSelection":
+      return { ...state, mapSelection: action.payload };
+    case "mapAltText":
+      return { ...state, mapAltText: action.payload };
+    case "charFaces":
+      return { ...state, charFaces: action.payload };
+    case "clickCoords":
+      return { ...state, clickCoords: action.payload };
+    case "found":
+      return { ...state, found: { ...state.found, [action.payload]: true } };
+    case "charOpac":
+      return {
+        ...state,
+        charOpac: { ...state.charOpac, [action.payload]: 0.5 },
+      };
+    case "mapLoading":
+      return { ...state, mapLoading: action.payload };
+    case "facesLoading":
+      return { ...state, facesLoading: action.payload };
+    case "gameover":
+      return { ...state, gameover: !state.gameover };
+    case "seconds":
+      return { ...state, seconds: action.payload };
+    case "timer":
+      return { ...state, timer: action.payload };
+    case "popupStyle":
+      return { ...state, popupStyle: action.payload };
+    case "playerMessage":
+      return { ...state, playerMessage: action.payload };
+    case "inputVal":
+      return { ...state, inputVal: action.payload };
+    case "collectionRef":
+      return { ...state, collectionRef: action.payload };
+    case "disableSubmit":
+      return { ...state, disableSubmit: action.payload };
+    case "submitErrorMsg":
+      return { ...state, submitErrorMsg: action.payload };
+    case "submitting":
+      return { ...state, submitting: action.payload };
+    default:
+      console.log(action.type);
+      throw new Error();
+  }
+};
+
+const ACTION = {
+  CHAR_COORDS: "charCoords",
+  MAP_SELECTION: "mapSelection",
+  MAP_ALT_TEXT: "mapAltText",
+  CHAR_FACES: "charFaces",
+  CLICK_COORDS: "clickCoords",
+  FOUND: "found",
+  CHAR_OPAC: "charOpac",
+  MAP_LOADING: "mapLoading",
+  FACES_LOADING: "facesLoading",
+  GAMEOVER: "gameover",
+  SECONDS: "seconds",
+  TIMER: "timer",
+  POPUPSTYLE: "popupStyle",
+  PLAYER_MESSAGE: "playerMessage",
+  INPUT_VAL: "inputVal",
+  COLLECTION_REF: "collectionRef",
+  DISABLE_SUBMIT: "disableSubmit",
+  SUBMIT_ERROR_MSG: "submitErrorMsg",
+  SUBMITTING: "submitting",
+};
+
+const initialState = {
+  charCoords: {},
+  mapSelection: null,
+  mapAltText: "",
+  charFaces: {},
+  clickCoords: {},
+  found: {
+    waldo: false,
+    whitebeard: false,
+    odlaw: false,
+    wenda: false,
+  },
+  charOpac: {
+    waldo: 1,
+    whitebeard: 1,
+    odlaw: 1,
+  },
+  mapLoading: true,
+  facesLoading: true,
+  gameover: false,
+  seconds: 0,
+  timer: "",
+  popupStyle: {},
+  playerMessage: "Click the screen to find the characters.",
+  inputVal: "",
+  collectionRef: null,
+  disableSubmit: false,
+  submitErrorMsg: "",
+  submitting: false,
+};
+
 const WaldoImg1 = () => {
   const { mapID } = useParams();
   const { waldoInfo } = useContext(WaldoInfoContext);
 
-  const [charCoords, setCharCoords] = useState({});
-
-  const [mapSelection, setMapSelection] = useState();
-  const [mapAltText, setMapAltText] = useState("");
-  const [charFaces, setCharFaces] = useState({});
-  const [clickCoord, setClickCoord] = useState({});
-  const [found, setFound] = useState({
-    waldo: false,
-    whitebeard: false,
-    odlaw: false,
-  });
-  const [charOpac, setCharOpac] = useState({
-    waldo: 1,
-    whitebeard: 1,
-    odlaw: 1,
-  });
-  const [mapLoading, setMapLoading] = useState(true);
-  const [facesLoading, setFacesLoading] = useState(true);
-  const [gameover, setGameover] = useState(false);
-  const [seconds, setSeconds] = useState(0);
-  const [timer, setTimer] = useState("");
-  const [popupStyle, setPopupStyle] = useState({});
-  const [playerMessage, setPlayerMessage] = useState(
-    "Click the screen to find the characters."
-  );
-  const [inputVal, setInputVal] = useState("");
-  const [collectionRef, setCollectionRef] = useState();
-  const [disableSubmit, setDisableSubmit] = useState(false);
-  const [submitErrorMsg, setSubmitErrorMsg] = useState("");
-  const [submitting, setSubmitting] = useState(false);
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   const navigate = useNavigate();
 
@@ -52,11 +125,15 @@ const WaldoImg1 = () => {
         const backgroundImg = await getDownloadURL(
           ref(storage, waldoInfo.images[mapName])
         );
-        setMapSelection(backgroundImg);
-        setMapAltText(waldoInfo.imgAltText[mapName]);
-        setFacesLoading(false);
+        dispatch({ type: ACTION.MAP_SELECTION, payload: backgroundImg });
+        dispatch({
+          type: ACTION.MAP_ALT_TEXT,
+          payload: waldoInfo.imgAltText[mapName],
+        });
+        dispatch({ type: ACTION.FACES_LOADING, payload: false });
       } catch (err) {
         console.log("Background Img: ", err.message);
+        dispatch({ type: ACTION.FACES_LOADING, payload: true });
       }
     };
     const loadCharacterImg = async () => {
@@ -74,15 +151,19 @@ const WaldoImg1 = () => {
           ref(storage, waldoInfo.images.wendaFace)
         );
 
-        setCharFaces({
-          waldoFace: waldo,
-          odlawFace: odlaw,
-          whitebeardFace: whitebeard,
-          wendaFace: wenda,
+        dispatch({
+          type: ACTION.CHAR_FACES,
+          payload: {
+            waldoFace: waldo,
+            odlawFace: odlaw,
+            whitebeardFace: whitebeard,
+            wendaFace: wenda,
+          },
         });
-        setMapLoading(false);
+        dispatch({ type: ACTION.MAP_LOADING, payload: false });
       } catch (err) {
         console.log("Character Img: ", err.message);
+        dispatch({ type: ACTION.MAP_LOADING, payload: true });
       }
     };
 
@@ -91,23 +172,47 @@ const WaldoImg1 = () => {
       switch (mapID) {
         case "snowMap":
           loadBackgroundImg("waldoSnow");
-          setCharCoords(waldoInfo.coords.snowCoords);
-          setCollectionRef(collection(db, "snowLeaderboard"));
+          dispatch({
+            type: ACTION.CHAR_COORDS,
+            payload: waldoInfo.coords.snowCoords,
+          });
+          dispatch({
+            type: ACTION.COLLECTION_REF,
+            payload: collection(db, "snowLeaderboard"),
+          });
           break;
         case "cityMap":
           loadBackgroundImg("waldoCity");
-          setCharCoords(waldoInfo.coords.cityCoords);
-          setCollectionRef(collection(db, "cityLeaderboard"));
+          dispatch({
+            type: ACTION.CHAR_COORDS,
+            payload: waldoInfo.coords.cityCoords,
+          });
+          dispatch({
+            type: ACTION.COLLECTION_REF,
+            payload: collection(db, "cityLeaderboard"),
+          });
           break;
         case "deptMap":
           loadBackgroundImg("waldoDeptStore");
-          setCharCoords(waldoInfo.coords.deptCoords);
-          setCollectionRef(collection(db, "deptLeaderboard"));
+          dispatch({
+            type: ACTION.CHAR_COORDS,
+            payload: waldoInfo.coords.deptCoords,
+          });
+          dispatch({
+            type: ACTION.COLLECTION_REF,
+            payload: collection(db, "deptLeaderboard"),
+          });
           break;
         case "musketeersMap":
           loadBackgroundImg("waldoMusketeers");
-          setCharCoords(waldoInfo.coords.muskCoords);
-          setCollectionRef(collection(db, "musketeersLeaderboard"));
+          dispatch({
+            type: ACTION.CHAR_COORDS,
+            payload: waldoInfo.coords.muskCoords,
+          });
+          dispatch({
+            type: ACTION.COLLECTION_REF,
+            payload: collection(db, "musketeersLeaderboard"),
+          });
           break;
         default:
           console.log("Loading Error.");
@@ -117,28 +222,31 @@ const WaldoImg1 = () => {
 
   useEffect(() => {
     let interval = null;
-    if (!gameover && !mapLoading && !facesLoading) {
+    if (!state.gameover && !state.mapLoading && !state.facesLoading) {
       interval = setInterval(() => {
-        setSeconds(seconds + 1);
+        dispatch({ type: ACTION.SECONDS, payload: state.seconds + 1 });
       }, 1000);
     }
     return () => clearInterval(interval);
-  }, [seconds, gameover, mapLoading, facesLoading]);
+  }, [state.seconds, state.gameover, state.mapLoading, state.facesLoading]);
 
   useEffect(() => {
-    handleTime(seconds);
-  }, [seconds]);
+    handleTime(state.seconds);
+  }, [state.seconds]);
 
   useEffect(() => {
     if (
-      found.waldo === true &&
-      found.whitebeard === true &&
-      found.odlaw === true
+      state.found.waldo === true &&
+      state.found.whitebeard === true &&
+      state.found.odlaw === true
     ) {
-      setGameover(true);
-      setPlayerMessage("Good job, you're all done");
+      dispatch({ type: ACTION.GAMEOVER, payload: true });
+      dispatch({
+        type: ACTION.PLAYER_MESSAGE,
+        payload: "Good job, you're all done.",
+      });
     }
-  }, [found]);
+  }, [state.found]);
 
   const handleTime = (secondCount) => {
     const hour = Math.floor(secondCount / 3600).toString();
@@ -149,11 +257,14 @@ const WaldoImg1 = () => {
     const minDisp = min > 0 ? (min > 9 ? min : "0" + min) : "00";
     const secDisp = sec > 0 ? (sec > 9 ? sec : "0" + sec) : "00";
 
-    setTimer(`${hourDisp}:${minDisp}:${secDisp}`);
+    dispatch({
+      type: ACTION.TIMER,
+      payload: `${hourDisp}:${minDisp}:${secDisp}`,
+    });
   };
 
   const handleClickCoord = (e) => {
-    if (gameover) return;
+    if (state.gameover) return;
     const rect = e.target.getBoundingClientRect();
     const rectRatio = rect.width / 100;
     const xCoord =
@@ -164,107 +275,118 @@ const WaldoImg1 = () => {
       top: `${((e.clientY - rect.top - 25) * 100) / rect.height}%`,
       display: "flex",
     };
-    setPopupStyle(popupStyle);
-    setClickCoord({ x: xCoord, y: yCoord });
+    dispatch({ type: ACTION.POPUPSTYLE, payload: popupStyle });
+    dispatch({ type: ACTION.CLICK_COORDS, payload: { x: xCoord, y: yCoord } });
   };
 
   const handleButtonClick = (char) => {
-    setPopupStyle({ display: "none" });
+    dispatch({ type: ACTION.POPUPSTYLE, payload: { display: "none" } });
     const minX = `${char}MinX`;
     const maxX = `${char}MaxX`;
     const minY = `${char}MinY`;
     const maxY = `${char}MaxY`;
     if (
-      clickCoord.x >= charCoords[minX] &&
-      clickCoord.x <= charCoords[maxX] &&
-      clickCoord.y >= charCoords[minY] &&
-      clickCoord.y <= charCoords[maxY]
+      state.clickCoords.x >= state.charCoords[minX] &&
+      state.clickCoords.x <= state.charCoords[maxX] &&
+      state.clickCoords.y >= state.charCoords[minY] &&
+      state.clickCoords.y <= state.charCoords[maxY]
     ) {
-      setCharOpac({ ...charOpac, [char]: 0.5 });
-      setPlayerMessage(
-        `You found ${char.slice(0, 1).toUpperCase() + char.slice(1)}`
-      );
-      setFound({ ...found, [char]: true });
+      dispatch({ type: ACTION.CHAR_OPAC, payload: char });
+      dispatch({
+        type: ACTION.PLAYER_MESSAGE,
+        payload: `You found ${char.slice(0, 1).toUpperCase() + char.slice(1)}.`,
+      });
+      dispatch({ type: ACTION.FOUND, payload: char });
       return;
     }
-    setPlayerMessage("Keep looking");
+    dispatch({ type: ACTION.PLAYER_MESSAGE, payload: "Keep looking" });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!inputVal.length) {
-      setSubmitErrorMsg("Error. Please input a name");
+    if (!state.inputVal.length) {
+      dispatch({
+        type: ACTION.SUBMIT_ERROR_MSG,
+        payload: "Error. Please input a name",
+      });
       return;
     }
-    setDisableSubmit(true);
+    dispatch({ type: ACTION.DISABLE_SUBMIT, payload: true });
     try {
-      setSubmitErrorMsg("");
-      setSubmitting(true);
-      await addDoc(collectionRef, {
-        name: inputVal,
-        seconds: seconds,
-        timer: timer,
+      dispatch({ type: ACTION.SUBMIT_ERROR_MSG, payload: "" });
+      dispatch({ type: ACTION.SUBMITTING, payload: true });
+      await addDoc(state.collectionRef, {
+        name: state.inputVal,
+        seconds: state.seconds,
+        timer: state.timer,
       });
       navigate("/");
     } catch (err) {
-      setSubmitting(false);
-      setDisableSubmit(false);
-      setSubmitErrorMsg("Submission error. Please try again.");
+      dispatch({ type: ACTION.SUBMITTING, payload: false });
+      dispatch({ type: ACTION.DISABLE_SUBMIT, payload: false });
+      dispatch({
+        type: ACTION.SUBMIT_ERROR_MSG,
+        payload: "Submission error. Please try again.",
+      });
       console.log(err.message);
     }
   };
 
+  const handleInput = (input) => {
+    dispatch({ type: ACTION.INPUT_VAL, payload: input });
+  };
+
   return (
     <div className='container'>
-      {(facesLoading || mapLoading) && <LoadingPage />}
-      {!facesLoading && !mapLoading && (
+      {(state.facesLoading || state.mapLoading) && <LoadingPage />}
+      {!state.facesLoading && !state.mapLoading && (
         <>
           <div className='gameInfo'>
-            <div className='timerDiv'>{timer}</div>
-            <div className='playerMessage'>{playerMessage}</div>
+            <div className='timerDiv'>{state.timer}</div>
+            <div className='playerMessage'>{state.playerMessage}</div>
             <div className='characterDisplay'>
               <img
-                src={charFaces.waldoFace}
-                alt='Character Waldo'
-                style={{ opacity: charOpac.waldo }}
+                src={state.charFaces.waldoFace}
+                alt={waldoInfo.imgAltText.waldoFace}
+                style={{ opacity: state.charOpac.waldo }}
               />
               <img
-                src={charFaces.odlawFace}
-                alt='Character Odlaw'
-                style={{ opacity: charOpac.odlaw }}
+                src={state.charFaces.odlawFace}
+                alt={waldoInfo.imgAltText.odlawFace}
+                style={{ opacity: state.charOpac.odlaw }}
               />
               <img
-                src={charFaces.whitebeardFace}
-                alt='Character Whitebeard'
-                style={{ opacity: charOpac.whitebeard }}
+                src={state.charFaces.whitebeardFace}
+                alt={waldoInfo.imgAltText.whitebeardFace}
+                style={{ opacity: state.charOpac.whitebeard }}
               />
             </div>
           </div>
 
           <div className='imgDiv'>
             <img
-              src={mapSelection}
-              alt={mapAltText}
+              src={state.mapSelection}
+              alt={state.mapAltText}
               onClick={handleClickCoord}
               id='waldoPic'
             />
-            <div className='popup' style={popupStyle}>
+            <div className='popup' style={state.popupStyle}>
               <div className='popupCircle'></div>
               <div className='popupButtons'>
                 <button
-                  disabled={!gameover ? false : true}
+                  disabled={!state.gameover ? false : true}
                   onClick={() => handleButtonClick("waldo")}
                 >
                   Waldo
                 </button>
                 <button
-                  disabled={!gameover ? false : true}
+                  disabled={!state.gameover ? false : true}
                   onClick={() => handleButtonClick("whitebeard")}
                 >
                   Whitebeard
                 </button>
                 <button
-                  disabled={!gameover ? false : true}
+                  disabled={!state.gameover ? false : true}
                   onClick={() => handleButtonClick("odlaw")}
                 >
                   Odlaw
@@ -274,14 +396,14 @@ const WaldoImg1 = () => {
           </div>
         </>
       )}
-      {gameover && (
+      {state.gameover && (
         <Modal
-          timer={timer}
+          timer={state.timer}
           handleSubmit={handleSubmit}
-          setInputVal={setInputVal}
-          disableSubmit={disableSubmit}
-          submitErrorMsg={submitErrorMsg}
-          submitting={submitting}
+          handleInput={handleInput}
+          disableSubmit={state.disableSubmit}
+          submitErrorMsg={state.submitErrorMsg}
+          submitting={state.submitting}
         />
       )}
     </div>
