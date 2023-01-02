@@ -68,7 +68,7 @@ const MapSelection = () => {
               </Link>
             ))
           : mapArr.map((el) => (
-              <div className='singleMap' key={el}>
+              <div className='singleMap loading' key={el}>
                 <div className='loadingText'>
                   <p>Loading</p>
                   <div className='lds-ring'>
@@ -78,7 +78,6 @@ const MapSelection = () => {
                     <div></div>
                   </div>
                 </div>
-                <img src={loadingImg} alt='loading placeholder' />
               </div>
             ))}
       </div>

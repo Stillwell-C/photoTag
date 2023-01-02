@@ -14,14 +14,22 @@
     align-items: flex-start;
     justify-content: center;
     flex-wrap: wrap;
-    gap: 50px;
+    gap: 2rem;
     width: 100%;
     max-width: 1200px;
 
+    & .loading {
+      border-radius: 3%;
+    }
+
     .singleMap {
       width: 500px;
+      height: 320px;
       position: relative;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
       .mapText,
       .loadingText {
