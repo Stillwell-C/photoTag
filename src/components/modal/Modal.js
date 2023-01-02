@@ -4,7 +4,7 @@ import "./modal.scss";
 const Modal = ({
   timer,
   handleSubmit,
-  setInputVal,
+  handleInput,
   disableSubmit,
   submitErrorMsg,
   submitting,
@@ -22,7 +22,7 @@ const Modal = ({
                   <label htmlFor='name'>Submit your score:</label>
                   <div className='inputDiv'>
                     <input
-                      onChange={(e) => setInputVal(e.target.value)}
+                      onChange={(e) => handleInput(e.target.value)}
                       type='text'
                       id='name'
                       placeholder='Name'

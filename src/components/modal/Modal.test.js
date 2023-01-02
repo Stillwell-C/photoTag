@@ -61,17 +61,17 @@ describe("Error Page component", () => {
     expect(handleSubmit).toHaveBeenCalledTimes(1);
   });
 
-  it("calls setInputVal for each entry into the input", () => {
-    const setInputVal = jest.fn();
+  it("calls handleInput for each entry into the input", () => {
+    const handleInput = jest.fn();
     render(
       <BrowserRouter>
-        <Modal setInputVal={setInputVal} />
+        <Modal handleInput={handleInput} />
       </BrowserRouter>
     );
     const input = screen.getByPlaceholderText(/name/i);
     userEvent.click(input);
     userEvent.keyboard("abc");
-    expect(setInputVal).toBeCalledWith("abc");
+    expect(handleInput).toBeCalledWith("abc");
   });
 
   it("submit button is disabled when disableSubmit is true", () => {
