@@ -16,6 +16,7 @@ const WaldoImg1 = () => {
   const [charCoords, setCharCoords] = useState({});
 
   const [mapSelection, setMapSelection] = useState();
+  const [mapAltText, setMapAltText] = useState("");
   const [charFaces, setCharFaces] = useState({});
   const [clickCoord, setClickCoord] = useState({});
   const [found, setFound] = useState({
@@ -41,6 +42,7 @@ const WaldoImg1 = () => {
   const [collectionRef, setCollectionRef] = useState();
   const [disableSubmit, setDisableSubmit] = useState(false);
   const [submitErrorMsg, setSubmitErrorMsg] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   const navigate = useNavigate();
 
@@ -51,6 +53,7 @@ const WaldoImg1 = () => {
           ref(storage, waldoInfo.images[mapName])
         );
         setMapSelection(backgroundImg);
+        setMapAltText(waldoInfo.imgAltText[mapName]);
         setFacesLoading(false);
       } catch (err) {
         console.log("Background Img: ", err.message);
@@ -189,9 +192,14 @@ const WaldoImg1 = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!inputVal.length) {
+      setSubmitErrorMsg("Error. Please input a name");
+      return;
+    }
     setDisableSubmit(true);
     try {
       setSubmitErrorMsg("");
+      setSubmitting(true);
       await addDoc(collectionRef, {
         name: inputVal,
         seconds: seconds,
@@ -199,6 +207,7 @@ const WaldoImg1 = () => {
       });
       navigate("/");
     } catch (err) {
+      setSubmitting(false);
       setDisableSubmit(false);
       setSubmitErrorMsg("Submission error. Please try again.");
       console.log(err.message);
@@ -235,7 +244,7 @@ const WaldoImg1 = () => {
           <div className='imgDiv'>
             <img
               src={mapSelection}
-              alt='Large crowd with waldo among them'
+              alt={mapAltText}
               onClick={handleClickCoord}
               id='waldoPic'
             />
@@ -272,6 +281,7 @@ const WaldoImg1 = () => {
           setInputVal={setInputVal}
           disableSubmit={disableSubmit}
           submitErrorMsg={submitErrorMsg}
+          submitting={submitting}
         />
       )}
     </div>
