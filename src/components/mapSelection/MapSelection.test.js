@@ -22,24 +22,16 @@ describe("Map Selection component", () => {
     expect(header).toBeInTheDocument();
   });
 
-  it("renders four images initially with alt text loading placeholder", () => {
+  it("renders loading animation initially", () => {
     renderWithContext();
-    const images = screen.getAllByRole("img");
-    expect(images).toHaveLength(4);
-    const altText = screen.getAllByAltText(/loading placeholder/i);
-    expect(altText).toHaveLength(4);
-  });
-
-  it("renders word loading over the images", () => {
-    renderWithContext();
-    const loadingText = screen.getAllByText(/loading/i);
+    const loadingText = screen.getAllByTestId(/loading-animation/i);
     expect(loadingText).toHaveLength(4);
   });
 
   describe("Map selection component after intended images are loaded asynchronously", () => {
     afterEach(() => jest.restoreAllMocks());
 
-    it("Does not render the word loading over the images", async () => {
+    it("Does not render the loading animation after images have been loaded", async () => {
       jest
         .spyOn(firebaseFunctions, "getURL")
         .mockImplementation(() => "../../assets/loading.jpg");
@@ -47,7 +39,7 @@ describe("Map Selection component", () => {
       renderWithContext();
 
       await screen.findByAltText(/Where's waldo city map/i);
-      const loadingImgs = screen.queryAllByText(/loading/i);
+      const loadingImgs = screen.queryAllByTestId(/loading-animation/i);
       expect(loadingImgs).toHaveLength(0);
     });
 
@@ -59,18 +51,28 @@ describe("Map Selection component", () => {
       renderWithContext();
       await screen.findByAltText(/Where's waldo city map/i);
       const cityMap = screen.getByAltText(/Where's waldo city map/i);
-      const loadingImgs = screen.queryAllByAltText(/loading/i);
+      const snowMap = screen.getByAltText(/Where's waldo ski slope map/i);
+      const deptMap = screen.getByAltText(
+        /Where's waldo department store map/i
+      );
+      const muskMap = screen.getByAltText(
+        /Where's waldo swashbuckling musketeers map/i
+      );
+      const loadingImgs = screen.queryAllByTestId(/loading-animation/i);
       expect(cityMap).toBeInTheDocument();
+      expect(snowMap).toBeInTheDocument();
+      expect(deptMap).toBeInTheDocument();
+      expect(muskMap).toBeInTheDocument();
       expect(loadingImgs).toHaveLength(0);
     });
 
-    it("Continues to render loading images when getURL returns nothing", async () => {
+    it("Continues to render loading animation when getURL returns nothing", async () => {
       jest.spyOn(firebaseFunctions, "getURL");
 
       renderWithContext();
 
       await waitFor(() => {
-        const altText = screen.getAllByAltText(/loading placeholder/i);
+        const altText = screen.getAllByTestId(/loading-animation/i);
         expect(altText).toHaveLength(4);
       });
     });

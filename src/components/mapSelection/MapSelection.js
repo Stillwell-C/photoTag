@@ -68,7 +68,11 @@ const MapSelection = () => {
               </Link>
             ))
           : mapArr.map((el) => (
-              <div className='singleMap loading' key={el}>
+              <div
+                className='singleMap loading'
+                key={el}
+                data-testid='loading-animation'
+              >
                 <div className='loadingText'>
                   <div className='lds-ring'>
                     <div></div>
