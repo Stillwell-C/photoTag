@@ -50,7 +50,7 @@ describe("Error Page component", () => {
   });
 
   it("calls handleSubmit when submit button is clicked", () => {
-    const handleSubmit = jest.fn();
+    const handleSubmit = jest.fn((e) => e.preventDefault());
     render(
       <BrowserRouter>
         <Modal handleSubmit={handleSubmit} />
