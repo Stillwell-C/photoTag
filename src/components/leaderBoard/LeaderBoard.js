@@ -46,12 +46,18 @@ const LeaderBoard = () => {
         const muskCol = await getDocs(muskLead);
         const muskArr = [];
         muskCol.forEach((doc) => muskArr.push({ id: doc.id, ...doc.data() }));
-        setLeaderData({
-          snowMap: snowArr,
-          cityMap: cityArr,
-          deptMap: deptArr,
-          muskMap: muskArr,
-        });
+        // setLeaderData({
+        //   snowMap: snowArr,
+        //   cityMap: cityArr,
+        //   deptMap: deptArr,
+        //   muskMap: muskArr,
+        // });
+        setLeaderData([
+          { id: "snowMap", data: snowArr, name: "Ski Slope" },
+          { id: "cityMap", data: cityArr, name: "City" },
+          { id: "deptMap", data: deptArr, name: "Department Store" },
+          { id: "muskMap", data: muskArr, name: "Swashbuckling Musketeers" },
+        ]);
         setLoading(false);
       } catch (err) {
         console.log(err.message);
@@ -67,66 +73,26 @@ const LeaderBoard = () => {
         <div className='container'>
           <h2 className='title'>LeaderBoard</h2>
           <div className='leaderboard-container'>
-            <div className='leaderboard-line'>
-              <div className='single-leaderboard'>
-                <h3>Ski Slope</h3>
+            {leaderData.map((singleBoard) => (
+              <div className='single-leaderboard' key={singleBoard.id}>
+                <h3>{singleBoard.name}</h3>
+                <div className='entry-header'>
+                  <div>Player</div>
+                  <div>Time</div>
+                </div>
                 <div className='leaderboard-div'>
-                  {leaderData.snowMap.map((entry) => (
+                  {singleBoard.data.map((entry) => (
                     <div className='entry-div' key={entry.id}>
                       <div className='entryName'>{entry.name}</div>
                       <div className='entryTime'>{entry.timer}</div>
                     </div>
                   ))}
-                  {leaderData.snowMap.length < 1 && (
+                  {singleBoard.data.length < 1 && (
                     <div className='no-data'>No data yet</div>
                   )}
                 </div>
               </div>
-              <div className='single-leaderboard'>
-                <h3>City</h3>
-                <div className='leaderboard-div'>
-                  {leaderData.cityMap.map((entry) => (
-                    <div className='entry-div' key={entry.id}>
-                      <div className='entryName'>{entry.name}</div>
-                      <div className='entryTime'>{entry.timer}</div>
-                    </div>
-                  ))}
-                  {leaderData.cityMap.length < 1 && (
-                    <div className='no-data'>No data yet</div>
-                  )}
-                </div>
-              </div>
-            </div>
-            <div className='leaderboard-line'>
-              <div className='single-leaderboard'>
-                <h3>Deptartment Store</h3>
-                <div className='leaderboard-div'>
-                  {leaderData.deptMap.map((entry) => (
-                    <div className='entry-div' key={entry.id}>
-                      <div className='entryName'>{entry.name}</div>
-                      <div className='entryTime'>{entry.timer}</div>
-                    </div>
-                  ))}
-                  {leaderData.deptMap.length < 1 && (
-                    <div className='no-data'>No data yet</div>
-                  )}
-                </div>
-              </div>
-              <div className='single-leaderboard'>
-                <h3>Swashbuckling Musketeers</h3>
-                <div className='leaderboard-div'>
-                  {leaderData.muskMap.map((entry) => (
-                    <div className='entry-div' key={entry.id}>
-                      <div className='entryName'>{entry.name}</div>
-                      <div className='entryTime'>{entry.timer}</div>
-                    </div>
-                  ))}
-                  {leaderData.muskMap.length < 1 && (
-                    <div className='no-data'>No data yet</div>
-                  )}
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       )}
