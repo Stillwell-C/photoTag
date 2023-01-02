@@ -70,7 +70,6 @@ const MapSelection = () => {
           : mapArr.map((el) => (
               <div className='singleMap loading' key={el}>
                 <div className='loadingText'>
-                  <p>Loading</p>
                   <div className='lds-ring'>
                     <div></div>
                     <div></div>
