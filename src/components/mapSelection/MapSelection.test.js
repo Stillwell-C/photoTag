@@ -83,19 +83,37 @@ const renderWithContext = () => {
   const waldoInfo = {
     waldoInfo: {
       images: {
-        waldoCity: "gs://todo-project-6cd99.appspot.com/waldoCity.jpg",
-        waldoDeptStore:
-          "gs://todo-project-6cd99.appspot.com/waldoDeptStore.jpg",
-        waldoMusketeers:
-          "gs://todo-project-6cd99.appspot.com/waldoMusketeers.jpg",
-        waldoSnow: "gs://todo-project-6cd99.appspot.com/waldoSnow.jpg",
+        waldoCity: {
+          storageRef: "gs://todo-project-6cd99.appspot.com/waldoCity.jpg",
+          id: "cityMap",
+          name: "City",
+          altText: "Where's Waldo city map",
+        },
+        waldoDeptStore: {
+          storageRef: "gs://todo-project-6cd99.appspot.com/waldoDeptStore.jpg",
+          id: "deptMap",
+          name: "City",
+          altText: "Where's Waldo department store map",
+        },
+        waldoMusketeers: {
+          storageRef: "gs://todo-project-6cd99.appspot.com/waldoMusketeers.jpg",
+          id: "muskMap",
+          name: "Swashbuckling Musketeers",
+          altText: "Where's Waldo swashbuckling musketeers map",
+        },
+        waldoSnow: {
+          storageRef: "gs://todo-project-6cd99.appspot.com/waldoSnow.jpg",
+          id: "snowMap",
+          name: "Ski Slope",
+          altText: "Where's Waldo ski slope map",
+        },
       },
-      imgAltText: {
-        waldoCity: "Where's waldo city map",
-        waldoDeptStore: "Where's waldo department store map",
-        waldoMusketeers: "Where's waldo swashbuckling musketeers map",
-        waldoSnow: "Where's waldo ski slope map",
-      },
+      mapLoadList: [
+        "waldoCity",
+        "waldoSnow",
+        "waldoDeptStore",
+        "waldoMusketeers",
+      ],
     },
   };
 
