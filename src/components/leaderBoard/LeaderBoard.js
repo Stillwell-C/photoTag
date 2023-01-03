@@ -1,70 +1,43 @@
 import { collection, query, orderBy, limit, getDocs } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { WaldoInfoContext } from "../../DataContext";
 
 import { db } from "../../firebase";
 import LoadingPage from "../loadingPage/LoadingPage";
 import "./leaderboard.scss";
 
 const LeaderBoard = () => {
-  const snowLead = query(
-    collection(db, "snowLeaderboard"),
-    orderBy("seconds"),
-    limit(5)
-  );
-  const cityLead = query(
-    collection(db, "cityLeaderboard"),
-    orderBy("seconds"),
-    limit(5)
-  );
-  const deptLead = query(
-    collection(db, "deptLeaderboard"),
-    orderBy("seconds"),
-    limit(5)
-  );
-  const muskLead = query(
-    collection(db, "musketeersLeaderboard"),
-    orderBy("seconds"),
-    limit(5)
-  );
-
+  const { waldoInfo } = useContext(WaldoInfoContext);
   const [leaderData, setLeaderData] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (waldoInfo !== null) queryBoards();
+  }, [waldoInfo]);
+
+  const queryBoards = async () => {
     setLoading(true);
-    const queryBoards = async () => {
+    const mapLoadList = waldoInfo.mapLoadList;
+    const mapArr = [];
+    for (let mapName of mapLoadList) {
       try {
-        const snowCol = await getDocs(snowLead);
-        const snowArr = [];
-        snowCol.forEach((doc) => snowArr.push({ id: doc.id, ...doc.data() }));
-        const cityCol = await getDocs(cityLead);
-        const cityArr = [];
-        cityCol.forEach((doc) => cityArr.push({ id: doc.id, ...doc.data() }));
-        const deptCol = await getDocs(deptLead);
-        const deptArr = [];
-        deptCol.forEach((doc) => deptArr.push({ id: doc.id, ...doc.data() }));
-        const muskCol = await getDocs(muskLead);
-        const muskArr = [];
-        muskCol.forEach((doc) => muskArr.push({ id: doc.id, ...doc.data() }));
-        // setLeaderData({
-        //   snowMap: snowArr,
-        //   cityMap: cityArr,
-        //   deptMap: deptArr,
-        //   muskMap: muskArr,
-        // });
-        setLeaderData([
-          { id: "snowMap", data: snowArr, name: "Ski Slope" },
-          { id: "cityMap", data: cityArr, name: "City" },
-          { id: "deptMap", data: deptArr, name: "Department Store" },
-          { id: "muskMap", data: muskArr, name: "Swashbuckling Musketeers" },
-        ]);
-        setLoading(false);
+        const data = await getDocs(
+          query(
+            collection(db, waldoInfo.images[mapName].leaderboard),
+            orderBy("seconds"),
+            limit(5)
+          )
+        );
+        const dataArr = [];
+        data.forEach((doc) => dataArr.push({ id: doc.id, ...doc.data() }));
+        mapArr.push({ ...waldoInfo.images[mapName], data: dataArr });
       } catch (err) {
         console.log(err.message);
       }
-    };
-    queryBoards();
-  }, []);
+    }
+    setLeaderData(mapArr);
+    setLoading(false);
+  };
 
   return (
     <>
