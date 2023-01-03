@@ -90,8 +90,8 @@ const WaldoImg1 = () => {
     if (
       state.found.waldo === true &&
       state.found.whitebeard === true &&
-      state.found.odlaw === true
-      //TODO: Add wenda when coords have been updated
+      state.found.odlaw === true &&
+      state.found.wenda === true
     ) {
       dispatch({ type: ACTION.GAMEOVER, payload: true });
       dispatch({
@@ -133,6 +133,7 @@ const WaldoImg1 = () => {
   };
 
   const handleButtonClick = (char) => {
+    const charName = char.slice(0, 1).toUpperCase() + char.slice(1);
     dispatch({ type: ACTION.POPUPSTYLE, payload: { display: "none" } });
     const minX = `${char}MinX`;
     const maxX = `${char}MaxX`;
@@ -144,10 +145,17 @@ const WaldoImg1 = () => {
       state.clickCoords.y >= state.charCoords[minY] &&
       state.clickCoords.y <= state.charCoords[maxY]
     ) {
+      if (state.found[char]) {
+        dispatch({
+          type: ACTION.PLAYER_MESSAGE,
+          payload: `You already found ${charName}.`,
+        });
+        return;
+      }
       dispatch({ type: ACTION.CHAR_OPAC, payload: char });
       dispatch({
         type: ACTION.PLAYER_MESSAGE,
-        payload: `You found ${char.slice(0, 1).toUpperCase() + char.slice(1)}.`,
+        payload: `You found ${charName}.`,
       });
       dispatch({ type: ACTION.FOUND, payload: char });
       return;
