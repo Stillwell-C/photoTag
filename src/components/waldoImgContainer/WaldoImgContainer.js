@@ -5,7 +5,7 @@ import { collection, addDoc } from "firebase/firestore";
 
 import "./waldoImgContainer.scss";
 import { WaldoInfoContext } from "../../DataContext";
-import { storage, db } from "../../firebase";
+import { storage, db, getURL } from "../../firebase";
 import { reducer, ACTION, initialState } from "./waldoImgContainerReducer";
 import LoadingPage from "../loadingPage/LoadingPage";
 import Modal from "../modal/Modal";
@@ -21,101 +21,54 @@ const WaldoImg1 = () => {
   useEffect(() => {
     const loadBackgroundImg = async (mapName) => {
       try {
-        const backgroundImg = await getDownloadURL(
-          ref(storage, waldoInfo.images[mapName])
+        const backgroundImg = await getURL(
+          waldoInfo.images[mapName].storageRef
         );
         dispatch({ type: ACTION.MAP_SELECTION, payload: backgroundImg });
         dispatch({
           type: ACTION.MAP_ALT_TEXT,
-          payload: waldoInfo.imgAltText[mapName],
-        });
-        dispatch({ type: ACTION.FACES_LOADING, payload: false });
-      } catch (err) {
-        console.log("Background Img: ", err.message);
-        dispatch({ type: ACTION.FACES_LOADING, payload: true });
-      }
-    };
-    const loadCharacterImg = async () => {
-      try {
-        const waldo = await getDownloadURL(
-          ref(storage, waldoInfo.images.waldoFace)
-        );
-        const odlaw = await getDownloadURL(
-          ref(storage, waldoInfo.images.odlawFace)
-        );
-        const whitebeard = await getDownloadURL(
-          ref(storage, waldoInfo.images.whitebeardFace)
-        );
-        const wenda = await getDownloadURL(
-          ref(storage, waldoInfo.images.wendaFace)
-        );
-
-        dispatch({
-          type: ACTION.CHAR_FACES,
-          payload: {
-            waldoFace: waldo,
-            odlawFace: odlaw,
-            whitebeardFace: whitebeard,
-            wendaFace: wenda,
-          },
+          payload: waldoInfo.images[mapName].altText,
         });
         dispatch({ type: ACTION.MAP_LOADING, payload: false });
       } catch (err) {
-        console.log("Character Img: ", err.message);
+        console.log("Background Img: ", err.message);
         dispatch({ type: ACTION.MAP_LOADING, payload: true });
       }
+    };
+    const loadCharacterImg = async () => {
+      const charList = waldoInfo.charLoadList;
+      const faceArr = [];
+      for (let char of charList) {
+        try {
+          const URL = await getURL(waldoInfo.images[char.face].storageRef);
+          faceArr.push({ ...waldoInfo.images[char.face], faceURL: URL });
+        } catch (err) {
+          console.log(err.message);
+        }
+      }
+      dispatch({
+        type: ACTION.CHAR_FACES,
+        payload: faceArr,
+      });
+      dispatch({ type: ACTION.FACES_LOADING, payload: false });
     };
 
     if (waldoInfo !== null) {
       loadCharacterImg();
-      switch (mapID) {
-        case "snowMap":
-          loadBackgroundImg("waldoSnow");
-          dispatch({
-            type: ACTION.CHAR_COORDS,
-            payload: waldoInfo.coords.snowCoords,
-          });
-          dispatch({
-            type: ACTION.COLLECTION_REF,
-            payload: collection(db, "snowLeaderboard"),
-          });
-          break;
-        case "cityMap":
-          loadBackgroundImg("waldoCity");
-          dispatch({
-            type: ACTION.CHAR_COORDS,
-            payload: waldoInfo.coords.cityCoords,
-          });
-          dispatch({
-            type: ACTION.COLLECTION_REF,
-            payload: collection(db, "cityLeaderboard"),
-          });
-          break;
-        case "deptMap":
-          loadBackgroundImg("waldoDeptStore");
-          dispatch({
-            type: ACTION.CHAR_COORDS,
-            payload: waldoInfo.coords.deptCoords,
-          });
-          dispatch({
-            type: ACTION.COLLECTION_REF,
-            payload: collection(db, "deptLeaderboard"),
-          });
-          break;
-        case "musketeersMap":
-          loadBackgroundImg("waldoMusketeers");
-          dispatch({
-            type: ACTION.CHAR_COORDS,
-            payload: waldoInfo.coords.muskCoords,
-          });
-          dispatch({
-            type: ACTION.COLLECTION_REF,
-            payload: collection(db, "musketeersLeaderboard"),
-          });
-          break;
-        default:
-          console.log("Loading Error.");
-      }
+      const [mapData] = waldoInfo.mapLoadList.filter((singleMap) => {
+        return waldoInfo.images[singleMap].id === mapID;
+      });
+      const leaderboard = waldoInfo.images[mapData].leaderboard;
+      const coords = waldoInfo.images[mapData].coords;
+      loadBackgroundImg(mapData);
+      dispatch({
+        type: ACTION.CHAR_COORDS,
+        payload: waldoInfo.coords[coords],
+      });
+      dispatch({
+        type: ACTION.COLLECTION_REF,
+        payload: collection(db, leaderboard),
+      });
     }
   }, [waldoInfo]);
 
@@ -138,6 +91,7 @@ const WaldoImg1 = () => {
       state.found.waldo === true &&
       state.found.whitebeard === true &&
       state.found.odlaw === true
+      //TODO: Add wenda when coords have been updated
     ) {
       dispatch({ type: ACTION.GAMEOVER, payload: true });
       dispatch({
@@ -210,6 +164,13 @@ const WaldoImg1 = () => {
       });
       return;
     }
+    if (state.inputVal.length >= 20) {
+      dispatch({
+        type: ACTION.SUBMIT_ERROR_MSG,
+        payload: "Error. Please input shorter name",
+      });
+      return;
+    }
     dispatch({ type: ACTION.DISABLE_SUBMIT, payload: true });
     try {
       dispatch({ type: ACTION.SUBMIT_ERROR_MSG, payload: "" });
@@ -244,21 +205,14 @@ const WaldoImg1 = () => {
             <div className='timerDiv'>{state.timer}</div>
             <div className='playerMessage'>{state.playerMessage}</div>
             <div className='characterDisplay'>
-              <img
-                src={state.charFaces.waldoFace}
-                alt={waldoInfo.imgAltText.waldoFace}
-                style={{ opacity: state.charOpac.waldo }}
-              />
-              <img
-                src={state.charFaces.odlawFace}
-                alt={waldoInfo.imgAltText.odlawFace}
-                style={{ opacity: state.charOpac.odlaw }}
-              />
-              <img
-                src={state.charFaces.whitebeardFace}
-                alt={waldoInfo.imgAltText.whitebeardFace}
-                style={{ opacity: state.charOpac.whitebeard }}
-              />
+              {state.charFaces.map((char) => (
+                <img
+                  src={char.faceURL}
+                  alt={char.altText}
+                  style={{ opacity: state.charOpac[char.name] }}
+                  key={char.id}
+                />
+              ))}
             </div>
           </div>
 
@@ -272,24 +226,15 @@ const WaldoImg1 = () => {
             <div className='popup' style={state.popupStyle}>
               <div className='popupCircle'></div>
               <div className='popupButtons'>
-                <button
-                  disabled={!state.gameover ? false : true}
-                  onClick={() => handleButtonClick("waldo")}
-                >
-                  Waldo
-                </button>
-                <button
-                  disabled={!state.gameover ? false : true}
-                  onClick={() => handleButtonClick("whitebeard")}
-                >
-                  Whitebeard
-                </button>
-                <button
-                  disabled={!state.gameover ? false : true}
-                  onClick={() => handleButtonClick("odlaw")}
-                >
-                  Odlaw
-                </button>
+                {state.charFaces.map((char) => (
+                  <button
+                    disabled={!state.gameover ? false : true}
+                    onClick={() => handleButtonClick(char.name)}
+                    key={char.name}
+                  >
+                    {char.name.slice(0, 1).toUpperCase() + char.name.slice(1)}
+                  </button>
+                ))}
               </div>
             </div>
           </div>
