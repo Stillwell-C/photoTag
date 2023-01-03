@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-import loadingImg from "../../assets/waldoCharLoading.jpg";
 import "./mapSelection.scss";
 import { getURL } from "../../firebase";
 import { WaldoInfoContext } from "../../DataContext";
@@ -10,64 +9,42 @@ const MapSelection = () => {
   const { waldoInfo } = useContext(WaldoInfoContext);
 
   const [mapImages, setMapImages] = useState(null);
-  const [mapArr, setmapArr] = useState([1, 2, 3, 4]);
+  const [loadingArr, setLoadingArr] = useState([1, 2, 3, 4]);
 
   useEffect(() => {
-    const getImages = async () => {
+    if (waldoInfo !== null) getMaps();
+  }, [waldoInfo]);
+
+  const getMaps = async () => {
+    const mapLoadList = waldoInfo.mapLoadList;
+    const mapArr = [];
+    for (let mapName of mapLoadList) {
       try {
-        const cityMap = await getURL(waldoInfo.images.waldoCity);
-        const snowMap = await getURL(waldoInfo.images.waldoSnow);
-        const deptMap = await getURL(waldoInfo.images.waldoDeptStore);
-        const musketeersMap = await getURL(waldoInfo.images.waldoMusketeers);
-        setMapImages({
-          cityMap: {
-            map: cityMap,
-            alt: waldoInfo.imgAltText.waldoCity,
-            mapName: "City",
-          },
-          snowMap: {
-            map: snowMap,
-            alt: waldoInfo.imgAltText.waldoSnow,
-            mapName: "Ski slope",
-          },
-          deptMap: {
-            map: deptMap,
-            alt: waldoInfo.imgAltText.waldoDeptStore,
-            mapName: "Department Store",
-          },
-          musketeersMap: {
-            map: musketeersMap,
-            alt: waldoInfo.imgAltText.waldoMusketeers,
-            mapName: "Swashbuckling Musketeers",
-          },
-        });
-        setmapArr(["cityMap", "snowMap", "deptMap", "musketeersMap"]);
+        const URL = await getURL(waldoInfo.images[mapName].storageRef);
+        mapArr.push({ ...waldoInfo.images[mapName], mapURL: URL });
       } catch (err) {
         console.log(err.message);
       }
-    };
-    if (waldoInfo !== null) getImages();
-  }, [waldoInfo]);
+    }
+    setMapImages(mapArr);
+  };
 
   return (
     <div className='container'>
       <h2>Map Selection</h2>
       <div className='mapList'>
         {mapImages
-          ? mapArr.map((mapKey) => (
-              <Link to={`/map/${mapKey}`} key={mapKey}>
+          ? mapImages.map((singleMap) => (
+              <Link to={`/map/${singleMap.id}`} key={singleMap.id}>
                 <div className='singleMap'>
                   <div className='mapText'>
-                    <p>{mapImages[`${mapKey}`]["mapName"]}</p>
+                    <p>{singleMap.name}</p>
                   </div>
-                  <img
-                    src={mapImages[`${mapKey}`]["map"]}
-                    alt={mapImages[`${mapKey}`]["alt"]}
-                  />
+                  <img src={singleMap.mapURL} alt={singleMap.altText} />
                 </div>
               </Link>
             ))
-          : mapArr.map((el) => (
+          : loadingArr.map((el) => (
               <div
                 className='singleMap loading'
                 key={el}
