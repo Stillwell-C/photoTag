@@ -1,8 +1,7 @@
-import { collection, query, orderBy, limit, getDocs } from "firebase/firestore";
 import { useContext, useEffect, useState } from "react";
 import { WaldoInfoContext } from "../../DataContext";
 
-import { db } from "../../firebase";
+import { db, getTopDocs } from "../../firebase";
 import LoadingPage from "../loadingPage/LoadingPage";
 import "./leaderboard.scss";
 
@@ -21,13 +20,7 @@ const LeaderBoard = () => {
     const mapArr = [];
     for (let mapName of mapLoadList) {
       try {
-        const data = await getDocs(
-          query(
-            collection(db, waldoInfo.images[mapName].leaderboard),
-            orderBy("seconds"),
-            limit(5)
-          )
-        );
+        const data = await getTopDocs(waldoInfo.images[mapName].leaderboard);
         const dataArr = [];
         data.forEach((doc) => dataArr.push({ id: doc.id, ...doc.data() }));
         mapArr.push({ ...waldoInfo.images[mapName], data: dataArr });
@@ -44,7 +37,7 @@ const LeaderBoard = () => {
       {loading && <LoadingPage />}
       {!loading && (
         <div className='container'>
-          <h2 className='title'>LeaderBoard</h2>
+          <h2 className='title'>Leaderboards</h2>
           <div className='leaderboard-container'>
             {leaderData.map((singleBoard) => (
               <div className='single-leaderboard' key={singleBoard.id}>
