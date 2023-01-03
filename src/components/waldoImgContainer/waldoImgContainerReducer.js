@@ -73,7 +73,7 @@ export const initialState = {
   charCoords: {},
   mapSelection: null,
   mapAltText: "",
-  charFaces: {},
+  charFaces: [],
   clickCoords: {},
   found: {
     waldo: false,
@@ -85,6 +85,7 @@ export const initialState = {
     waldo: 1,
     whitebeard: 1,
     odlaw: 1,
+    wenda: 1,
   },
   mapLoading: true,
   facesLoading: true,
