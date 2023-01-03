@@ -18,6 +18,7 @@ describe("LeaderBoard component", () => {
     expect(img).toBeInTheDocument();
     expect(text).toBeInTheDocument();
 
+    //This is to avoid getting act error messages
     await screen.findByText(/city/i);
     jest.restoreAllMocks();
   });
