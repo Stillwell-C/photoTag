@@ -79,24 +79,28 @@ const renderWithContext = () => {
           id: "cityMap",
           name: "City",
           altText: "Where's Waldo city map",
+          leaderboard: "cityLeaderboard",
         },
         waldoDeptStore: {
           storageRef: "gs://todo-project-6cd99.appspot.com/waldoDeptStore.jpg",
           id: "deptMap",
           name: "Department Store",
           altText: "Where's Waldo department store map",
+          leaderboard: "deptLeaderboard",
         },
         waldoMusketeers: {
           storageRef: "gs://todo-project-6cd99.appspot.com/waldoMusketeers.jpg",
           id: "muskMap",
           name: "Swashbuckling Musketeers",
           altText: "Where's Waldo swashbuckling musketeers map",
+          leaderboard: "musketeersLeaderboard",
         },
         waldoSnow: {
           storageRef: "gs://todo-project-6cd99.appspot.com/waldoSnow.jpg",
           id: "snowMap",
           name: "Ski Slope",
           altText: "Where's Waldo ski slope map",
+          leaderboard: "snowLeaderboard",
         },
       },
       mapLoadList: [
