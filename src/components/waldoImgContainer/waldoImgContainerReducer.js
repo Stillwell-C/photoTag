@@ -92,7 +92,7 @@ export const initialState = {
   gameover: false,
   seconds: 0,
   timer: "",
-  popupStyle: {},
+  popupStyle: { display: "none" },
   playerMessage: "Click the screen to find the characters.",
   inputVal: "",
   collectionRef: null,
