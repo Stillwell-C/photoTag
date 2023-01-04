@@ -19,40 +19,6 @@ const WaldoImg1 = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const loadBackgroundImg = async (mapName) => {
-      try {
-        const backgroundImg = await getURL(
-          waldoInfo.images[mapName].storageRef
-        );
-        dispatch({ type: ACTION.MAP_SELECTION, payload: backgroundImg });
-        dispatch({
-          type: ACTION.MAP_ALT_TEXT,
-          payload: waldoInfo.images[mapName].altText,
-        });
-        dispatch({ type: ACTION.MAP_LOADING, payload: false });
-      } catch (err) {
-        console.log("Background Img: ", err.message);
-        dispatch({ type: ACTION.MAP_LOADING, payload: true });
-      }
-    };
-    const loadCharacterImg = async () => {
-      const charList = waldoInfo.charLoadList;
-      const faceArr = [];
-      for (let char of charList) {
-        try {
-          const URL = await getURL(waldoInfo.images[char.face].storageRef);
-          faceArr.push({ ...waldoInfo.images[char.face], faceURL: URL });
-        } catch (err) {
-          console.log(err.message);
-        }
-      }
-      dispatch({
-        type: ACTION.CHAR_FACES,
-        payload: faceArr,
-      });
-      dispatch({ type: ACTION.FACES_LOADING, payload: false });
-    };
-
     if (waldoInfo !== null) {
       loadCharacterImg();
       const [mapData] = waldoInfo.mapLoadList.filter((singleMap) => {
@@ -101,6 +67,39 @@ const WaldoImg1 = () => {
     }
   }, [state.found]);
 
+  const loadBackgroundImg = async (mapName) => {
+    try {
+      const backgroundImg = await getURL(waldoInfo.images[mapName].storageRef);
+      dispatch({ type: ACTION.MAP_SELECTION, payload: backgroundImg });
+      dispatch({
+        type: ACTION.MAP_ALT_TEXT,
+        payload: waldoInfo.images[mapName].altText,
+      });
+      dispatch({ type: ACTION.MAP_LOADING, payload: false });
+    } catch (err) {
+      console.log("Background Img: ", err.message);
+      dispatch({ type: ACTION.MAP_LOADING, payload: true });
+    }
+  };
+
+  const loadCharacterImg = async () => {
+    const charList = waldoInfo.charLoadList;
+    const faceArr = [];
+    for (let char of charList) {
+      try {
+        const URL = await getURL(waldoInfo.images[char.face].storageRef);
+        faceArr.push({ ...waldoInfo.images[char.face], faceURL: URL });
+      } catch (err) {
+        console.log(err.message);
+      }
+    }
+    dispatch({
+      type: ACTION.CHAR_FACES,
+      payload: faceArr,
+    });
+    dispatch({ type: ACTION.FACES_LOADING, payload: false });
+  };
+
   const handleTime = (secondCount) => {
     const hour = Math.floor(secondCount / 3600).toString();
     const min = Math.floor((secondCount % 3600) / 60).toString();
@@ -133,6 +132,7 @@ const WaldoImg1 = () => {
   };
 
   const handleButtonClick = (char) => {
+    console.log(state);
     const charName = char.slice(0, 1).toUpperCase() + char.slice(1);
     dispatch({ type: ACTION.POPUPSTYLE, payload: { display: "none" } });
     const minX = `${char}MinX`;
@@ -231,7 +231,7 @@ const WaldoImg1 = () => {
               onClick={handleClickCoord}
               id='waldoPic'
             />
-            <div className='popup' style={state.popupStyle}>
+            <div className='popup' style={state.popupStyle} data-testid='popup'>
               <div className='popupCircle'></div>
               <div className='popupButtons'>
                 {state.charFaces.map((char) => (
