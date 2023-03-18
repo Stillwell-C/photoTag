@@ -8,6 +8,7 @@ import userEvent from "@testing-library/user-event";
 import WaldoImgContainer from "./WaldoImgContainer";
 import { WaldoInfoContext } from "../../DataContext";
 import * as ReducerFile from "./waldoImgContainerReducer";
+import { reducer } from "./waldoImgContainerReducer";
 
 describe("WaldoImgContainer component", () => {
   afterEach(() => jest.resetAllMocks);
@@ -103,23 +104,45 @@ describe("WaldoImgContainer component", () => {
       ).toBeInTheDocument();
     });
 
-    // it("hides the character selection popup after popup button click", async () => {
-    //   spyURL();
-    //   renderWithContext();
+    it("hides the character selection popup after popup button click", async () => {
+      spyURL();
+      renderWithContext();
 
-    //   await screen.findByText(/click the screen to find the characters/i);
+      await screen.findByText(/click the screen to find the characters/i);
 
-    //   const mainImg = screen.getByAltText(/where's waldo ski slope/i);
+      const mainImg = screen.getByAltText(/where's waldo ski slope/i);
 
-    //   userEvent.click(mainImg);
+      userEvent.click(mainImg, {
+        clientX: 200,
+        clientY: 200,
+      });
 
-    //   const popup = screen.getByTestId(/popup/i);
-    //   const odlawBtn = screen.getByRole("button", { name: /odlaw/i });
+      const popup = screen.getByTestId(/popup/i);
+      const odlawBtn = screen.getByRole("button", { name: /odlaw/i });
 
-    //   userEvent.click(odlawBtn);
+      userEvent.click(odlawBtn);
 
-    //   expect(popup).not.toBeVisible();
-    // });
+      expect(popup).not.toBeVisible();
+    });
+
+    it("renders text saying keep looking after incorrect character selection", async () => {
+      spyURL();
+      renderWithContext();
+
+      await screen.findByText(/click the screen to find the characters/i);
+
+      const mainImg = screen.getByAltText(/where's waldo ski slope/i);
+
+      userEvent.click(mainImg, {
+        clientX: 1,
+        clientY: 1,
+      });
+
+      const odlawBtn = screen.getByRole("button", { name: /odlaw/i });
+      userEvent.click(odlawBtn);
+
+      expect(screen.getByText(/keep looking/i)).toBeInTheDocument();
+    });
 
     it("renders a timer that starts out at 0", async () => {
       spyURL();
@@ -191,6 +214,7 @@ const renderWithContext = (mapID = "snowMap") => {
           name: "City",
           altText: "Where's Waldo city map",
           leaderboard: "cityLeaderboard",
+          coords: "cityCoords",
         },
         waldoDeptStore: {
           storageRef: "gs://todo-project-6cd99.appspot.com/waldoDeptStore.jpg",
@@ -198,6 +222,7 @@ const renderWithContext = (mapID = "snowMap") => {
           name: "Department Store",
           altText: "Where's Waldo department store map",
           leaderboard: "deptLeaderboard",
+          coords: "deptCoords",
         },
         waldoMusketeers: {
           storageRef: "gs://todo-project-6cd99.appspot.com/waldoMusketeers.jpg",
@@ -205,6 +230,7 @@ const renderWithContext = (mapID = "snowMap") => {
           name: "Swashbuckling Musketeers",
           altText: "Where's Waldo swashbuckling musketeers map",
           leaderboard: "musketeersLeaderboard",
+          coords: "muskCoords",
         },
         waldoSnow: {
           storageRef: "gs://todo-project-6cd99.appspot.com/waldoSnow.jpg",
@@ -212,6 +238,7 @@ const renderWithContext = (mapID = "snowMap") => {
           name: "Ski Slope",
           altText: "Where's Waldo ski slope map",
           leaderboard: "snowLeaderboard",
+          coords: "snowCoords",
         },
         odlawFace: {
           altText: "Face of character Odlaw",
@@ -407,6 +434,80 @@ const reducerObj = {
   facesLoading: false,
   gameover: false,
   seconds: 1,
+  timer: "00:00:01",
+  popupStyle: { display: "flex" },
+  playerMessage: "Click the screen to find the characters.",
+  inputVal: "",
+  collectionRef: null,
+  disableSubmit: false,
+  submitErrorMsg: "",
+  submitting: false,
+};
+
+const reducerObjOpac = {
+  charCoords: {
+    odlawMaxX: 32.5,
+    odlawMaxY: 41.5,
+    odlawMinX: 31,
+    odlawMinY: 39.45,
+    waldoMaxX: 87.5,
+    waldoMaxY: 49.2,
+    waldoMinX: 83.6,
+    waldoMinY: 44.8,
+    wendaMaxX: 49.5,
+    wendaMaxY: 28.15,
+    wendaMinX: 48,
+    wendaMinY: 25.5,
+    whitebeardMaxX: 9,
+    whitebeardMaxY: 49.5,
+    whitebeardMinX: 6,
+    whitebeardMinY: 46.75,
+  },
+  mapSelection: "../../assets/waldoSnow.jpg",
+  mapAltText: "Where's Waldo ski slope map",
+  charFaces: [
+    {
+      altText: "Face of character Odlaw",
+      id: "odlawFace",
+      name: "odlaw",
+      storageRef: "gs://todo-project-6cd99.appspot.com/odlaw-face.jpg",
+    },
+    {
+      altText: "Face of character waldo",
+      id: "waldoFace",
+      name: "waldo",
+      storageRef: "gs://todo-project-6cd99.appspot.com/waldo-face.webp",
+    },
+    {
+      altText: "Face of character Wenda",
+      id: "wendaFace",
+      name: "wenda",
+      storageRef: "gs://todo-project-6cd99.appspot.com/wenda-face.png",
+    },
+    {
+      altText: "Face of character Whitebeard",
+      id: "whitebeardFace",
+      name: "whitebeard",
+      storageRef: "gs://todo-project-6cd99.appspot.com/whitebeard-face.jpeg",
+    },
+  ],
+  clickCoords: { x: 14, y: 36 },
+  found: {
+    waldo: false,
+    whitebeard: false,
+    odlaw: false,
+    wenda: false,
+  },
+  charOpac: {
+    waldo: 0.5,
+    whitebeard: 0.5,
+    odlaw: 0.5,
+    wenda: 0.5,
+  },
+  mapLoading: false,
+  facesLoading: false,
+  gameover: false,
+  seconds: 0,
   timer: "00:00:01",
   popupStyle: { display: "flex" },
   playerMessage: "Click the screen to find the characters.",
