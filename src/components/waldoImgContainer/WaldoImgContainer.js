@@ -116,6 +116,7 @@ const WaldoImg1 = () => {
   };
 
   const handleClickCoord = (e) => {
+    console.log(state.clickCoords);
     if (state.gameover) return;
     const rect = e.target.getBoundingClientRect();
     const rectRatio = rect.width / 100;
@@ -132,7 +133,6 @@ const WaldoImg1 = () => {
   };
 
   const handleButtonClick = (char) => {
-    console.log(state);
     const charName = char.slice(0, 1).toUpperCase() + char.slice(1);
     dispatch({ type: ACTION.POPUPSTYLE, payload: { display: "none" } });
     const minX = `${char}MinX`;
