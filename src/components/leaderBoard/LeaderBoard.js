@@ -47,7 +47,7 @@ const LeaderBoard = () => {
                   <div>Time</div>
                 </div>
                 <div className='leaderboard-div'>
-                  {singleBoard.data.map((entry) => (
+                  {singleBoard.data.map((entry, index) => (
                     <div className='entry-div' key={entry.id}>
                       <div className='entryName'>{entry.name}</div>
                       <div className='entryTime'>{entry.timer}</div>
