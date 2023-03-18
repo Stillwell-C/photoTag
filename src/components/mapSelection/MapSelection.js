@@ -40,7 +40,11 @@ const MapSelection = () => {
                   <div className='mapText'>
                     <p>{singleMap.name}</p>
                   </div>
-                  <img src={singleMap.mapURL} alt={singleMap.altText} />
+                  <img
+                    src={singleMap.mapURL}
+                    alt={singleMap.altText}
+                    loading='lazy'
+                  />
                 </div>
               </Link>
             ))
