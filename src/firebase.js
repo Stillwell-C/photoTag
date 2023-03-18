@@ -1,7 +1,14 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
-import { getStorage } from "firebase/storage";
+import {
+  collection,
+  getDocs,
+  getFirestore,
+  orderBy,
+  query,
+  limit,
+} from "firebase/firestore";
+import { getStorage, getDownloadURL, ref } from "firebase/storage";
 import { doc, updateDoc } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -18,6 +25,16 @@ export const db = getFirestore(app);
 export const auth = getAuth(app);
 export const storage = getStorage(app);
 export const dataDocRef = doc(db, "waldoInfo", "WUu96CPVkblEdShgzgDz");
+export const getURL = async (imgLoc) => {
+  const url = await getDownloadURL(ref(storage, imgLoc));
+  return url;
+};
+export const getTopDocs = async (leaderboard) => {
+  const data = await getDocs(
+    query(collection(db, leaderboard), orderBy("seconds"), limit(5))
+  );
+  return data;
+};
 
 //Function to upload coord data to db
 // export const uploadData = async () => {
