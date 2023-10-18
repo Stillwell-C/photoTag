@@ -8,10 +8,17 @@ import "./mapSelection.scss";
 const MapSelection = () => {
   const navigate = useNavigate();
 
-  const [mapImages, setMapImages] = useState([]);
+  interface Map {
+    _id: string;
+    mapName: string;
+    imgKey: string;
+  }
+  type MapData = Map[];
+
+  const [mapImages, setMapImages] = useState<MapData>([]);
   const [loading, setLoading] = useState(false);
 
-  const imgURL = (imgKey) =>
+  const imgURL = (imgKey: string): string =>
     `https://res.cloudinary.com/danscxcd2/image/upload/w_500,c_fill/${imgKey}`;
 
   useEffect(() => {
@@ -45,7 +52,7 @@ const MapSelection = () => {
     // setMapImages(mapArr);
   };
 
-  const loadingDiv = (key) => (
+  const loadingDiv = (key: number) => (
     <div
       className='singleMap loading'
       key={key}
