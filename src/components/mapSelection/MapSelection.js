@@ -1,9 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
+import photoTagApi from "../../app/api/photoTagApi";
+
 import "./mapSelection.scss";
 import { getURL } from "../../firebase";
 import { WaldoInfoContext } from "../../DataContext";
+import axios from "axios";
 
 const MapSelection = () => {
   const { waldoInfo } = useContext(WaldoInfoContext);
@@ -14,6 +17,19 @@ const MapSelection = () => {
   useEffect(() => {
     if (waldoInfo !== null) getMaps();
   }, [waldoInfo]);
+
+  useEffect(() => {
+    const axioscall = async () => {
+      try {
+        // const response = await photoTagApi.get("/map/frontpage");
+        // const response = await axios.get("http://localhost:3500/map");
+        // console.log(response);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    axioscall();
+  }, []);
 
   const getMaps = async () => {
     const mapLoadList = waldoInfo.mapLoadList;
@@ -26,6 +42,7 @@ const MapSelection = () => {
         console.log(err.message);
       }
     }
+    // console.log(mapArr);
     setMapImages(mapArr);
   };
 
