@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import photoTagApi from "../../app/api/photoTagApi";
@@ -16,7 +16,7 @@ const MapSelection = () => {
   type MapData = Map[];
 
   const [mapImages, setMapImages] = useState<MapData>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const imgURL = (imgKey: string): string =>
     `https://res.cloudinary.com/danscxcd2/image/upload/w_500,c_fill/${imgKey}`;
