@@ -1,15 +1,11 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import photoTagApi from "../../app/api/photoTagApi";
 
 import "./mapSelection.scss";
-import { getURL } from "../../firebase";
-import { WaldoInfoContext } from "../../DataContext";
 
 const MapSelection = () => {
-  const { waldoInfo } = useContext(WaldoInfoContext);
-
   const navigate = useNavigate();
 
   const [mapImages, setMapImages] = useState([]);
@@ -19,8 +15,8 @@ const MapSelection = () => {
     `https://res.cloudinary.com/danscxcd2/image/upload/w_500,c_fill/${imgKey}`;
 
   useEffect(() => {
-    if (waldoInfo !== null) getMaps();
-  }, [waldoInfo]);
+    if (!mapImages?.length) getMaps();
+  }, []);
 
   const getMaps = async () => {
     setLoading(true);
