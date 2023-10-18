@@ -16,7 +16,7 @@ const MapSelection = () => {
   const [loading, setLoading] = useState(false);
 
   const imgURL = (imgKey) =>
-    `https://res.cloudinary.com/danscxcd2/image/upload/${imgKey}`;
+    `https://res.cloudinary.com/danscxcd2/image/upload/w_500,c_fill/${imgKey}`;
 
   useEffect(() => {
     if (waldoInfo !== null) getMaps();
