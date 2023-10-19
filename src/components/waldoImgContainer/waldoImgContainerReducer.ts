@@ -37,12 +37,8 @@ export type foundType = {
     wenda: boolean,
 }
 
-type Coordinate = {
-  [key: string]: number;
-};
-
-type mapDataType = {
-  _id: string;
+export type mapDataType = {
+  id: string;
   mapName: string;
   imgURL: string;
 }
