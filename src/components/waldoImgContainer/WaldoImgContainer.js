@@ -10,6 +10,12 @@ import { reducer, ACTION, initialState } from "./waldoImgContainerReducer";
 import LoadingPage from "../loadingPage/LoadingPage";
 import Modal from "../modal/Modal";
 
+import waldoFace from "../../assets/waldo-face.webp";
+import wendaFace from "../../assets/wenda-face.png";
+import odlawFace from "../../assets/odlaw-face.jpg";
+import whitebeardFace from "../../assets/whitebeard-face.jpeg";
+import photoTagApi from "../../app/api/photoTagApi";
+
 const WaldoImg1 = () => {
   const { mapID } = useParams();
   const { waldoInfo } = useContext(WaldoInfoContext);
@@ -18,24 +24,36 @@ const WaldoImg1 = () => {
 
   const navigate = useNavigate();
 
+  const imgURL = (imgKey) =>
+    `https://res.cloudinary.com/danscxcd2/image/upload/${imgKey}`;
+
+  const getMapData = async () => {
+    const { data } = await photoTagApi.get(`/map/${mapID}`);
+    console.log(data);
+  };
+
   useEffect(() => {
-    if (waldoInfo !== null) {
-      loadCharacterImg();
-      const [mapData] = waldoInfo.mapLoadList.filter((singleMap) => {
-        return waldoInfo.images[singleMap].id === mapID;
-      });
-      const leaderboard = waldoInfo.images[mapData].leaderboard;
-      const coords = waldoInfo.images[mapData].coords;
-      loadBackgroundImg(mapData);
-      dispatch({
-        type: ACTION.CHAR_COORDS,
-        payload: waldoInfo.coords[coords],
-      });
-      dispatch({
-        type: ACTION.COLLECTION_REF,
-        payload: collection(db, leaderboard),
-      });
-    }
+    getMapData();
+  }, []);
+
+  useEffect(() => {
+    // if (waldoInfo !== null) {
+    //   loadCharacterImg();
+    //   const [mapData] = waldoInfo.mapLoadList.filter((singleMap) => {
+    //     return waldoInfo.images[singleMap].id === mapID;
+    //   });
+    //   const leaderboard = waldoInfo?.images[mapData]?.leaderboard;
+    //   const coords = waldoInfo?.images[mapData]?.coords;
+    //   loadBackgroundImg(mapData);
+    //   dispatch({
+    //     type: ACTION.CHAR_COORDS,
+    //     payload: waldoInfo.coords[coords],
+    //   });
+    //   dispatch({
+    //     type: ACTION.COLLECTION_REF,
+    //     payload: collection(db, leaderboard),
+    //   });
+    // }
   }, [waldoInfo]);
 
   useEffect(() => {
@@ -68,36 +86,38 @@ const WaldoImg1 = () => {
   }, [state.found]);
 
   const loadBackgroundImg = async (mapName) => {
-    try {
-      const backgroundImg = await getURL(waldoInfo.images[mapName].storageRef);
-      dispatch({ type: ACTION.MAP_SELECTION, payload: backgroundImg });
-      dispatch({
-        type: ACTION.MAP_ALT_TEXT,
-        payload: waldoInfo.images[mapName].altText,
-      });
-      dispatch({ type: ACTION.MAP_LOADING, payload: false });
-    } catch (err) {
-      console.log("Background Img: ", err.message);
-      dispatch({ type: ACTION.MAP_LOADING, payload: true });
-    }
+    // try {
+    //   const backgroundImg = await getURL(
+    //     waldoInfo?.images[mapName]?.storageRef
+    //   );
+    //   dispatch({ type: ACTION.MAP_SELECTION, payload: backgroundImg });
+    //   dispatch({
+    //     type: ACTION.MAP_ALT_TEXT,
+    //     payload: waldoInfo.images[mapName].altText,
+    //   });
+    //   dispatch({ type: ACTION.MAP_LOADING, payload: false });
+    // } catch (err) {
+    //   console.log("Background Img: ", err.message);
+    //   dispatch({ type: ACTION.MAP_LOADING, payload: true });
+    // }
   };
 
   const loadCharacterImg = async () => {
-    const charList = waldoInfo.charLoadList;
-    const faceArr = [];
-    for (let char of charList) {
-      try {
-        const URL = await getURL(waldoInfo.images[char.face].storageRef);
-        faceArr.push({ ...waldoInfo.images[char.face], faceURL: URL });
-      } catch (err) {
-        console.log(err.message);
-      }
-    }
-    dispatch({
-      type: ACTION.CHAR_FACES,
-      payload: faceArr,
-    });
-    dispatch({ type: ACTION.FACES_LOADING, payload: false });
+    // const charList = waldoInfo.charLoadList;
+    // const faceArr = [];
+    // for (let char of charList) {
+    //   try {
+    //     const URL = await getURL(waldoInfo.images[char.face].storageRef);
+    //     faceArr.push({ ...waldoInfo.images[char.face], faceURL: URL });
+    //   } catch (err) {
+    //     console.log(err.message);
+    //   }
+    // }
+    // dispatch({
+    //   type: ACTION.CHAR_FACES,
+    //   payload: faceArr,
+    // });
+    // dispatch({ type: ACTION.FACES_LOADING, payload: false });
   };
 
   const handleTime = (secondCount) => {
@@ -204,6 +224,21 @@ const WaldoImg1 = () => {
     dispatch({ type: ACTION.INPUT_VAL, payload: input });
   };
 
+  const characterArr = [
+    { img: waldoFace, name: "waldo" },
+    { img: wendaFace, name: "wenda" },
+    { img: odlawFace, name: "odlaw" },
+    { img: whitebeardFace, name: "whitebeard" },
+  ];
+  const characterImages = characterArr.map((character) => (
+    <img
+      src={character.img}
+      alt={character.name}
+      style={{ opacity: state.charOpac[character.name] }}
+      key={character.name}
+    />
+  ));
+
   return (
     <div className='container'>
       {(state.facesLoading || state.mapLoading) && <LoadingPage />}
@@ -212,16 +247,7 @@ const WaldoImg1 = () => {
           <div className='gameInfo'>
             <div className='timerDiv'>{state.timer}</div>
             <div className='playerMessage'>{state.playerMessage}</div>
-            <div className='characterDisplay'>
-              {state.charFaces.map((char) => (
-                <img
-                  src={char.faceURL}
-                  alt={char.altText}
-                  style={{ opacity: state.charOpac[char.name] }}
-                  key={char.id}
-                />
-              ))}
-            </div>
+            <div className='characterDisplay'>{characterImages}</div>
           </div>
 
           <div className='imgDiv'>
