@@ -25,22 +25,38 @@ const WaldoImg1 = () => {
     `https://res.cloudinary.com/danscxcd2/image/upload/${imgKey}`;
 
   const getMapData = async () => {
-    const { data } = await photoTagApi.get(`/map/${mapID}`);
-    dispatch({
-      type: ACTION.CHAR_COORDS,
-      payload: data.coordinates,
-    });
-    dispatch({
-      type: ACTION.MAP_DATA,
-      payload: {
-        mapName: data.mapName,
-        imgURL: createImgURL(data.imgKey),
-        id: data._id,
-      },
-    });
-    dispatch({ type: ACTION.MAP_LOADING, payload: false });
-
-    console.log(data);
+    try {
+      const { data } = await photoTagApi.get(`/map/${mapID}`);
+      dispatch({
+        type: ACTION.CHAR_COORDS,
+        payload: data.coordinates,
+      });
+      dispatch({
+        type: ACTION.MAP_DATA,
+        payload: {
+          mapName: data.mapName,
+          imgURL: createImgURL(data.imgKey),
+          id: data._id,
+        },
+      });
+      dispatch({ type: ACTION.MAP_LOADING, payload: false });
+    } catch (err) {
+      console.log(err);
+      if (err?.response?.status === 404) {
+        navigate("/error", {
+          state: { errorCode: err?.response?.status },
+          replace: true,
+        });
+      } else if (err?.response) {
+        navigate("/error", {
+          state: { errorCode: err?.response?.status },
+        });
+      } else {
+        navigate("/error", {
+          state: { errorCode: err?.code },
+        });
+      }
+    }
   };
 
   useEffect(() => {
