@@ -1,59 +1,46 @@
-import { useContext, useEffect, useState } from "react";
-import { WaldoInfoContext } from "../../DataContext";
+import { useEffect, useState } from "react";
 
-import { db, getTopDocs } from "../../firebase";
 import LoadingPage from "../loadingPage/LoadingPage";
 import "./leaderboard.scss";
+import photoTagApi from "../../app/api/photoTagApi";
 
 const LeaderBoard = () => {
-  const { waldoInfo } = useContext(WaldoInfoContext);
-  const [leaderData, setLeaderData] = useState(null);
+  const [leaderData, setLeaderData] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (waldoInfo !== null) queryBoards();
-  }, [waldoInfo]);
-
-  const queryBoards = async () => {
-    setLoading(true);
-    const mapLoadList = waldoInfo.mapLoadList;
-    const mapArr = [];
-    for (let mapName of mapLoadList) {
-      try {
-        const data = await getTopDocs(waldoInfo.images[mapName].leaderboard);
-        const dataArr = [];
-        data.forEach((doc) => dataArr.push({ id: doc.id, ...doc.data() }));
-        mapArr.push({ ...waldoInfo.images[mapName], data: dataArr });
-      } catch (err) {
-        console.log(err.message);
-      }
-    }
-    setLeaderData(mapArr);
+  const getMapData = async () => {
+    const { data } = await photoTagApi.get("/leaderboard");
+    setLeaderData(data);
     setLoading(false);
+    console.log(data);
   };
+
+  useEffect(() => {
+    getMapData();
+  }, []);
 
   return (
     <>
       {loading && <LoadingPage />}
-      {!loading && (
+      {!loading && leaderData.length > 0 && (
         <div className='container'>
           <h2 className='title'>Leaderboards</h2>
           <div className='leaderboard-container'>
-            {leaderData.map((singleBoard) => (
-              <div className='single-leaderboard' key={singleBoard.id}>
-                <h3>{singleBoard.name}</h3>
+            {leaderData?.map((singleBoard) => (
+              <div className='single-leaderboard' key={singleBoard?.mapName}>
+                <h3>{singleBoard?.mapName}</h3>
                 <div className='entry-header'>
                   <div>Player</div>
                   <div>Time</div>
                 </div>
                 <div className='leaderboard-div'>
-                  {singleBoard.data.map((entry, index) => (
-                    <div className='entry-div' key={entry.id}>
-                      <div className='entryName'>{entry.name}</div>
+                  {singleBoard?.leaderData?.map((entry, index) => (
+                    <div className='entry-div' key={entry._id}>
+                      <div className='entryName'>{entry.playerName}</div>
                       <div className='entryTime'>{entry.timer}</div>
                     </div>
                   ))}
-                  {singleBoard.data.length < 1 && (
+                  {!singleBoard?.leaderData?.length > 0 && (
                     <div className='no-data'>No data yet</div>
                   )}
                 </div>
