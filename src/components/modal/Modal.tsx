@@ -1,14 +1,23 @@
 import { Link } from "react-router-dom";
 import "./modal.scss";
 
+interface ModalPropData {
+  timer: string;
+  disableSubmit: boolean;
+  submitErrorMsg: string;
+  submitting: boolean;
+  handleInput: (e: string) => void;
+  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+}
+
 const Modal = ({
   timer,
-  handleSubmit,
   handleInput,
+  handleSubmit,
   disableSubmit,
   submitErrorMsg,
   submitting,
-}) => {
+}: ModalPropData) => {
   return (
     <>
       <div className='modalContainer'>
