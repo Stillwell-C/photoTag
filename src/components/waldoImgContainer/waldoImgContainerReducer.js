@@ -2,25 +2,14 @@ export const reducer = (state, action) => {
   switch (action.type) {
     case "charCoords":
       return { ...state, charCoords: action.payload };
-    case "mapSelection":
-      return { ...state, mapSelection: action.payload };
-    case "mapAltText":
-      return { ...state, mapAltText: action.payload };
-    case "charFaces":
-      return { ...state, charFaces: action.payload };
+    case "mapData":
+      return { ...state, mapData: action.payload };
     case "clickCoords":
       return { ...state, clickCoords: action.payload };
     case "found":
       return { ...state, found: { ...state.found, [action.payload]: true } };
-    case "charOpac":
-      return {
-        ...state,
-        charOpac: { ...state.charOpac, [action.payload]: 0.5 },
-      };
     case "mapLoading":
       return { ...state, mapLoading: action.payload };
-    case "facesLoading":
-      return { ...state, facesLoading: action.payload };
     case "gameover":
       return { ...state, gameover: !state.gameover };
     case "seconds":
@@ -33,8 +22,6 @@ export const reducer = (state, action) => {
       return { ...state, playerMessage: action.payload };
     case "inputVal":
       return { ...state, inputVal: action.payload };
-    case "collectionRef":
-      return { ...state, collectionRef: action.payload };
     case "disableSubmit":
       return { ...state, disableSubmit: action.payload };
     case "submitErrorMsg":
@@ -49,12 +36,9 @@ export const reducer = (state, action) => {
 
 export const ACTION = {
   CHAR_COORDS: "charCoords",
-  MAP_SELECTION: "mapSelection",
-  MAP_ALT_TEXT: "mapAltText",
-  CHAR_FACES: "charFaces",
+  MAP_DATA: "mapData",
   CLICK_COORDS: "clickCoords",
   FOUND: "found",
-  CHAR_OPAC: "charOpac",
   MAP_LOADING: "mapLoading",
   FACES_LOADING: "facesLoading",
   GAMEOVER: "gameover",
@@ -71,9 +55,7 @@ export const ACTION = {
 
 export const initialState = {
   charCoords: {},
-  mapSelection: null,
-  mapAltText: "",
-  charFaces: [],
+  mapData: null,
   clickCoords: {},
   found: {
     waldo: false,
@@ -88,14 +70,12 @@ export const initialState = {
     wenda: 1,
   },
   mapLoading: true,
-  facesLoading: true,
   gameover: false,
   seconds: 0,
   timer: "",
   popupStyle: { display: "none" },
   playerMessage: "Click the screen to find the characters.",
   inputVal: "",
-  collectionRef: null,
   disableSubmit: false,
   submitErrorMsg: "",
   submitting: false,
