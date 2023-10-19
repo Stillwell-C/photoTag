@@ -4,7 +4,13 @@ import { collection, addDoc } from "firebase/firestore";
 
 import "./waldoImgContainer.scss";
 
-import { reducer, ACTION, initialState } from "./waldoImgContainerReducer";
+import {
+  reducer,
+  initialState,
+  REDUCER_ACTION_TYPE,
+  foundType,
+  mapDataType,
+} from "./waldoImgContainerReducer";
 import LoadingPage from "../loadingPage/LoadingPage";
 import Modal from "../modal/Modal";
 
@@ -13,6 +19,20 @@ import wendaFace from "../../assets/wenda-face.png";
 import odlawFace from "../../assets/odlaw-face.jpg";
 import whitebeardFace from "../../assets/whitebeard-face.jpeg";
 import photoTagApi from "../../app/api/photoTagApi";
+import { AxiosError } from "axios";
+
+type Coordinate = {
+  [key: string]: number;
+};
+
+interface MapData {
+  data: {
+    _id: string;
+    mapName: string;
+    imgKey: string;
+    coordinates: Coordinate;
+  };
+}
 
 const WaldoImg1 = () => {
   const { mapID } = useParams();
@@ -21,26 +41,27 @@ const WaldoImg1 = () => {
 
   const navigate = useNavigate();
 
-  const createImgURL = (imgKey) =>
+  const createImgURL = (imgKey: string): string =>
     `https://res.cloudinary.com/danscxcd2/image/upload/${imgKey}`;
 
   const getMapData = async () => {
     try {
-      const { data } = await photoTagApi.get(`/map/${mapID}`);
+      const { data }: MapData = await photoTagApi.get(`/map/${mapID}`);
       dispatch({
-        type: ACTION.CHAR_COORDS,
+        type: REDUCER_ACTION_TYPE.CHAR_COORDS,
         payload: data.coordinates,
       });
       dispatch({
-        type: ACTION.MAP_DATA,
+        type: REDUCER_ACTION_TYPE.MAP_DATA,
         payload: {
           mapName: data.mapName,
           imgURL: createImgURL(data.imgKey),
           id: data._id,
         },
       });
-      dispatch({ type: ACTION.MAP_LOADING, payload: false });
-    } catch (err) {
+      dispatch({ type: REDUCER_ACTION_TYPE.MAP_LOADING, payload: false });
+    } catch (e) {
+      const err = e as AxiosError;
       console.log(err);
       if (err?.response?.status === 404) {
         navigate("/error", {
@@ -64,10 +85,13 @@ const WaldoImg1 = () => {
   }, []);
 
   useEffect(() => {
-    let interval = null;
+    let interval: undefined | NodeJS.Timeout;
     if (!state.gameover && !state.mapLoading) {
       interval = setInterval(() => {
-        dispatch({ type: ACTION.SECONDS, payload: state.seconds + 1 });
+        dispatch({
+          type: REDUCER_ACTION_TYPE.SECONDS,
+          payload: state.seconds + 1,
+        });
       }, 1000);
     }
     return () => clearInterval(interval);
@@ -84,33 +108,37 @@ const WaldoImg1 = () => {
       state.found.odlaw === true &&
       state.found.wenda === true
     ) {
-      dispatch({ type: ACTION.GAMEOVER, payload: true });
+      dispatch({ type: REDUCER_ACTION_TYPE.GAMEOVER, payload: true });
       dispatch({
-        type: ACTION.PLAYER_MESSAGE,
+        type: REDUCER_ACTION_TYPE.PLAYER_MESSAGE,
         payload: "Good job, you're all done.",
       });
     }
   }, [state.found]);
 
-  const handleTime = (secondCount) => {
-    const hour = Math.floor(secondCount / 3600).toString();
-    const min = Math.floor((secondCount % 3600) / 60).toString();
-    const sec = Math.floor((secondCount % 3600) % 60).toString();
+  const handleTime = (secondCount: number): void => {
+    const hour: string = Math.floor(secondCount / 3600).toString();
+    const min: string = Math.floor((secondCount % 3600) / 60).toString();
+    const sec: string = Math.floor((secondCount % 3600) % 60).toString();
 
-    const hourDisp = parseInt(hour) > 0 ? (hour > 9 ? hour : "0" + hour) : "00";
-    const minDisp = parseInt(min) > 0 ? (min > 9 ? min : "0" + min) : "00";
-    const secDisp = parseInt(sec) > 0 ? (sec > 9 ? sec : "0" + sec) : "00";
+    const hourDisp: string =
+      parseInt(hour) > 0 ? (parseInt(hour) > 9 ? hour : "0" + hour) : "00";
+    const minDisp: string =
+      parseInt(min) > 0 ? (parseInt(min) > 9 ? min : "0" + min) : "00";
+    const secDisp: string =
+      parseInt(sec) > 0 ? (parseInt(sec) > 9 ? sec : "0" + sec) : "00";
 
     dispatch({
-      type: ACTION.TIMER,
+      type: REDUCER_ACTION_TYPE.TIMER,
       payload: `${hourDisp}:${minDisp}:${secDisp}`,
     });
   };
 
-  const handleClickCoord = (e) => {
+  const handleClickCoord = (e: React.MouseEvent<HTMLHeadingElement>): void => {
     console.log(state.clickCoords);
     if (state.gameover) return;
-    const rect = e.target.getBoundingClientRect();
+    // const rect = e.target.getBoundingClientRect();
+    const rect = e.currentTarget.getBoundingClientRect();
     const rectRatio = rect.width / 100;
     const xCoord =
       Math.round(((e.clientX - rect.left) / rectRatio) * 100) / 100;
@@ -120,13 +148,19 @@ const WaldoImg1 = () => {
       top: `${((e.clientY - rect.top - 25) * 100) / rect.height}%`,
       display: "flex",
     };
-    dispatch({ type: ACTION.POPUPSTYLE, payload: popupStyle });
-    dispatch({ type: ACTION.CLICK_COORDS, payload: { x: xCoord, y: yCoord } });
+    dispatch({ type: REDUCER_ACTION_TYPE.POPUPSTYLE, payload: popupStyle });
+    dispatch({
+      type: REDUCER_ACTION_TYPE.CLICK_COORDS,
+      payload: { x: xCoord, y: yCoord },
+    });
   };
 
-  const handleButtonClick = (char) => {
+  const handleButtonClick = (char: string): void => {
     const charName = char.slice(0, 1).toUpperCase() + char.slice(1);
-    dispatch({ type: ACTION.POPUPSTYLE, payload: { display: "none" } });
+    dispatch({
+      type: REDUCER_ACTION_TYPE.POPUPSTYLE,
+      payload: { display: "none" },
+    });
     const minX = `${char}MinX`;
     const maxX = `${char}MaxX`;
     const minY = `${char}MinY`;
@@ -137,43 +171,48 @@ const WaldoImg1 = () => {
       state.clickCoords.y >= state.charCoords[minY] &&
       state.clickCoords.y <= state.charCoords[maxY]
     ) {
-      if (state.found[char]) {
+      if (state.found[char as keyof foundType]) {
         dispatch({
-          type: ACTION.PLAYER_MESSAGE,
+          type: REDUCER_ACTION_TYPE.PLAYER_MESSAGE,
           payload: `You already found ${charName}.`,
         });
         return;
       }
       dispatch({
-        type: ACTION.PLAYER_MESSAGE,
+        type: REDUCER_ACTION_TYPE.PLAYER_MESSAGE,
         payload: `You found ${charName}.`,
       });
-      dispatch({ type: ACTION.FOUND, payload: char });
+      dispatch({ type: REDUCER_ACTION_TYPE.FOUND, payload: char });
       return;
     }
-    dispatch({ type: ACTION.PLAYER_MESSAGE, payload: "Keep looking" });
+    dispatch({
+      type: REDUCER_ACTION_TYPE.PLAYER_MESSAGE,
+      payload: "Keep looking",
+    });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (
+    e: React.FormEvent<HTMLFormElement>
+  ): Promise<void> => {
     e.preventDefault();
     if (!state.inputVal.length) {
       dispatch({
-        type: ACTION.SUBMIT_ERROR_MSG,
+        type: REDUCER_ACTION_TYPE.SUBMIT_ERROR_MSG,
         payload: "Error. Please input a name",
       });
       return;
     }
     if (state.inputVal.length >= 20) {
       dispatch({
-        type: ACTION.SUBMIT_ERROR_MSG,
+        type: REDUCER_ACTION_TYPE.SUBMIT_ERROR_MSG,
         payload: "Error. Please a name 20 characters or less",
       });
       return;
     }
-    dispatch({ type: ACTION.DISABLE_SUBMIT, payload: true });
+    dispatch({ type: REDUCER_ACTION_TYPE.DISABLE_SUBMIT, payload: true });
     try {
-      dispatch({ type: ACTION.SUBMIT_ERROR_MSG, payload: "" });
-      dispatch({ type: ACTION.SUBMITTING, payload: true });
+      dispatch({ type: REDUCER_ACTION_TYPE.SUBMIT_ERROR_MSG, payload: "" });
+      dispatch({ type: REDUCER_ACTION_TYPE.SUBMITTING, payload: true });
 
       await photoTagApi.post(`/leaderboard`, {
         playerName: state.inputVal,
@@ -188,19 +227,20 @@ const WaldoImg1 = () => {
       //   timer: state.timer,
       // });
       navigate("/");
-    } catch (err) {
-      dispatch({ type: ACTION.SUBMITTING, payload: false });
-      dispatch({ type: ACTION.DISABLE_SUBMIT, payload: false });
+    } catch (e) {
+      const err = e as AxiosError;
+      dispatch({ type: REDUCER_ACTION_TYPE.SUBMITTING, payload: false });
+      dispatch({ type: REDUCER_ACTION_TYPE.DISABLE_SUBMIT, payload: false });
       dispatch({
-        type: ACTION.SUBMIT_ERROR_MSG,
+        type: REDUCER_ACTION_TYPE.SUBMIT_ERROR_MSG,
         payload: "Submission error. Please try again.",
       });
       console.log(err.message);
     }
   };
 
-  const handleInput = (input) => {
-    dispatch({ type: ACTION.INPUT_VAL, payload: input });
+  const handleInput = (input: string): void => {
+    dispatch({ type: REDUCER_ACTION_TYPE.INPUT_VAL, payload: input });
   };
 
   const characterArr = [
@@ -213,7 +253,10 @@ const WaldoImg1 = () => {
     <img
       src={character.img}
       alt={character.name}
-      style={{ opacity: state.found[character.name] === true ? 0.5 : 1 }}
+      style={{
+        opacity:
+          state.found[character.name as keyof foundType] === true ? 0.5 : 1,
+      }}
       key={character.name}
     />
   ));
@@ -231,8 +274,8 @@ const WaldoImg1 = () => {
 
           <div className='imgDiv'>
             <img
-              src={state.mapData.imgURL}
-              alt={`Map for level: ${state.mapData.mapName}`}
+              src={state?.mapData?.imgURL}
+              alt={`Map for level: ${state?.mapData?.mapName}`}
               onClick={handleClickCoord}
               id='waldoPic'
             />
