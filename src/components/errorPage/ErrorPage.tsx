@@ -2,18 +2,20 @@ import "./errorPage.scss";
 import errorImg from "../../assets/wrongPage.jpg";
 import { useLocation } from "react-router-dom";
 
+interface StateData {
+  errorCode: string | number;
+}
+
 const ErrorPage = () => {
   const location = useLocation();
-  let errorMessage = "Something went wrong";
-  console.log(location?.state);
+  const state: StateData = location?.state;
+  let errorMessage: string = "Something went wrong";
 
-  if (
-    location?.state?.errorCode === "ERR_NETWORK" ||
-    location?.state?.errorCode === 500
-  ) {
+  console.log(location);
+  if (state?.errorCode === "ERR_NETWORK" || state?.errorCode === 500) {
     errorMessage = "Network Error. Please try again later.";
   }
-  if (location?.state?.errorCode === 404) {
+  if (state?.errorCode === 404) {
     errorMessage = "This page does not exist";
   }
 
