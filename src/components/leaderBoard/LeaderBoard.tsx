@@ -4,9 +4,22 @@ import LoadingPage from "../loadingPage/LoadingPage";
 import "./leaderboard.scss";
 import photoTagApi from "../../app/api/photoTagApi";
 
+type SingleLeader = {
+  _id: string;
+  playerName: string;
+  seconds: number;
+  mapId: string;
+  timer: string;
+};
+
+interface SingleMapData {
+  mapName: string;
+  leaderData: SingleLeader[];
+}
+
 const LeaderBoard = () => {
-  const [leaderData, setLeaderData] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [leaderData, setLeaderData] = useState<SingleMapData[]>([]);
+  const [loading, setLoading] = useState<Boolean>(true);
 
   const getMapData = async () => {
     const { data } = await photoTagApi.get("/leaderboard");
@@ -40,7 +53,7 @@ const LeaderBoard = () => {
                       <div className='entryTime'>{entry.timer}</div>
                     </div>
                   ))}
-                  {!singleBoard?.leaderData?.length > 0 && (
+                  {!(singleBoard?.leaderData?.length > 0) && (
                     <div className='no-data'>No data yet</div>
                   )}
                 </div>
