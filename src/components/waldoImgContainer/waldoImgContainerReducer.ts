@@ -38,7 +38,6 @@ export type foundType = {
 }
 
 export type mapDataType = {
-  id: string;
   mapName: string;
   imgURL: string;
 }
@@ -91,7 +90,6 @@ interface initialStateData {
 export const initialState: initialStateData = {
   charCoords: {},
   mapData: {
-    _id: "",
     mapName: "",
     imgURL: "",
   },

@@ -56,7 +56,6 @@ const WaldoImg1 = () => {
         payload: {
           mapName: data.mapName,
           imgURL: createImgURL(data.imgKey),
-          id: data._id,
         },
       });
       dispatch({ type: REDUCER_ACTION_TYPE.MAP_LOADING, payload: false });
