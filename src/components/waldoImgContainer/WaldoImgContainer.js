@@ -81,9 +81,9 @@ const WaldoImg1 = () => {
     const min = Math.floor((secondCount % 3600) / 60).toString();
     const sec = Math.floor((secondCount % 3600) % 60).toString();
 
-    const hourDisp = hour > 0 ? (hour > 9 ? hour : "0" + hour) : "00";
-    const minDisp = min > 0 ? (min > 9 ? min : "0" + min) : "00";
-    const secDisp = sec > 0 ? (sec > 9 ? sec : "0" + sec) : "00";
+    const hourDisp = parseInt(hour) > 0 ? (hour > 9 ? hour : "0" + hour) : "00";
+    const minDisp = parseInt(min) > 0 ? (min > 9 ? min : "0" + min) : "00";
+    const secDisp = parseInt(sec) > 0 ? (sec > 9 ? sec : "0" + sec) : "00";
 
     dispatch({
       type: ACTION.TIMER,
@@ -150,7 +150,7 @@ const WaldoImg1 = () => {
     if (state.inputVal.length >= 20) {
       dispatch({
         type: ACTION.SUBMIT_ERROR_MSG,
-        payload: "Error. Please input shorter name",
+        payload: "Error. Please a name 20 characters or less",
       });
       return;
     }
@@ -158,11 +158,19 @@ const WaldoImg1 = () => {
     try {
       dispatch({ type: ACTION.SUBMIT_ERROR_MSG, payload: "" });
       dispatch({ type: ACTION.SUBMITTING, payload: true });
-      await addDoc(state.collectionRef, {
-        name: state.inputVal,
+
+      await photoTagApi.post(`/leaderboard`, {
+        playerName: state.inputVal,
         seconds: state.seconds,
         timer: state.timer,
+        mapID,
       });
+
+      // await addDoc(state.collectionRef, {
+      //   name: state.inputVal,
+      //   seconds: state.seconds,
+      //   timer: state.timer,
+      // });
       navigate("/");
     } catch (err) {
       dispatch({ type: ACTION.SUBMITTING, payload: false });
