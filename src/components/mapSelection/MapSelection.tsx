@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import photoTagApi from "../../app/api/photoTagApi";
+import { AxiosError } from "axios";
 
 import "./mapSelection.scss";
 
@@ -33,9 +34,19 @@ const MapSelection = () => {
       setMapImages(data);
       setLoading(false);
       console.log(data);
-    } catch (err) {
+    } catch (e) {
+      const err = e as AxiosError;
+      console.log(err);
       setLoading(false);
-      navigate("/error");
+      if (err?.response) {
+        navigate("/error", {
+          state: { errorCode: err?.response?.status },
+        });
+      } else {
+        navigate("/error", {
+          state: { errorCode: err?.code },
+        });
+      }
     }
 
     // const mapLoadList = waldoInfo.mapLoadList;
