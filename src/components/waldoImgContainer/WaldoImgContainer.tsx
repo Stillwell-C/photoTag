@@ -131,7 +131,7 @@ const WaldoImg1 = () => {
     });
   };
 
-  const handleClickCoord = (e: React.MouseEvent<HTMLHeadingElement>): void => {
+  const handleClickCoord = (e: React.MouseEvent<HTMLImageElement>): void => {
     console.log(state.clickCoords);
     if (state.gameover) return;
     // const rect = e.target.getBoundingClientRect();
