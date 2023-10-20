@@ -15,46 +15,46 @@ export const enum REDUCER_ACTION_TYPE {
   SUBMITTING
 }
 
-type popupStyleType = {
+type PopupStyleType = {
   display: string,
   left?: string,
   right?: string,
 }
 
-type clickCoordsType = {
+type ClickCoordsType = {
   x: number,
   y: number
 }
 
-type charCoordsType = {
+type CharCoordsType = {
   [key: string]: number
 }
 
-export type foundType = {
+export type FoundType = {
     waldo: boolean,
     whitebeard: boolean,
     odlaw: boolean,
     wenda: boolean,
 }
 
-export type mapDataType = {
+type MapDataType = {
   mapName: string;
   imgURL: string;
 }
 
-type ReducerAction = {type: REDUCER_ACTION_TYPE.CHAR_COORDS, payload: charCoordsType} | {type: REDUCER_ACTION_TYPE.MAP_DATA, payload: mapDataType} | {type: REDUCER_ACTION_TYPE.CLICK_COORDS, payload: clickCoordsType} | {type: REDUCER_ACTION_TYPE.FOUND, payload: string} | {type: REDUCER_ACTION_TYPE.MAP_LOADING, payload: boolean} | {type: REDUCER_ACTION_TYPE.GAMEOVER, payload: boolean} | {type: REDUCER_ACTION_TYPE.SECONDS, payload: number} | {type: REDUCER_ACTION_TYPE, payload: string} | {type: REDUCER_ACTION_TYPE.POPUPSTYLE, payload: popupStyleType} | {type: REDUCER_ACTION_TYPE.PLAYER_MESSAGE, payload: string} | {type: REDUCER_ACTION_TYPE.INPUT_VAL, payload: string} | {type: REDUCER_ACTION_TYPE.DISABLE_SUBMIT, payload: boolean} | {type: REDUCER_ACTION_TYPE.SUBMIT_ERROR_MSG, payload: string} | {type: REDUCER_ACTION_TYPE.SUBMITTING, payload: boolean}
+type ReducerAction = {type: REDUCER_ACTION_TYPE.CHAR_COORDS, payload: CharCoordsType} | {type: REDUCER_ACTION_TYPE.MAP_DATA, payload: MapDataType} | {type: REDUCER_ACTION_TYPE.CLICK_COORDS, payload: ClickCoordsType} | {type: REDUCER_ACTION_TYPE.FOUND, payload: string} | {type: REDUCER_ACTION_TYPE.MAP_LOADING, payload: boolean} | {type: REDUCER_ACTION_TYPE.GAMEOVER, payload: boolean} | {type: REDUCER_ACTION_TYPE.SECONDS, payload: number} | {type: REDUCER_ACTION_TYPE, payload: string} | {type: REDUCER_ACTION_TYPE.POPUPSTYLE, payload: PopupStyleType} | {type: REDUCER_ACTION_TYPE.PLAYER_MESSAGE, payload: string} | {type: REDUCER_ACTION_TYPE.INPUT_VAL, payload: string} | {type: REDUCER_ACTION_TYPE.DISABLE_SUBMIT, payload: boolean} | {type: REDUCER_ACTION_TYPE.SUBMIT_ERROR_MSG, payload: string} | {type: REDUCER_ACTION_TYPE.SUBMITTING, payload: boolean}
 
 
 interface initialStateData {
-  charCoords: charCoordsType,
-  mapData: mapDataType,
-  clickCoords: clickCoordsType,
-  found: foundType,
+  charCoords: CharCoordsType,
+  mapData: MapDataType,
+  clickCoords: ClickCoordsType,
+  found: FoundType,
   mapLoading: boolean,
   gameover: boolean,
   seconds: number,
   timer: string,
-  popupStyle: popupStyleType,
+  popupStyle: PopupStyleType,
   playerMessage: string,
   inputVal: string,
   disableSubmit: boolean,
@@ -90,22 +90,22 @@ export const initialState: initialStateData = {
   submitting: false,
 };
 
-const isMapData = (data: any): data is mapDataType => {
-  return (data as mapDataType).mapName !== undefined
+const isMapData = (data: any): data is MapDataType => {
+  return (data as MapDataType).mapName !== undefined
 }
 
-const isClickCoords = (data: any): data is clickCoordsType => {
-  return (data as clickCoordsType).x !== undefined
+const isClickCoords = (data: any): data is ClickCoordsType => {
+  return (data as ClickCoordsType).x !== undefined
 }
 
-const isPopupStyle = (data: any): data is popupStyleType => {
-  return (data as popupStyleType).display !== undefined
+const isPopupStyle = (data: any): data is PopupStyleType => {
+  return (data as PopupStyleType).display !== undefined
 }
 
 export const reducer = (state: typeof initialState, action: ReducerAction): typeof initialState => {
   switch (action.type) {
     case REDUCER_ACTION_TYPE.CHAR_COORDS:
-      return { ...state, charCoords: action.payload as charCoordsType };
+      return { ...state, charCoords: action.payload as CharCoordsType };
     case REDUCER_ACTION_TYPE.MAP_DATA:
       if (isMapData(action.payload)){
         return { ...state, mapData: action.payload};
