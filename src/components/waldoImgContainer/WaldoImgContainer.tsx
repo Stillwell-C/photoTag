@@ -36,7 +36,6 @@ interface MapData {
 const WaldoImg1 = () => {
   const { mapID } = useParams();
 
-  // const [state, dispatch] = useReducer(reducer, initialState);
   const {
     state,
     setCharCoords,
@@ -69,19 +68,6 @@ const WaldoImg1 = () => {
         imgURL: createImgURL(data.imgKey),
       });
       setMapLoading(false);
-
-      // dispatch({
-      //   type: REDUCER_ACTION_TYPE.CHAR_COORDS,
-      //   payload: data.coordinates,
-      // });
-      // dispatch({
-      //   type: REDUCER_ACTION_TYPE.MAP_DATA,
-      //   payload: {
-      //     mapName: data.mapName,
-      //     imgURL: createImgURL(data.imgKey),
-      //   },
-      // });
-      // dispatch({ type: REDUCER_ACTION_TYPE.MAP_LOADING, payload: false });
     } catch (e) {
       const err = e as AxiosError;
       console.log(err);
@@ -111,10 +97,6 @@ const WaldoImg1 = () => {
     if (!state.gameover && !state.mapLoading) {
       interval = setInterval(() => {
         setSeconds(state.seconds + 1);
-        // dispatch({
-        //   type: REDUCER_ACTION_TYPE.SECONDS,
-        //   payload: state.seconds + 1,
-        // });
       }, 1000);
     }
     return () => clearInterval(interval);
@@ -133,11 +115,6 @@ const WaldoImg1 = () => {
     ) {
       setGameover(true);
       setPlayerMessage("Good job, you're all done.");
-      // dispatch({ type: REDUCER_ACTION_TYPE.GAMEOVER, payload: true });
-      // dispatch({
-      //   type: REDUCER_ACTION_TYPE.PLAYER_MESSAGE,
-      //   payload: "Good job, you're all done.",
-      // });
     }
   }, [state.found]);
 
@@ -154,10 +131,6 @@ const WaldoImg1 = () => {
       parseInt(sec) > 0 ? (parseInt(sec) > 9 ? sec : "0" + sec) : "00";
 
     setTimer(`${hourDisp}:${minDisp}:${secDisp}`);
-    // dispatch({
-    //   type: REDUCER_ACTION_TYPE.TIMER,
-    //   payload: `${hourDisp}:${minDisp}:${secDisp}`,
-    // });
   };
 
   const handleClickCoord = (e: MouseEvent<HTMLImageElement>): void => {
@@ -176,20 +149,11 @@ const WaldoImg1 = () => {
     };
     setPopupStyle(popupStyle);
     setClickCoords({ x: xCoord, y: yCoord });
-    // dispatch({ type: REDUCER_ACTION_TYPE.POPUPSTYLE, payload: popupStyle });
-    // dispatch({
-    //   type: REDUCER_ACTION_TYPE.CLICK_COORDS,
-    //   payload: { x: xCoord, y: yCoord },
-    // });
   };
 
   const handleButtonClick = (char: string): void => {
     const charName = char.slice(0, 1).toUpperCase() + char.slice(1);
     setPopupStyle({ display: "none" });
-    // dispatch({
-    //   type: REDUCER_ACTION_TYPE.POPUPSTYLE,
-    //   payload: { display: "none" },
-    // });
     const minX = `${char}MinX`;
     const maxX = `${char}MaxX`;
     const minY = `${char}MinY`;
@@ -202,26 +166,13 @@ const WaldoImg1 = () => {
     ) {
       if (state.found[char as keyof FoundType]) {
         setPlayerMessage(`You already found ${charName}.`);
-        // dispatch({
-        //   type: REDUCER_ACTION_TYPE.PLAYER_MESSAGE,
-        //   payload: `You already found ${charName}.`,
-        // });
         return;
       }
       setPlayerMessage(`You found ${charName}.`);
       setFound(char);
-      // dispatch({
-      //   type: REDUCER_ACTION_TYPE.PLAYER_MESSAGE,
-      //   payload: `You found ${charName}.`,
-      // });
-      // dispatch({ type: REDUCER_ACTION_TYPE.FOUND, payload: char });
       return;
     }
     setPlayerMessage("Keep looking");
-    // dispatch({
-    //   type: REDUCER_ACTION_TYPE.PLAYER_MESSAGE,
-    //   payload: "Keep looking",
-    // });
   };
 
   const handleSubmit = async (
@@ -230,27 +181,16 @@ const WaldoImg1 = () => {
     e.preventDefault();
     if (!state.inputVal.length) {
       setSubmitErrorMsg("Error. Please input a name");
-      // dispatch({
-      //   type: REDUCER_ACTION_TYPE.SUBMIT_ERROR_MSG,
-      //   payload: "Error. Please input a name",
-      // });
       return;
     }
     if (state.inputVal.length >= 20) {
       setSubmitErrorMsg("Error. Please a name 20 characters or less");
-      // dispatch({
-      //   type: REDUCER_ACTION_TYPE.SUBMIT_ERROR_MSG,
-      //   payload: "Error. Please a name 20 characters or less",
-      // });
       return;
     }
     setDisableSubmit(true);
-    // dispatch({ type: REDUCER_ACTION_TYPE.DISABLE_SUBMIT, payload: true });
     try {
       setSubmitErrorMsg("");
       setSubmitting(true);
-      // dispatch({ type: REDUCER_ACTION_TYPE.SUBMIT_ERROR_MSG, payload: "" });
-      // dispatch({ type: REDUCER_ACTION_TYPE.SUBMITTING, payload: true });
 
       await photoTagApi.post(`/leaderboard`, {
         playerName: state.inputVal,
@@ -264,19 +204,12 @@ const WaldoImg1 = () => {
       setSubmitting(false);
       setDisableSubmit(false);
       setSubmitErrorMsg("Submission error. Please try again.");
-      // dispatch({ type: REDUCER_ACTION_TYPE.SUBMITTING, payload: false });
-      // dispatch({ type: REDUCER_ACTION_TYPE.DISABLE_SUBMIT, payload: false });
-      // dispatch({
-      //   type: REDUCER_ACTION_TYPE.SUBMIT_ERROR_MSG,
-      //   payload: "Submission error. Please try again.",
-      // });
       console.log(err.message);
     }
   };
 
   const handleInput = (input: string): void => {
     setInputVal(input);
-    // dispatch({ type: REDUCER_ACTION_TYPE.INPUT_VAL, payload: input });
   };
 
   const characterArr = [
