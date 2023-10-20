@@ -7,8 +7,8 @@ import userEvent from "@testing-library/user-event";
 
 import WaldoImgContainer from "./WaldoImgContainer";
 import { WaldoInfoContext } from "../../DataContext";
-import * as ReducerFile from "./waldoImgContainerReducer";
-import { reducer } from "./waldoImgContainerReducer";
+import * as ReducerFile from "../../Context/PhotoTagContext";
+import { reducer } from "../../Context/PhotoTagContext";
 
 it("passes the test", () => {});
 
