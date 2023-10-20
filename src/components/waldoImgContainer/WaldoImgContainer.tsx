@@ -1,6 +1,5 @@
 import React, { useEffect, useReducer } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
-import { collection, addDoc } from "firebase/firestore";
+import { useParams, useNavigate } from "react-router-dom";
 
 import "./waldoImgContainer.scss";
 
@@ -9,7 +8,6 @@ import {
   initialState,
   REDUCER_ACTION_TYPE,
   foundType,
-  mapDataType,
 } from "./waldoImgContainerReducer";
 import LoadingPage from "../loadingPage/LoadingPage";
 import Modal from "../modal/Modal";
