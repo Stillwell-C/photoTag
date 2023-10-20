@@ -7,7 +7,7 @@ import {
   reducer,
   initialState,
   REDUCER_ACTION_TYPE,
-  foundType,
+  FoundType,
 } from "./waldoImgContainerReducer";
 import LoadingPage from "../loadingPage/LoadingPage";
 import Modal from "../modal/Modal";
@@ -168,7 +168,7 @@ const WaldoImg1 = () => {
       state.clickCoords.y >= state.charCoords[minY] &&
       state.clickCoords.y <= state.charCoords[maxY]
     ) {
-      if (state.found[char as keyof foundType]) {
+      if (state.found[char as keyof FoundType]) {
         dispatch({
           type: REDUCER_ACTION_TYPE.PLAYER_MESSAGE,
           payload: `You already found ${charName}.`,
@@ -252,7 +252,7 @@ const WaldoImg1 = () => {
       alt={character.name}
       style={{
         opacity:
-          state.found[character.name as keyof foundType] === true ? 0.5 : 1,
+          state.found[character.name as keyof FoundType] === true ? 0.5 : 1,
       }}
       key={character.name}
     />
