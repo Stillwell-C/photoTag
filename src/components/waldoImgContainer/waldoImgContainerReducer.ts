@@ -90,14 +90,32 @@ export const initialState: initialStateData = {
   submitting: false,
 };
 
+const isMapData = (data: any): data is mapDataType => {
+  return (data as mapDataType).mapName !== undefined
+}
+
+const isClickCoords = (data: any): data is clickCoordsType => {
+  return (data as clickCoordsType).x !== undefined
+}
+
+const isPopupStyle = (data: any): data is popupStyleType => {
+  return (data as popupStyleType).display !== undefined
+}
+
 export const reducer = (state: typeof initialState, action: ReducerAction): typeof initialState => {
   switch (action.type) {
     case REDUCER_ACTION_TYPE.CHAR_COORDS:
       return { ...state, charCoords: action.payload as charCoordsType };
     case REDUCER_ACTION_TYPE.MAP_DATA:
-      return { ...state, mapData: action.payload as mapDataType };
+      if (isMapData(action.payload)){
+        return { ...state, mapData: action.payload};
+      }
+      return state
     case REDUCER_ACTION_TYPE.CLICK_COORDS:
-      return { ...state, clickCoords: action.payload as clickCoordsType};
+      if (isClickCoords(action.payload)) {
+        return { ...state, clickCoords: action.payload};
+      }
+      return state
     case REDUCER_ACTION_TYPE.FOUND:
       return { ...state, found: { ...state.found, [action.payload]: true } };
     case REDUCER_ACTION_TYPE.MAP_LOADING:
@@ -115,7 +133,10 @@ export const reducer = (state: typeof initialState, action: ReducerAction): type
     case REDUCER_ACTION_TYPE.TIMER:
       return { ...state, timer: action.payload };
     case REDUCER_ACTION_TYPE.POPUPSTYLE:
-      return { ...state, popupStyle: action.payload as popupStyleType};
+      if (isPopupStyle(action.payload)) {
+        return { ...state, popupStyle: action.payload};
+      }
+      return state
     case REDUCER_ACTION_TYPE.PLAYER_MESSAGE:
       return { ...state, playerMessage: action.payload };
     case REDUCER_ACTION_TYPE.INPUT_VAL:
