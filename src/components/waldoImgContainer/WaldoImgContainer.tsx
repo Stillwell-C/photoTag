@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer } from "react";
+import React, { useEffect, useReducer, MouseEvent } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 import "./waldoImgContainer.scss";
@@ -131,7 +131,7 @@ const WaldoImg1 = () => {
     });
   };
 
-  const handleClickCoord = (e: React.MouseEvent<HTMLImageElement>): void => {
+  const handleClickCoord = (e: MouseEvent<HTMLImageElement>): void => {
     console.log(state.clickCoords);
     if (state.gameover) return;
     // const rect = e.target.getBoundingClientRect();
