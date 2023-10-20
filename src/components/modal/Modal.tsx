@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import "./modal.scss";
+import { useEffect, useRef } from "react";
 
 interface ModalPropData {
   timer: string;
@@ -18,6 +19,14 @@ const Modal = ({
   submitErrorMsg,
   submitting,
 }: ModalPropData) => {
+  const errorRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (submitErrorMsg.length) {
+      errorRef?.current?.focus();
+    }
+  }, [submitErrorMsg]);
+
   return (
     <>
       <div className='modalContainer'>
@@ -40,7 +49,9 @@ const Modal = ({
                       Submit
                     </button>
                   </div>
-                  <div className='errorMsg'>{submitErrorMsg}</div>
+                  <div className='errorMsg' ref={errorRef}>
+                    {submitErrorMsg}
+                  </div>
                 </form>
               </div>
               <Link to='/'>
