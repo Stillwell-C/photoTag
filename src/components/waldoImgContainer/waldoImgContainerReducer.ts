@@ -45,31 +45,6 @@ export type mapDataType = {
 type ReducerAction = {type: REDUCER_ACTION_TYPE.CHAR_COORDS, payload: charCoordsType} | {type: REDUCER_ACTION_TYPE.MAP_DATA, payload: mapDataType} | {type: REDUCER_ACTION_TYPE.CLICK_COORDS, payload: clickCoordsType} | {type: REDUCER_ACTION_TYPE.FOUND, payload: string} | {type: REDUCER_ACTION_TYPE.MAP_LOADING, payload: boolean} | {type: REDUCER_ACTION_TYPE.GAMEOVER, payload: boolean} | {type: REDUCER_ACTION_TYPE.SECONDS, payload: number} | {type: REDUCER_ACTION_TYPE, payload: string} | {type: REDUCER_ACTION_TYPE.POPUPSTYLE, payload: popupStyleType} | {type: REDUCER_ACTION_TYPE.PLAYER_MESSAGE, payload: string} | {type: REDUCER_ACTION_TYPE.INPUT_VAL, payload: string} | {type: REDUCER_ACTION_TYPE.DISABLE_SUBMIT, payload: boolean} | {type: REDUCER_ACTION_TYPE.SUBMIT_ERROR_MSG, payload: string} | {type: REDUCER_ACTION_TYPE.SUBMITTING, payload: boolean}
 
 
-
-// type ReducerAction = {
-//   type: REDUCER_ACTION_TYPE;
-//   payload: number | boolean | string | object
-// }
-
-export const ACTION = {
-  CHAR_COORDS: "charCoords",
-  MAP_DATA: "mapData",
-  CLICK_COORDS: "clickCoords",
-  FOUND: "found",
-  MAP_LOADING: "mapLoading",
-  FACES_LOADING: "facesLoading",
-  GAMEOVER: "gameover",
-  SECONDS: "seconds",
-  TIMER: "timer",
-  POPUPSTYLE: "popupStyle",
-  PLAYER_MESSAGE: "playerMessage",
-  INPUT_VAL: "inputVal",
-  COLLECTION_REF: "collectionRef",
-  DISABLE_SUBMIT: "disableSubmit",
-  SUBMIT_ERROR_MSG: "submitErrorMsg",
-  SUBMITTING: "submitting",
-};
-
 interface initialStateData {
   charCoords: charCoordsType,
   mapData: mapDataType,
