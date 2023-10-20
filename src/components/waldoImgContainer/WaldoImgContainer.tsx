@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, MouseEvent } from "react";
+import React, { useEffect, useReducer, MouseEvent, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 import "./waldoImgContainer.scss";
@@ -54,6 +54,8 @@ const WaldoImg1 = () => {
   } = usePhotoTag();
 
   const navigate = useNavigate();
+
+  const [buttonStyle, setButtonStyle] = useState<string>("");
 
   const createImgURL = (imgKey: string): string =>
     `https://res.cloudinary.com/danscxcd2/image/upload/${imgKey}`;
@@ -141,11 +143,16 @@ const WaldoImg1 = () => {
     const xCoord =
       Math.round(((e.clientX - rect.left) / rectRatio) * 100) / 100;
     const yCoord = Math.round(((e.clientY - rect.top) / rectRatio) * 100) / 100;
+    const leftDistance = ((e.clientX - rect.left - 25) * 100) / rect.width;
+    const topDistance = ((e.clientY - rect.top - 25) * 100) / rect.height;
+    const left = leftDistance <= 50 ? "left" : "right";
+    const top = topDistance <= 50 ? "top" : "bottom";
     const popupStyle = {
-      left: `${((e.clientX - rect.left - 25) * 100) / rect.width}%`,
-      top: `${((e.clientY - rect.top - 25) * 100) / rect.height}%`,
+      left: `${leftDistance}%`,
+      top: `${topDistance}%`,
       display: "flex",
     };
+    setButtonStyle(`${left} ${top}`);
     setPopupStyle(popupStyle);
     setClickCoords({ x: xCoord, y: yCoord });
   };
@@ -216,16 +223,30 @@ const WaldoImg1 = () => {
     { img: whitebeardFace, name: "whitebeard" },
   ];
   const characterImages = characterArr.map((character) => (
-    <img
-      src={character.img}
-      alt={character.name}
+    <div
+      className='character-img-div'
       style={{
         opacity:
           state.found[character.name as keyof FoundType] === true ? 0.5 : 1,
       }}
-      key={character.name}
-    />
+    >
+      <img src={character.img} alt={character.name} key={character.name} />
+    </div>
   ));
+
+  const timer = (
+    <div className='timerDiv'>
+      <span>{state.timer}</span>
+    </div>
+  );
+  const playerMessage = (
+    <div className='playerMessage'>
+      <span>{state.playerMessage}</span>
+    </div>
+  );
+  const characterImageDiv = (
+    <div className='characterDisplay'>{characterImages}</div>
+  );
 
   return (
     <div className='container'>
@@ -233,9 +254,9 @@ const WaldoImg1 = () => {
       {!state.mapLoading && (
         <>
           <div className='gameInfo'>
-            <div className='timerDiv'>{state.timer}</div>
-            <div className='playerMessage'>{state.playerMessage}</div>
-            <div className='characterDisplay'>{characterImages}</div>
+            {timer}
+            {playerMessage}
+            {characterImageDiv}
           </div>
 
           <div className='imgDiv'>
@@ -246,19 +267,25 @@ const WaldoImg1 = () => {
               id='waldoPic'
             />
             <div className='popup' style={state.popupStyle} data-testid='popup'>
-              <div className='popupCircle'></div>
-              <div className='popupButtons'>
-                {characterArr.map((char) => (
-                  <button
-                    disabled={state.gameover ? true : false}
-                    onClick={() => handleButtonClick(char.name)}
-                    key={char.name}
-                  >
-                    {char.name.slice(0, 1).toUpperCase() + char.name.slice(1)}
-                  </button>
-                ))}
+              <div className='popupCircle'>
+                <div className={`popupButtons ${buttonStyle}`}>
+                  {characterArr.map((char) => (
+                    <button
+                      disabled={state.gameover ? true : false}
+                      onClick={() => handleButtonClick(char.name)}
+                      key={char.name}
+                    >
+                      {char.name.slice(0, 1).toUpperCase() + char.name.slice(1)}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
+            <div className='gameInfo-layover-top'>
+              {playerMessage}
+              {timer}
+            </div>
+            <div className='gameInfo-layover-bottom'>{characterImageDiv}</div>
           </div>
         </>
       )}
