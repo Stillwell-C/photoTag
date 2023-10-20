@@ -1,15 +1,15 @@
 import { Routes, Route } from "react-router-dom";
-import React, { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { getDoc } from "firebase/firestore";
 
 import "./App.scss";
 import MapSelection from "./components/mapSelection/MapSelection";
 import WaldoImgContainer from "./components/waldoImgContainer/WaldoImgContainer";
-import { WaldoInfoContext } from "./DataContext";
 import { dataDocRef } from "./firebase";
 import ErrorPage from "./components/errorPage/ErrorPage";
 import LeaderBoard from "./components/leaderBoard/LeaderBoard";
 import Navbar from "./components/navbar/Navbar";
+import ContextProviderLayout from "./components/ContextProviderLayout";
 
 function App() {
   const [waldoInfo, setWaldoInfo] = useState(null);
@@ -35,14 +35,14 @@ function App() {
   return (
     <div className='App'>
       <Navbar />
-      <WaldoInfoContext.Provider value={memoizedWaldoInfo}>
-        <Routes>
-          <Route path='/' element={<MapSelection />} />
+      <Routes>
+        <Route path='/' element={<MapSelection />} />
+        <Route element={<ContextProviderLayout />}>
           <Route path='/map/:mapID' element={<WaldoImgContainer />} />
-          <Route path='/leaderboards' element={<LeaderBoard />} />
-          <Route path='*' element={<ErrorPage />} />
-        </Routes>
-      </WaldoInfoContext.Provider>
+        </Route>
+        <Route path='/leaderboards' element={<LeaderBoard />} />
+        <Route path='*' element={<ErrorPage />} />
+      </Routes>
     </div>
   );
 }
