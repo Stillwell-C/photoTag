@@ -10,6 +10,7 @@ import ErrorPage from "./components/errorPage/ErrorPage";
 import LeaderBoard from "./components/leaderBoard/LeaderBoard";
 import Navbar from "./components/navbar/Navbar";
 import ContextProviderLayout from "./components/ContextProviderLayout";
+import LoadingPage from "./components/loadingPage/LoadingPage";
 
 function App() {
   const [waldoInfo, setWaldoInfo] = useState(null);
@@ -41,6 +42,8 @@ function App() {
           <Route path='/map/:mapID' element={<WaldoImgContainer />} />
         </Route>
         <Route path='/leaderboards' element={<LeaderBoard />} />
+        <Route path='/loading' element={<LoadingPage />} />
+
         <Route path='*' element={<ErrorPage />} />
       </Routes>
     </div>
