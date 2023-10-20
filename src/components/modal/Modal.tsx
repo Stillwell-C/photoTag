@@ -4,7 +4,6 @@ import { RefObject, useEffect, useRef } from "react";
 
 interface ModalPropData {
   timer: string;
-  disableSubmit: boolean;
   submitErrorMsg: string;
   submitting: boolean;
   handleInput: (e: string) => void;
