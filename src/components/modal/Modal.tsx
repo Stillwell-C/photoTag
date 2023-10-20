@@ -15,7 +15,6 @@ const Modal = ({
   timer,
   handleInput,
   handleSubmit,
-  disableSubmit,
   submitErrorMsg,
   submitting,
 }: ModalPropData) => {
@@ -45,7 +44,7 @@ const Modal = ({
                       id='name'
                       placeholder='Name'
                     />
-                    <button type='submit' disabled={disableSubmit}>
+                    <button type='submit' disabled={submitting}>
                       Submit
                     </button>
                   </div>
