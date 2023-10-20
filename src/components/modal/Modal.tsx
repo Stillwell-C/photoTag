@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import "./modal.scss";
-import { RefObject, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 
 interface ModalPropData {
   timer: string;
