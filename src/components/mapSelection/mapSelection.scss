@@ -1,8 +1,11 @@
+@import "../../App.scss";
+
 .container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-bottom: 1rem;
 
   h2 {
     font-size: 3rem;
@@ -14,17 +17,21 @@
     align-items: flex-start;
     justify-content: center;
     flex-wrap: wrap;
-    gap: 2rem;
+    gap: 1rem;
     width: 100%;
     max-width: 1200px;
+
+    @include medium {
+      gap: 2rem;
+    }
 
     & .loading {
       border-radius: 3%;
     }
 
     .singleMap {
-      width: 500px;
-      height: 320px;
+      width: clamp(300px, 90vw, 500px);
+      max-height: 320px;
       position: relative;
       cursor: pointer;
       display: flex;
