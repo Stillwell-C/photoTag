@@ -17,7 +17,6 @@ export const enum REDUCER_ACTION_TYPE {
   POPUPSTYLE,
   PLAYER_MESSAGE,
   INPUT_VAL,
-  DISABLE_SUBMIT,
   SUBMIT_ERROR_MSG,
   SUBMITTING,
 }
@@ -61,7 +60,6 @@ type ReducerAction =
   | { type: REDUCER_ACTION_TYPE.POPUPSTYLE; payload: PopupStyleType }
   | { type: REDUCER_ACTION_TYPE.PLAYER_MESSAGE; payload: string }
   | { type: REDUCER_ACTION_TYPE.INPUT_VAL; payload: string }
-  | { type: REDUCER_ACTION_TYPE.DISABLE_SUBMIT; payload: boolean }
   | { type: REDUCER_ACTION_TYPE.SUBMIT_ERROR_MSG; payload: string }
   | { type: REDUCER_ACTION_TYPE.SUBMITTING; payload: boolean };
 
@@ -77,7 +75,6 @@ type StateType = {
   popupStyle: PopupStyleType;
   playerMessage: string;
   inputVal: string;
-  disableSubmit: boolean;
   submitErrorMsg: string;
   submitting: boolean;
 };
@@ -105,7 +102,6 @@ export const initialState: StateType = {
   popupStyle: { display: "none" },
   playerMessage: "Click the screen to find the characters.",
   inputVal: "",
-  disableSubmit: false,
   submitErrorMsg: "",
   submitting: false,
 };
@@ -161,11 +157,6 @@ export const reducer = (state: StateType, action: ReducerAction): StateType => {
       return { ...state, playerMessage: action.payload };
     case REDUCER_ACTION_TYPE.INPUT_VAL:
       return { ...state, inputVal: action.payload };
-    case REDUCER_ACTION_TYPE.DISABLE_SUBMIT:
-      if (typeof action.payload === "boolean") {
-        return { ...state, disableSubmit: action.payload };
-      }
-      return { ...state };
     case REDUCER_ACTION_TYPE.SUBMIT_ERROR_MSG:
       return { ...state, submitErrorMsg: action.payload };
     case REDUCER_ACTION_TYPE.SUBMITTING:
@@ -217,12 +208,6 @@ const usePhotoTagContext = (initialState: StateType) => {
   const setInputVal = (inputVal: string) =>
     dispatch({ type: REDUCER_ACTION_TYPE.INPUT_VAL, payload: inputVal });
 
-  const setDisableSubmit = (disableSubmit: boolean) =>
-    dispatch({
-      type: REDUCER_ACTION_TYPE.DISABLE_SUBMIT,
-      payload: disableSubmit,
-    });
-
   const setSubmitErrorMsg = (submitErrMsg: string) =>
     dispatch({
       type: REDUCER_ACTION_TYPE.SUBMIT_ERROR_MSG,
@@ -245,7 +230,6 @@ const usePhotoTagContext = (initialState: StateType) => {
     setPopupStyle,
     setPlayerMessage,
     setInputVal,
-    setDisableSubmit,
     setSubmitErrorMsg,
     setSubmitting,
   };
@@ -269,7 +253,6 @@ const initContextState: UsePhotoTagContextType = {
   setPopupStyle: (popupStyle: PopupStyleType) => {},
   setPlayerMessage: (playerMessage: string) => {},
   setInputVal: (inputVal: string) => {},
-  setDisableSubmit: (disableSubmit: boolean) => {},
   setSubmitErrorMsg: (submitErrMsg: string) => {},
   setSubmitting: (submittting: boolean) => {},
 };
@@ -302,7 +285,6 @@ type UsePhotoTagHookType = {
   setPopupStyle: (popupStyle: PopupStyleType) => void;
   setPlayerMessage: (playerMessage: string) => void;
   setInputVal: (inputVal: string) => void;
-  setDisableSubmit: (disableSubmit: boolean) => void;
   setSubmitErrorMsg: (submitErrMsg: string) => void;
   setSubmitting: (submittting: boolean) => void;
 };
@@ -321,7 +303,6 @@ export const usePhotoTag = (): UsePhotoTagHookType => {
     setPopupStyle,
     setPlayerMessage,
     setInputVal,
-    setDisableSubmit,
     setSubmitErrorMsg,
     setSubmitting,
   } = useContext(PhotoTagContext);
@@ -339,7 +320,6 @@ export const usePhotoTag = (): UsePhotoTagHookType => {
     setPopupStyle,
     setPlayerMessage,
     setInputVal,
-    setDisableSubmit,
     setSubmitErrorMsg,
     setSubmitting,
   };
