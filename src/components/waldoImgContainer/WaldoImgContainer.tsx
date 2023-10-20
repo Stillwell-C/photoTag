@@ -49,7 +49,6 @@ const WaldoImg1 = () => {
     setPopupStyle,
     setPlayerMessage,
     setInputVal,
-    setDisableSubmit,
     setSubmitErrorMsg,
     setSubmitting,
   } = usePhotoTag();
@@ -187,7 +186,6 @@ const WaldoImg1 = () => {
       setSubmitErrorMsg("Error. Please a name 20 characters or less");
       return;
     }
-    setDisableSubmit(true);
     try {
       setSubmitErrorMsg("");
       setSubmitting(true);
@@ -202,7 +200,6 @@ const WaldoImg1 = () => {
     } catch (e) {
       const err = e as AxiosError;
       setSubmitting(false);
-      setDisableSubmit(false);
       setSubmitErrorMsg("Submission error. Please try again.");
       console.log(err.message);
     }
@@ -270,7 +267,6 @@ const WaldoImg1 = () => {
           timer={state.timer}
           handleSubmit={handleSubmit}
           handleInput={handleInput}
-          disableSubmit={state.disableSubmit}
           submitErrorMsg={state.submitErrorMsg}
           submitting={state.submitting}
         />
