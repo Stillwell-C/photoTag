@@ -1,7 +1,7 @@
 @import "../../App.scss";
 
 .navbar-container {
-  height: 3rem;
+  min-height: 3rem;
   background-color: rgba(107, 106, 106, 0.1);
   display: flex;
   align-items: center;
