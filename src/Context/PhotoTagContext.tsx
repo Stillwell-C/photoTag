@@ -15,6 +15,7 @@ export const enum REDUCER_ACTION_TYPE {
   SECONDS,
   TIMER,
   POPUPSTYLE,
+  BUTTONSTYLE,
   PLAYER_MESSAGE,
   INPUT_VAL,
   SUBMIT_ERROR_MSG,
@@ -58,6 +59,7 @@ type ReducerAction =
   | { type: REDUCER_ACTION_TYPE.SECONDS; payload: number }
   | { type: REDUCER_ACTION_TYPE; payload: string }
   | { type: REDUCER_ACTION_TYPE.POPUPSTYLE; payload: PopupStyleType }
+  | { type: REDUCER_ACTION_TYPE.BUTTONSTYLE; payload: string }
   | { type: REDUCER_ACTION_TYPE.PLAYER_MESSAGE; payload: string }
   | { type: REDUCER_ACTION_TYPE.INPUT_VAL; payload: string }
   | { type: REDUCER_ACTION_TYPE.SUBMIT_ERROR_MSG; payload: string }
@@ -73,6 +75,7 @@ type StateType = {
   seconds: number;
   timer: string;
   popupStyle: PopupStyleType;
+  buttonStyle: string;
   playerMessage: string;
   inputVal: string;
   submitErrorMsg: string;
@@ -100,6 +103,7 @@ export const initialState: StateType = {
   seconds: 0,
   timer: "",
   popupStyle: { display: "none" },
+  buttonStyle: "",
   playerMessage: "Click the screen to find the characters.",
   inputVal: "",
   submitErrorMsg: "",
@@ -153,6 +157,8 @@ export const reducer = (state: StateType, action: ReducerAction): StateType => {
         return { ...state, popupStyle: action.payload };
       }
       return state;
+    case REDUCER_ACTION_TYPE.BUTTONSTYLE:
+      return { ...state, buttonStyle: action.payload };
     case REDUCER_ACTION_TYPE.PLAYER_MESSAGE:
       return { ...state, playerMessage: action.payload };
     case REDUCER_ACTION_TYPE.INPUT_VAL:
@@ -199,6 +205,9 @@ const usePhotoTagContext = (initialState: StateType) => {
   const setPopupStyle = (popupStyle: PopupStyleType) =>
     dispatch({ type: REDUCER_ACTION_TYPE.POPUPSTYLE, payload: popupStyle });
 
+  const setButtonStyle = (buttonStyle: string) =>
+    dispatch({ type: REDUCER_ACTION_TYPE.BUTTONSTYLE, payload: buttonStyle });
+
   const setPlayerMessage = (playerMessage: string) =>
     dispatch({
       type: REDUCER_ACTION_TYPE.PLAYER_MESSAGE,
@@ -228,6 +237,7 @@ const usePhotoTagContext = (initialState: StateType) => {
     setSeconds,
     setTimer,
     setPopupStyle,
+    setButtonStyle,
     setPlayerMessage,
     setInputVal,
     setSubmitErrorMsg,
@@ -251,6 +261,7 @@ const initContextState: UsePhotoTagContextType = {
   setSeconds: (seconds: number) => {},
   setTimer: (timer: string) => {},
   setPopupStyle: (popupStyle: PopupStyleType) => {},
+  setButtonStyle: (buttonStyle: string) => {},
   setPlayerMessage: (playerMessage: string) => {},
   setInputVal: (inputVal: string) => {},
   setSubmitErrorMsg: (submitErrMsg: string) => {},
@@ -283,6 +294,7 @@ type UsePhotoTagHookType = {
   setSeconds: (seconds: number) => void;
   setTimer: (timer: string) => void;
   setPopupStyle: (popupStyle: PopupStyleType) => void;
+  setButtonStyle: (buttonStyle: string) => void;
   setPlayerMessage: (playerMessage: string) => void;
   setInputVal: (inputVal: string) => void;
   setSubmitErrorMsg: (submitErrMsg: string) => void;
@@ -301,6 +313,7 @@ export const usePhotoTag = (): UsePhotoTagHookType => {
     setSeconds,
     setTimer,
     setPopupStyle,
+    setButtonStyle,
     setPlayerMessage,
     setInputVal,
     setSubmitErrorMsg,
@@ -318,6 +331,7 @@ export const usePhotoTag = (): UsePhotoTagHookType => {
     setSeconds,
     setTimer,
     setPopupStyle,
+    setButtonStyle,
     setPlayerMessage,
     setInputVal,
     setSubmitErrorMsg,
