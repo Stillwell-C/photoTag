@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, MouseEvent, useState } from "react";
+import React, { useEffect, useReducer, MouseEvent } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 import "./waldoImgContainer.scss";
@@ -48,14 +48,13 @@ const WaldoImg1 = () => {
     setTimer,
     setPopupStyle,
     setPlayerMessage,
+    setButtonStyle,
     setInputVal,
     setSubmitErrorMsg,
     setSubmitting,
   } = usePhotoTag();
 
   const navigate = useNavigate();
-
-  const [buttonStyle, setButtonStyle] = useState<string>("");
 
   const createImgURL = (imgKey: string): string =>
     `https://res.cloudinary.com/danscxcd2/image/upload/${imgKey}`;
@@ -249,7 +248,7 @@ const WaldoImg1 = () => {
   );
 
   return (
-    <div className='container'>
+    <div className='waldo-img-container'>
       {state.mapLoading && <LoadingPage />}
       {!state.mapLoading && (
         <>
@@ -268,7 +267,7 @@ const WaldoImg1 = () => {
             />
             <div className='popup' style={state.popupStyle} data-testid='popup'>
               <div className='popupCircle'>
-                <div className={`popupButtons ${buttonStyle}`}>
+                <div className={`popupButtons ${state.buttonStyle}`}>
                   {characterArr.map((char) => (
                     <button
                       disabled={state.gameover ? true : false}
