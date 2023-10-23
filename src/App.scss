@@ -5,8 +5,15 @@
 }
 
 $breakpoints: (
+  "small": 450px,
   "medium": 900px,
 );
+
+@mixin small {
+  @media (min-width: map-get($breakpoints, "small")) {
+    @content;
+  }
+}
 
 @mixin medium {
   @media (min-width: map-get($breakpoints, "medium")) {
@@ -18,7 +25,4 @@ $breakpoints: (
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-  // @include medium {
-  //   max-height: 100vh;
-  // }
 }
