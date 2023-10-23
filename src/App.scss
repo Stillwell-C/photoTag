@@ -13,3 +13,12 @@ $breakpoints: (
     @content;
   }
 }
+
+.layout-div {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  // @include medium {
+  //   max-height: 100vh;
+  // }
+}
