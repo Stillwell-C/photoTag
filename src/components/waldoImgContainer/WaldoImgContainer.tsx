@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, MouseEvent } from "react";
+import React, { useEffect, useReducer, MouseEvent, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 import "./waldoImgContainer.scss";
@@ -53,6 +53,8 @@ const WaldoImg1 = () => {
     setSubmitErrorMsg,
     setSubmitting,
   } = usePhotoTag();
+
+  const [shiftLayover, setShiftLayover] = useState(false);
 
   const navigate = useNavigate();
 
@@ -284,7 +286,16 @@ const WaldoImg1 = () => {
               {playerMessage}
               {timer}
             </div>
-            <div className='gameInfo-layover-bottom'>{characterImageDiv}</div>
+            <div
+              className={`gameInfo-layover-bottom ${
+                shiftLayover ? "shift" : ""
+              }`}
+              onClick={() => {
+                setShiftLayover((prev) => !prev);
+              }}
+            >
+              {characterImageDiv}
+            </div>
           </div>
         </>
       )}
