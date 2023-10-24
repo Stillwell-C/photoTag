@@ -5,8 +5,8 @@ const LoadingPage = () => {
   return (
     <div className='loadingContainer'>
       <div className='loadingDiv'>
-        <img src={loadingImg} alt='Waldo for loading screen' />
-        <p className='loadingText'>Loading...</p>
+        <img src={loadingImg} alt='loading' />
+        <h2 className='loadingText'>Loading...</h2>
       </div>
     </div>
   );
