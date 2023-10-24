@@ -1,8 +1,8 @@
-import axios from 'axios'
+import axios from "axios";
 
 const photoTagApi = axios.create({
-    baseURL: 'http://localhost:3500/',
-    withCredentials: true,
-})
+  baseURL: "http://localhost:3500/",
+  withCredentials: true,
+});
 
-export default photoTagApi
+export default photoTagApi;
