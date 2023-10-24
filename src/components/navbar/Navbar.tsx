@@ -3,12 +3,12 @@ import "./navbar.scss";
 
 const Navbar = () => {
   return (
-    <div className='navbar-container'>
+    <nav className='navbar-container'>
       <div className='links'>
         <Link to='/'>Home</Link>
         <Link to='/leaderboards'>Leaderboards</Link>
       </div>
-    </div>
+    </nav>
   );
 };
 
