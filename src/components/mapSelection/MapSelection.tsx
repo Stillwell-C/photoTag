@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import photoTagApi from "../../app/api/photoTagApi";
-import { AxiosError } from "axios";
+import axios, { AxiosError } from "axios";
 
 import "./mapSelection.scss";
 
@@ -29,7 +29,7 @@ const MapSelection = () => {
   const getMaps = async () => {
     setLoading(true);
     try {
-      const { data } = await photoTagApi.get("/map/frontpage");
+      const { data } = await axios.get("http://localhost:3500/map/frontpage");
 
       setMapImages(data);
       setLoading(false);
@@ -80,12 +80,14 @@ const MapSelection = () => {
     </div>
   );
 
+  const fourLoadingDivs = [...Array(4)].map((el, i) => loadingDiv(i));
+
   return (
     <div className='container'>
       <h2>Map Selection</h2>
       <div className='mapList'>
-        {!loading
-          ? mapImages.map((singleMap) => (
+        {mapImages.length > 0
+          ? mapImages?.map((singleMap) => (
               <Link to={`/map/${singleMap?._id}`} key={singleMap?._id}>
                 <div className='singleMap'>
                   <div className='mapText'>
@@ -99,7 +101,7 @@ const MapSelection = () => {
                 </div>
               </Link>
             ))
-          : Array(4).map((el, i) => loadingDiv(i))}
+          : fourLoadingDivs}
       </div>
     </div>
   );
