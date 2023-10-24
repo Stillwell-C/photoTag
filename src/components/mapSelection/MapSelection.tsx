@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import photoTagApi from "../../app/api/photoTagApi";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 
 import "./mapSelection.scss";
 
@@ -29,7 +29,7 @@ const MapSelection = () => {
   const getMaps = async () => {
     setLoading(true);
     try {
-      const { data } = await axios.get("http://localhost:3500/map/frontpage");
+      const { data } = await photoTagApi.get("/map/frontpage");
 
       setMapImages(data);
       setLoading(false);
