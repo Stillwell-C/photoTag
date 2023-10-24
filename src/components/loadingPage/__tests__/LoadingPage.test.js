@@ -1,9 +1,8 @@
-import React from "react";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { BrowserRouter } from "react-router-dom";
 
-import LoadingPage from "./LoadingPage";
+import LoadingPage from "../LoadingPage";
 
 describe("Error Page component", () => {
   const setup = () => {
@@ -16,14 +15,14 @@ describe("Error Page component", () => {
 
   it("renders correct heading", () => {
     setup();
-    const header = screen.getByText(/loading.../i);
+    const header = screen.getByRole("heading", { name: "Loading..." });
     expect(header).toBeInTheDocument();
   });
 
-  it("renders an image", () => {
+  it("renders an image with alt text 'loading'", () => {
     setup();
     const loadingImg = screen.getByRole("img", {
-      name: /Waldo for loading screen/i,
+      name: /loading/i,
     });
     expect(loadingImg).toBeInTheDocument();
   });
