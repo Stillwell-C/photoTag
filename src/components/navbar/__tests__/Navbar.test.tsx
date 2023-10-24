@@ -3,7 +3,7 @@ import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { BrowserRouter } from "react-router-dom";
 
-import Navbar from "./Navbar";
+import Navbar from "../Navbar";
 
 describe("Error Page component", () => {
   const setup = () => {
@@ -13,6 +13,12 @@ describe("Error Page component", () => {
       </BrowserRouter>
     );
   };
+
+  it("renders a nav element", () => {
+    setup();
+    const navElement = screen.getByRole("navigation");
+    expect(navElement).toBeInTheDocument();
+  });
 
   it("renders correct links", () => {
     setup();
