@@ -11,7 +11,6 @@ const ErrorPage = () => {
   const state: StateData = location?.state;
   let errorMessage: string = "Something went wrong";
 
-  console.log(location);
   if (state?.errorCode === "ERR_NETWORK" || state?.errorCode === 500) {
     errorMessage = "Network Error. Please try again later.";
   }
