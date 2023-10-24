@@ -38,6 +38,10 @@
       align-items: center;
       justify-content: center;
 
+      &.loading {
+        height: 320px;
+      }
+
       .mapText,
       .loadingText {
         position: absolute;
