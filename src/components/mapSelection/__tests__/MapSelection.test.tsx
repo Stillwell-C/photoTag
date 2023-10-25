@@ -65,12 +65,16 @@ describe("Map Selection component", () => {
   };
 
   it("renders correct heading", () => {
+    apiGetMock.mockResolvedValue(exampleData);
+
     setup();
     const header = screen.getByText(/map selection/i);
     expect(header).toBeInTheDocument();
   });
 
   it("renders loading animation initially", () => {
+    apiGetMock.mockResolvedValue(exampleData);
+
     setup();
     const loadingText = screen.getAllByTestId(/loading-animation/i);
     expect(loadingText).toHaveLength(4);
