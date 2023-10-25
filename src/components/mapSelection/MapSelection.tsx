@@ -33,7 +33,6 @@ const MapSelection = () => {
 
       setMapImages(data);
       setLoading(false);
-      console.log(data);
     } catch (e) {
       const err = e as AxiosError;
       console.log(err);
@@ -48,19 +47,6 @@ const MapSelection = () => {
         });
       }
     }
-
-    // const mapLoadList = waldoInfo.mapLoadList;
-    // const mapArr = [];
-    // for (let mapName of mapLoadList) {
-    //   try {
-    //     const URL = await getURL(waldoInfo.images[mapName].storageRef);
-    //     mapArr.push({ ...waldoInfo.images[mapName], mapURL: URL });
-    //   } catch (err) {
-    //     console.log(err.message);
-    //   }
-    // }
-    // // console.log(mapArr);
-    // setMapImages(mapArr);
   };
 
   const loadingDiv = (key: number) => (
@@ -86,7 +72,7 @@ const MapSelection = () => {
     <div className='container'>
       <h2>Map Selection</h2>
       <div className='mapList'>
-        {mapImages.length > 0
+        {!loading
           ? mapImages?.map((singleMap) => (
               <Link to={`/map/${singleMap?._id}`} key={singleMap?._id}>
                 <div className='singleMap'>
@@ -102,6 +88,9 @@ const MapSelection = () => {
               </Link>
             ))
           : fourLoadingDivs}
+        {!loading && mapImages.length <= 0 && (
+          <p>No maps found. Please try again later.</p>
+        )}
       </div>
     </div>
   );
