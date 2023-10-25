@@ -30,7 +30,6 @@ const MapSelection = () => {
     setLoading(true);
     try {
       const { data } = await photoTagApi.get("/map/frontpage");
-
       setMapImages(data);
       setLoading(false);
     } catch (e) {
