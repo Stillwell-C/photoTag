@@ -56,9 +56,6 @@ const WaldoImg1 = () => {
     setPopupStyle,
     setPlayerMessage,
     setButtonStyle,
-    setInputVal,
-    setSubmitErrorMsg,
-    setSubmitting,
   } = usePhotoTag();
 
   const [shiftLayover, setShiftLayover] = useState(false);
@@ -190,41 +187,6 @@ const WaldoImg1 = () => {
     setPlayerMessage("Keep looking");
   };
 
-  const handleSubmit = async (
-    e: React.FormEvent<HTMLFormElement>
-  ): Promise<void> => {
-    e.preventDefault();
-    if (!state.inputVal.length) {
-      setSubmitErrorMsg("Error. Please input a name");
-      return;
-    }
-    if (state.inputVal.length >= 20) {
-      setSubmitErrorMsg("Error. Please a name 20 characters or less");
-      return;
-    }
-    try {
-      setSubmitErrorMsg("");
-      setSubmitting(true);
-
-      await photoTagApi.post(`/leaderboard`, {
-        playerName: state.inputVal,
-        seconds: state.seconds,
-        timer: state.timer,
-        mapID,
-      });
-      navigate("/");
-    } catch (e) {
-      const err = e as AxiosError;
-      setSubmitting(false);
-      setSubmitErrorMsg("Submission error. Please try again.");
-      console.log(err.message);
-    }
-  };
-
-  const handleInput = (input: string): void => {
-    setInputVal(input);
-  };
-
   const characterArr = [
     { img: waldoFace, name: "waldo" },
     { img: wendaFace, name: "wenda" },
@@ -307,15 +269,7 @@ const WaldoImg1 = () => {
           </div>
         </>
       )}
-      {state.gameover && (
-        <Modal
-          timer={state.timer}
-          handleSubmit={handleSubmit}
-          handleInput={handleInput}
-          submitErrorMsg={state.submitErrorMsg}
-          submitting={state.submitting}
-        />
-      )}
+      {state.gameover && <Modal mapID={mapID} />}
     </div>
   );
 };
