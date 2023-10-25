@@ -1,4 +1,10 @@
-import React, { useEffect, useReducer, MouseEvent, useState } from "react";
+import React, {
+  useEffect,
+  useReducer,
+  MouseEvent,
+  useState,
+  useRef,
+} from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 import "./waldoImgContainer.scss";
@@ -35,6 +41,7 @@ interface MapData {
 
 const WaldoImg1 = () => {
   const { mapID } = useParams();
+  const playerMessageRef = useRef<HTMLSpanElement>(null);
 
   const {
     state,
@@ -118,6 +125,7 @@ const WaldoImg1 = () => {
       setGameover(true);
       setPlayerMessage("Good job, you're all done.");
     }
+    playerMessageRef?.current?.focus();
   }, [state.found]);
 
   const handleTime = (secondCount: number): void => {
@@ -242,7 +250,7 @@ const WaldoImg1 = () => {
   );
   const playerMessage = (
     <div className='playerMessage'>
-      <span>{state.playerMessage}</span>
+      <span ref={playerMessageRef}>{state.playerMessage}</span>
     </div>
   );
   const characterImageDiv = (
