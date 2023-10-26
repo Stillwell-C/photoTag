@@ -1,21 +1,9 @@
-import React, {
-  useEffect,
-  useReducer,
-  MouseEvent,
-  useState,
-  useRef,
-} from "react";
+import { useEffect, MouseEvent, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 import "./waldoImgContainer.scss";
 
-import {
-  reducer,
-  initialState,
-  REDUCER_ACTION_TYPE,
-  FoundType,
-  usePhotoTag,
-} from "../../Context/PhotoTagContext";
+import { FoundType, usePhotoTag } from "../../Context/PhotoTagContext";
 import LoadingPage from "../loadingPage/LoadingPage";
 import Modal from "../modal/Modal";
 
