@@ -25,6 +25,7 @@ import odlawFace from "../../assets/odlaw-face.jpg";
 import whitebeardFace from "../../assets/whitebeard-face.jpeg";
 import photoTagApi from "../../app/api/photoTagApi";
 import { AxiosError } from "axios";
+import ClickPopup from "../clickPopup/ClickPopup";
 
 type Coordinate = {
   [key: string]: number;
@@ -163,36 +164,13 @@ const WaldoImg1 = () => {
     setClickCoords({ x: xCoord, y: yCoord });
   };
 
-  const handleButtonClick = (char: string): void => {
-    const charName = char.slice(0, 1).toUpperCase() + char.slice(1);
-    setPopupStyle({ display: "none" });
-    const minX = `${char}MinX`;
-    const maxX = `${char}MaxX`;
-    const minY = `${char}MinY`;
-    const maxY = `${char}MaxY`;
-    if (
-      state.clickCoords.x >= state.charCoords[minX] &&
-      state.clickCoords.x <= state.charCoords[maxX] &&
-      state.clickCoords.y >= state.charCoords[minY] &&
-      state.clickCoords.y <= state.charCoords[maxY]
-    ) {
-      if (state.found[char as keyof FoundType]) {
-        setPlayerMessage(`You already found ${charName}.`);
-        return;
-      }
-      setPlayerMessage(`You found ${charName}.`);
-      setFound(char);
-      return;
-    }
-    setPlayerMessage("Keep looking");
-  };
-
   const characterArr = [
     { img: waldoFace, name: "waldo" },
     { img: wendaFace, name: "wenda" },
     { img: odlawFace, name: "odlaw" },
     { img: whitebeardFace, name: "whitebeard" },
   ];
+
   const characterImages = characterArr.map((character) => (
     <div
       className='character-img-div'
@@ -237,21 +215,7 @@ const WaldoImg1 = () => {
               onClick={handleClickCoord}
               id='waldoPic'
             />
-            <div className='popup' style={state.popupStyle} data-testid='popup'>
-              <div className='popupCircle'>
-                <div className={`popupButtons ${state.buttonStyle}`}>
-                  {characterArr.map((char) => (
-                    <button
-                      disabled={state.gameover ? true : false}
-                      onClick={() => handleButtonClick(char.name)}
-                      key={char.name}
-                    >
-                      {char.name.slice(0, 1).toUpperCase() + char.name.slice(1)}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
+            <ClickPopup characterArr={characterArr} />
             <div className='gameInfo-layover-top'>
               {playerMessage}
               {timer}
