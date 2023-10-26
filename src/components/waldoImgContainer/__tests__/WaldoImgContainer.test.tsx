@@ -1,18 +1,136 @@
 import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import * as firebaseFunctions from "../../firebase";
-import { BrowserRouter, MemoryRouter, Route, Routes } from "react-router-dom";
-import userEvent from "@testing-library/user-event";
+import { BrowserRouter, MemoryRouter, Routes, Route } from "react-router-dom";
+import { initialState } from "../../../Context/PhotoTagContext";
+import photoTagApi from "../../../app/api/photoTagApi";
+import WaldoImgContainer from "../WaldoImgContainer";
+import * as context from "../../../Context/PhotoTagContext";
+import { usePhotoTag } from "../../../Context/PhotoTagContext";
 
-import WaldoImgContainer from "./WaldoImgContainer";
-import { WaldoInfoContext } from "../../DataContext";
-import * as ReducerFile from "../../Context/PhotoTagContext";
-import { reducer } from "../../Context/PhotoTagContext";
+const mockSetInputVal = jest.fn();
+const mockSetSubmitErrorMsg = jest.fn();
+const mockSetSubmitting = jest.fn();
 
-it("passes the test", () => {});
+const mockInitialState = initialState;
 
-// describe("WaldoImgContainer component", () => {
+const mockContextFunctions = {
+  setInputVal: mockSetInputVal,
+  setSubmitErrorMsg: mockSetSubmitErrorMsg,
+  setSubmitting: mockSetSubmitting,
+  setCharCoords: jest.fn(),
+  setMapData: jest.fn(),
+  setClickCoords: jest.fn(),
+  setFound: jest.fn(),
+  setMapLoading: jest.fn(),
+  setGameover: jest.fn(),
+  setSeconds: jest.fn(),
+  setTimer: jest.fn(),
+  setPopupStyle: jest.fn(),
+  setPlayerMessage: jest.fn(),
+  setButtonStyle: jest.fn(),
+};
+
+const exampleMapData = {
+  data: {
+    _id: "652f650570b6a54dd23f2f29",
+    mapName: "Ski Slope",
+    imgKey: "h4nm4gu6clhqbrn27vfw.jpg",
+    coordinates: {
+      odlawMaxX: 32.5,
+      odlawMaxY: 41.5,
+      odlawMinX: 31,
+      odlawMinY: 39.45,
+      waldoMaxX: 87.5,
+      waldoMaxY: 49.2,
+      waldoMinX: 83.6,
+      waldoMinY: 44.8,
+      wendaMaxX: 49.5,
+      wendaMaxY: 28.15,
+      wendaMinX: 48,
+      wendaMinY: 25.5,
+      whitebeardMaxX: 9,
+      whitebeardMaxY: 49.5,
+      whitebeardMinX: 6,
+      whitebeardMinY: 46.75,
+    },
+  },
+};
+
+const apiGetMock = jest.spyOn(photoTagApi, "get");
+
+describe("WaldoImgContainer component", () => {
+  const setup = () => {
+    render(
+      //   <BrowserRouter>
+      //     <WaldoImgContainer />
+      //   </BrowserRouter>
+
+      <MemoryRouter initialEntries={[`/map/testmap`]}>
+        <Routes>
+          <Route path={`/map/:mapID`} element={<WaldoImgContainer />} />
+        </Routes>
+      </MemoryRouter>
+    );
+  };
+
+  afterEach(() => jest.clearAllMocks());
+  afterEach(() => jest.restoreAllMocks());
+
+  //   it("renders a loading screen before API response", () => {
+  //     apiGetMock.mockResolvedValue(exampleMapData);
+
+  //     setup();
+  //     const img = screen.getByAltText(/loading/i);
+  //     const text = screen.getByText(/Loading.../i);
+  //     expect(img).toBeInTheDocument();
+  //     expect(text).toBeInTheDocument();
+  //   });
+
+  describe("After API response", () => {
+    it("sets timer based on the current seconds", async () => {
+      const setTimerMock = jest.fn();
+      const mockContext = {
+        state: { ...mockInitialState, mapLoading: false, seconds: 13 },
+        ...mockContextFunctions,
+        setTimer: setTimerMock,
+      };
+
+      jest
+        .spyOn(context, "usePhotoTag")
+        .mockImplementationOnce(() => mockContext);
+
+      apiGetMock.mockResolvedValue(exampleMapData);
+
+      setup();
+      expect(setTimerMock).toBeCalledWith("00:00:13");
+    });
+
+    // it("Saves map data recieved from API and runs setMapLoading to false", async () => {
+    //   const setCharCoordsMock = jest.fn();
+    //   const setMapDataMock = jest.fn();
+    //   const setMapLoadingMock = jest.fn();
+
+    //   const mockContext = {
+    //     state: mockInitialState,
+    //     ...mockContextFunctions,
+    //     setCharCoords: setCharCoordsMock,
+    //     setMapData: setMapDataMock,
+    //     setMapLoading: setMapLoadingMock,
+    //   };
+
+    //   jest
+    //     .spyOn(context, "usePhotoTag")
+    //     .mockImplementationOnce(() => mockContext);
+
+    //   apiGetMock.mockResolvedValue(exampleMapData);
+
+    //   setup();
+
+    //   expect(setMapLoadingMock).toBeCalled();
+    // });
+  });
+});
 //   afterEach(() => jest.resetAllMocks);
 //   it("renders a loading screen initially", async () => {
 //     spyURL();
