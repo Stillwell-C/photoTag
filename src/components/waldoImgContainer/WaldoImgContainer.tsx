@@ -28,7 +28,7 @@ interface MapData {
   };
 }
 
-const WaldoImg1 = () => {
+const WaldoImgContainer = () => {
   const { mapID } = useParams();
   const playerMessageRef = useRef<HTMLSpanElement>(null);
 
@@ -165,8 +165,9 @@ const WaldoImg1 = () => {
         opacity:
           state.found[character.name as keyof FoundType] === true ? 0.5 : 1,
       }}
+      key={character.name}
     >
-      <img src={character.img} alt={character.name} key={character.name} />
+      <img src={character.img} alt={character.name} />
     </div>
   ));
 
@@ -225,4 +226,4 @@ const WaldoImg1 = () => {
   );
 };
 
-export default WaldoImg1;
+export default WaldoImgContainer;
