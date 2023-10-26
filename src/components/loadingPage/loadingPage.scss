@@ -3,6 +3,7 @@
   width: 100%;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
 
   .loadingDiv {
     width: clamp(300px, 95%, 600px);
