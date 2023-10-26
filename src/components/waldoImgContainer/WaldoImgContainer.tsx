@@ -49,7 +49,6 @@ const WaldoImg1 = () => {
     setCharCoords,
     setMapData,
     setClickCoords,
-    setFound,
     setMapLoading,
     setGameover,
     setSeconds,
