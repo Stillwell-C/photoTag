@@ -32,7 +32,7 @@ const Modal = ({ mapID }: ModalPropData) => {
       return;
     }
     if (state.inputVal.length >= 20) {
-      setSubmitErrorMsg("Error. Please a name 20 characters or less");
+      setSubmitErrorMsg("Error. Please input a name 20 characters or less");
       return;
     }
     try {
@@ -72,7 +72,7 @@ const Modal = ({ mapID }: ModalPropData) => {
                       id='name'
                       placeholder='Name'
                     />
-                    <button type='submit' disabled={state.submitting}>
+                    <button type='submit' disabled={!state.inputVal.length}>
                       Submit
                     </button>
                   </div>
@@ -81,9 +81,13 @@ const Modal = ({ mapID }: ModalPropData) => {
                   </div>
                 </form>
               </div>
-              <Link to='/'>
-                <button className='homeButton'>Back to home</button>
-              </Link>
+              <button
+                role='link'
+                className='homeButton'
+                onClick={() => navigate("/")}
+              >
+                Back to home
+              </button>
             </div>
           </>
         )}
