@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const photoTagApi = axios.create({
-  baseURL: "http://localhost:3500/",
+  baseURL: "http://phototagapi-production.up.railway.app/",
   withCredentials: true,
 });
 
