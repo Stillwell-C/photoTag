@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { usePhotoTag, FoundType } from "../../Context/PhotoTagContext";
 
 type Character = { img: string; name: string };
@@ -34,8 +34,26 @@ const ClickPopup = ({ characterArr }: ClickPopupPropType) => {
     setPlayerMessage("Keep looking");
   };
 
+  useEffect(() => {
+    //This will close modal with escape key
+    function keyListener(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        setPopupStyle({ display: "none" });
+      }
+    }
+
+    document.addEventListener("keydown", keyListener);
+
+    return () => document.removeEventListener("keydown", keyListener);
+  }, []);
+
   return (
-    <div className='popup' style={state.popupStyle} data-testid='popup'>
+    <div
+      className='popup'
+      style={state.popupStyle}
+      data-testid='popup'
+      role='dialog'
+    >
       <div className='popupCircle'>
         <div className={`popupButtons ${state.buttonStyle}`}>
           {characterArr.map((char) => (
@@ -43,6 +61,7 @@ const ClickPopup = ({ characterArr }: ClickPopupPropType) => {
               disabled={state.gameover ? true : false}
               onClick={() => handleButtonClick(char.name)}
               key={char.name}
+              aria-label={`click to select ${char.name}`}
             >
               {char.name.slice(0, 1).toUpperCase() + char.name.slice(1)}
             </button>
