@@ -32,6 +32,7 @@ describe("LeaderBoard component", () => {
   };
 
   afterEach(() => jest.clearAllMocks());
+  afterEach(() => jest.restoreAllMocks());
 
   it("renders a loading screen before API response", () => {
     apiGetMock.mockResolvedValue(multiBoardData);
