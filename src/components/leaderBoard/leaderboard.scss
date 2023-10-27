@@ -45,10 +45,8 @@
           font-weight: bold;
         }
 
-        tbody {
+        thead {
           width: 100%;
-          display: flex;
-          flex-direction: column;
 
           .entry-header {
             display: flex;
@@ -57,6 +55,12 @@
             font-size: 1.5rem;
             margin-bottom: 1rem;
           }
+        }
+
+        tbody {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
           .entry-div {
             margin: 5px 0;
             display: flex;
