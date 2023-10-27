@@ -53,11 +53,13 @@ const LeaderBoard = () => {
     <article className='single-leaderboard' key={singleBoard?.mapName}>
       <table>
         <caption>{singleBoard?.mapName}</caption>
-        <tbody>
+        <thead>
           <tr className='entry-header'>
             <th>Player</th>
             <th>Time</th>
           </tr>
+        </thead>
+        <tbody>
           {singleBoard?.leaderData?.slice(0, 5).map((entry, index) => (
             <tr className='entry-div' key={entry._id}>
               <td className='entryName'>{entry.playerName}</td>
