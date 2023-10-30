@@ -64,20 +64,24 @@ describe("Map Selection component", () => {
     );
   };
 
-  it("renders correct heading", () => {
+  it("renders correct heading", async () => {
     apiGetMock.mockResolvedValue(exampleData);
 
     setup();
     const header = screen.getByText(/map selection/i);
     expect(header).toBeInTheDocument();
+
+    await screen.findAllByAltText(/Ski slope/i);
   });
 
-  it("renders loading animation initially", () => {
+  it("renders loading animation initially", async () => {
     apiGetMock.mockResolvedValue(exampleData);
 
     setup();
     const loadingText = screen.getAllByTestId(/loading-animation/i);
     expect(loadingText).toHaveLength(4);
+
+    await screen.findAllByAltText(/Ski slope/i);
   });
 
   describe("Map selection component after intended images are loaded asynchronously", () => {
