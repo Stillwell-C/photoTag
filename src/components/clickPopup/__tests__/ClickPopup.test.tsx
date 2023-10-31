@@ -58,6 +58,39 @@ describe("Click popup component", () => {
     ).toBeInTheDocument();
   });
 
+  it("Is visible when popupStyle is set to display: flex", () => {
+    const setPopupStyleMock = jest.fn();
+    const mockContext = {
+      state: { ...mockInitialState, popupStyle: { display: "flex" } },
+      ...mockContextFunctions,
+      setPopupStyle: setPopupStyleMock,
+    };
+    jest
+      .spyOn(context, "usePhotoTag")
+      .mockImplementationOnce(() => mockContext);
+    setup();
+
+    const popup = screen.getByRole("dialog");
+    expect(popup).toBeVisible();
+  });
+
+  it("Is not visible when popupStyle is set to display: none", () => {
+    const setPopupStyleMock = jest.fn();
+    const mockContext = {
+      state: { ...mockInitialState },
+      ...mockContextFunctions,
+      setPopupStyle: setPopupStyleMock,
+    };
+    jest
+      .spyOn(context, "usePhotoTag")
+      .mockImplementationOnce(() => mockContext);
+
+    setup();
+
+    const popup = screen.getByTestId("popup");
+    expect(popup).not.toBeVisible();
+  });
+
   it("Closes popup by setting popupStyle to none upon escape button click", async () => {
     const setPopupStyleMock = jest.fn();
     const mockContext = {
