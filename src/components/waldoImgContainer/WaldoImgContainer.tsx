@@ -110,8 +110,11 @@ const WaldoImgContainer = () => {
       setGameover(true);
       setPlayerMessage("Good job, you're all done.");
     }
-    playerMessageRef?.current?.focus();
   }, [state.found]);
+
+  useEffect(() => {
+    playerMessageRef?.current?.focus();
+  }, [state.playerMessage]);
 
   const handleTime = (secondCount: number): void => {
     const hour: string = Math.floor(secondCount / 3600).toString();
@@ -178,7 +181,9 @@ const WaldoImgContainer = () => {
   );
   const playerMessage = (
     <div className='playerMessage'>
-      <span ref={playerMessageRef}>{state.playerMessage}</span>
+      <span aria-live='assertive' ref={playerMessageRef}>
+        {state.playerMessage}
+      </span>
     </div>
   );
   const characterImageDiv = (
