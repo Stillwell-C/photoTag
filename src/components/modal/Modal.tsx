@@ -46,6 +46,7 @@ const Modal = ({ mapID }: ModalPropData) => {
         mapID,
       });
       navigate("/");
+      setSubmitting(false);
     } catch (e) {
       const err = e as AxiosError;
       setSubmitting(false);
