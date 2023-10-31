@@ -47,7 +47,7 @@ describe("Error Page component", () => {
 
   it("renders correct heading", () => {
     setup();
-    const header = screen.getByText(/congratulations!/i);
+    const header = screen.getByRole("heading", { name: /congratulations!/i });
     expect(header).toBeInTheDocument();
   });
 

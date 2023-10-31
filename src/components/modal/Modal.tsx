@@ -60,7 +60,7 @@ const Modal = ({ mapID }: ModalPropData) => {
       <div className='modalContainer'>
         {!state.submitting && (
           <>
-            <div className='modalHeader'>Congratulations!</div>
+            <h2 className='modalHeader'>Congratulations!</h2>
             <div className='modalBody'>
               <div className='modalInfo'>Your time was {state.timer}</div>
               <div className='modalForm'>
