@@ -132,7 +132,6 @@ const WaldoImgContainer = () => {
   };
 
   const handleClickCoord = (e: MouseEvent<HTMLImageElement>): void => {
-    console.log(state.clickCoords);
     if (state.gameover) return;
     // const rect = e.target.getBoundingClientRect();
     const rect = e.currentTarget.getBoundingClientRect();
@@ -170,7 +169,12 @@ const WaldoImgContainer = () => {
       }}
       key={character.name}
     >
-      <img src={character.img} alt={character.name} />
+      <img
+        src={character.img}
+        alt={`${character.name} has ${
+          state.found[character.name as keyof FoundType] === false ? "not" : ""
+        } been found`}
+      />
     </div>
   ));
 
