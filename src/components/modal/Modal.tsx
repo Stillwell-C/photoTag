@@ -77,7 +77,11 @@ const Modal = ({ mapID }: ModalPropData) => {
                       Submit
                     </button>
                   </div>
-                  <div className='errorMsg' ref={errorRef}>
+                  <div
+                    className='errorMsg'
+                    aria-live='assertive'
+                    ref={errorRef}
+                  >
                     {state.submitErrorMsg}
                   </div>
                 </form>
