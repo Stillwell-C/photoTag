@@ -91,11 +91,17 @@ describe("LeaderBoard component", () => {
       expect(playerColumn).toHaveLength(6);
       expect(timeColumn).toHaveLength(5);
     });
-    it("Handles error by navigating to a new page", async () => {
+
+    it("Handles API error with response by navigating to a new page", async () => {
       apiGetMock.mockRejectedValue({
-        code: "ERR_NETWORK",
-        name: "AxiosError",
+        response: { status: 404 },
       });
+      setup();
+      await waitFor(() => expect(mockedUseNavigate).toBeCalledTimes(1));
+    });
+
+    it("Handles error without response by navigating to a new page", async () => {
+      apiGetMock.mockRejectedValue({});
       setup();
       await waitFor(() => expect(mockedUseNavigate).toBeCalledTimes(1));
     });
