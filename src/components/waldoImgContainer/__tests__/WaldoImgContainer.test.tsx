@@ -97,11 +97,24 @@ describe("WaldoImgContainer component", () => {
   });
 
   describe("After API response", () => {
-    it("Handles API errors by navigating to a new page", async () => {
+    it("Handles API error with 404 response by navigating to a new page", async () => {
       apiGetMock.mockRejectedValue({
-        code: "ERR_NETWORK",
-        name: "AxiosError",
+        response: { status: 404 },
       });
+      setup();
+      await waitFor(() => expect(mockedUseNavigate).toBeCalledTimes(1));
+    });
+
+    it("Handles API error with non-404 response by navigating to a new page", async () => {
+      apiGetMock.mockRejectedValue({
+        response: { status: 400 },
+      });
+      setup();
+      await waitFor(() => expect(mockedUseNavigate).toBeCalledTimes(1));
+    });
+
+    it("Handles API error without response by navigating to a new page", async () => {
+      apiGetMock.mockRejectedValue({});
       setup();
       await waitFor(() => expect(mockedUseNavigate).toBeCalledTimes(1));
     });
@@ -123,6 +136,29 @@ describe("WaldoImgContainer component", () => {
       setup();
       expect(setTimerMock).toBeCalledWith("00:00:13");
     });
+
+    // it("calls setSeconds to update the timer with the correct number of seconds", async () => {
+    //   const setSecondsMock = jest.fn();
+    //   const mockContext = {
+    //     state: {
+    //       ...mockInitialState,
+    //       mapLoading: false,
+    //       seconds: 13,
+    //       gameover: false,
+    //     },
+    //     ...mockContextFunctions,
+    //     setSeconds: setSecondsMock,
+    //   };
+
+    //   jest
+    //     .spyOn(context, "usePhotoTag")
+    //     .mockImplementationOnce(() => mockContext);
+
+    //   apiGetMock.mockResolvedValue(exampleMapData);
+
+    //   setup();
+    //   await waitFor(() => expect(setSecondsMock).toBeCalled());
+    // });
 
     it("Saves map data recieved from API to context and runs setMapLoading to false", async () => {
       const setCharCoordsMock = jest.fn();
@@ -352,6 +388,34 @@ describe("WaldoImgContainer component", () => {
         });
       }
     });
+
+    // it("Moves lower character image layover when clicked", async () => {
+    //   const mockSetShiftLayover = jest.fn();
+
+    //   const mockContext = {
+    //     state: {
+    //       ...mockInitialState,
+    //       mapLoading: false,
+    //     },
+    //     ...mockContextFunctions,
+    //     setShiftLayover: mockSetShiftLayover,
+    //   };
+
+    //   jest
+    //     .spyOn(context, "usePhotoTag")
+    //     .mockImplementationOnce(() => mockContext);
+
+    //   apiGetMock.mockResolvedValue(exampleMapData);
+
+    //   setup();
+
+    //   const bottomLayover = await screen.findByTestId("layover-bottom");
+    //   screen.debug();
+    //   await userEvent.click(bottomLayover);
+    //   screen.debug();
+
+    //   expect(mockSetShiftLayover).toBeCalled();
+    // });
 
     it("Sets gameover & gives gameover message when all players are found", async () => {
       const mockSetGameover = jest.fn();
