@@ -217,7 +217,7 @@ describe("Error Page component", () => {
     expect(errorMsg).toBeInTheDocument();
   });
 
-  it("calls post route with data from the context", async () => {
+  it("calls post route with data from the context and navigates to another page", async () => {
     const mockContext = {
       state: {
         ...mockInitialState,
@@ -245,6 +245,8 @@ describe("Error Page component", () => {
       timer: "00:00:13",
       mapID: "testID",
     });
+
+    expect(mockedUseNavigate).toBeCalled();
   });
 
   it('navigates to a new page when "Back to Home" button is clicked', async () => {
