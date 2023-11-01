@@ -8,6 +8,7 @@ import Modal from "../Modal";
 import userEvent from "@testing-library/user-event";
 import photoTagApi from "../../../app/api/photoTagApi";
 
+//Context Mock
 const mockSetInputVal = jest.fn();
 const mockSetSubmitErrorMsg = jest.fn();
 const mockSetSubmitting = jest.fn();
@@ -31,7 +32,17 @@ const mockContextFunctions = {
   setButtonStyle: jest.fn(),
 };
 
+//API Mock
 const apiPostMock = jest.spyOn(photoTagApi, "post");
+
+//UseNavigate Mock
+// Mock for useNavigate. This is used for API errors
+const mockedUseNavigate = jest.fn();
+
+jest.mock("react-router-dom", () => ({
+  ...(jest.requireActual("react-router-dom") as any),
+  useNavigate: () => mockedUseNavigate,
+}));
 
 describe("Error Page component", () => {
   const setup = () => {
@@ -98,12 +109,6 @@ describe("Error Page component", () => {
     expect(input.value).toBe("abc");
   });
 
-  it("submit button is disabled when no input has been made is true", () => {
-    setup();
-    const submitBtn = screen.getByRole("button", { name: /submit/i });
-    expect(submitBtn).toBeDisabled();
-  });
-
   it("submit button is enabled when an input is made", async () => {
     //Typing into input not updating context. So input value is mocked.
     const mockContext = {
@@ -140,7 +145,7 @@ describe("Error Page component", () => {
     expect(apiPostMock).not.toBeCalled();
   });
 
-  it("does not call post if inputVal is not input", async () => {
+  it("sets error message & does not call post if inputVal is not input", async () => {
     const mockContext = {
       state: { ...mockInitialState, inputVal: "" },
       ...mockContextFunctions,
@@ -153,7 +158,43 @@ describe("Error Page component", () => {
     setup();
     const submitBtn = screen.getByRole("button", { name: /submit/i });
     await userEvent.click(submitBtn);
+
     expect(apiPostMock).not.toBeCalled();
+    expect(mockSetSubmitErrorMsg).toBeCalled();
+    expect(mockSetSubmitErrorMsg).toBeCalledWith("Error. Please input a name");
+  });
+
+  it("sets error message if API Post call fails", async () => {
+    const mockContext = {
+      state: {
+        ...mockInitialState,
+        inputVal: "testName",
+        seconds: 13,
+        timer: "00:00:13",
+        mapID: "testID",
+      },
+      ...mockContextFunctions,
+    };
+
+    jest
+      .spyOn(context, "usePhotoTag")
+      .mockImplementationOnce(() => mockContext);
+
+    apiPostMock.mockRejectedValue({
+      code: "ERR_NETWORK",
+      name: "AxiosError",
+    });
+
+    setup();
+
+    const submitBtn = screen.getByRole("button", { name: /submit/i });
+    await userEvent.click(submitBtn);
+
+    expect(mockSetSubmitting).toBeCalled();
+    expect(mockSetSubmitErrorMsg).toBeCalled();
+    expect(mockSetSubmitErrorMsg).toBeCalledWith(
+      "Submission error. Please try again."
+    );
   });
 
   it("displays error message if error message is set", () => {
@@ -204,6 +245,26 @@ describe("Error Page component", () => {
       timer: "00:00:13",
       mapID: "testID",
     });
+  });
+
+  it('navigates to a new page when "Back to Home" button is clicked', async () => {
+    const mockContext = {
+      state: {
+        ...mockInitialState,
+      },
+      ...mockContextFunctions,
+    };
+
+    jest
+      .spyOn(context, "usePhotoTag")
+      .mockImplementationOnce(() => mockContext);
+
+    setup();
+
+    const homeButton = screen.getByRole("link", { name: /back to home/i });
+    await userEvent.click(homeButton);
+
+    expect(mockedUseNavigate).toBeCalled();
   });
 
   describe("should correctly display loading animation", () => {
