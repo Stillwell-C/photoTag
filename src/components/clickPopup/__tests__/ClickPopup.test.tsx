@@ -58,6 +58,27 @@ describe("Click popup component", () => {
     ).toBeInTheDocument();
   });
 
+  it("Buttons are disabled if gameover is true", () => {
+    const mockContext = {
+      state: { ...mockInitialState, gameover: true },
+      ...mockContextFunctions,
+    };
+    jest
+      .spyOn(context, "usePhotoTag")
+      .mockImplementationOnce(() => mockContext);
+
+    setup();
+
+    const waldoButton = screen.getByText("Waldo");
+    const wendaButton = screen.getByText("Wenda");
+    const odlawButton = screen.getByText("Odlaw");
+    const whitebeardButton = screen.getByText("Whitebeard");
+
+    expect(
+      waldoButton && wendaButton && odlawButton && whitebeardButton
+    ).toBeDisabled();
+  });
+
   it("Is visible when popupStyle is set to display: flex", () => {
     const setPopupStyleMock = jest.fn();
     const mockContext = {
@@ -106,6 +127,22 @@ describe("Click popup component", () => {
     await userEvent.keyboard("{Escape}");
     expect(setPopupStyleMock).toBeCalled();
     expect(setPopupStyleMock).toBeCalledWith({ display: "none" });
+  });
+
+  it("Does not close popup by setting popupStyle to none if button other than escape button click", async () => {
+    const setPopupStyleMock = jest.fn();
+    const mockContext = {
+      state: { ...mockInitialState },
+      ...mockContextFunctions,
+      setPopupStyle: setPopupStyleMock,
+    };
+    jest
+      .spyOn(context, "usePhotoTag")
+      .mockImplementationOnce(() => mockContext);
+    setup();
+
+    await userEvent.keyboard("{Enter}");
+    expect(setPopupStyleMock).not.toBeCalled();
   });
 
   it("Sets playerMessage to 'Keep Looking' if player coords are not clicked", async () => {
