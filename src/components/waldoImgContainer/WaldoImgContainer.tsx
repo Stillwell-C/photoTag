@@ -221,6 +221,7 @@ const WaldoImgContainer = () => {
               className={`gameInfo-layover-bottom ${
                 shiftLayover ? "shift" : ""
               }`}
+              data-testid='layover-bottom'
               onClick={() => {
                 setShiftLayover((prev) => !prev);
               }}
