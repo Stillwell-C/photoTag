@@ -87,6 +87,15 @@ describe("Map Selection component", () => {
   describe("Map selection component after intended images are loaded asynchronously", () => {
     afterEach(() => jest.clearAllMocks());
 
+    it("Fetches data from API when map data not present in state", async () => {
+      apiGetMock.mockResolvedValue(exampleData);
+
+      setup();
+
+      await screen.findAllByAltText(/Ski slope/i);
+      expect(apiGetMock).toBeCalledTimes(1);
+    });
+
     it("Does not render the loading animation after images have been loaded", async () => {
       apiGetMock.mockImplementation(() => Promise.resolve(exampleData));
 
@@ -125,11 +134,16 @@ describe("Map Selection component", () => {
       expect(loadedMapImages).toBeInTheDocument();
     });
 
-    it("Handles error by navigating to a new page", async () => {
+    it("Handles API error with response by navigating to a new page", async () => {
       apiGetMock.mockRejectedValue({
-        code: "ERR_NETWORK",
-        name: "AxiosError",
+        response: { status: 404 },
       });
+      setup();
+      await waitFor(() => expect(mockedUseNavigate).toBeCalledTimes(1));
+    });
+
+    it("Handles error without response by navigating to a new page", async () => {
+      apiGetMock.mockRejectedValue({});
       setup();
       await waitFor(() => expect(mockedUseNavigate).toBeCalledTimes(1));
     });
