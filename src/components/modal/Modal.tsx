@@ -10,24 +10,22 @@ interface ModalPropData {
 }
 
 const Modal = ({ mapID }: ModalPropData) => {
-  const errorRef = useRef<HTMLDivElement>(null);
-
-  const navigate = useNavigate();
-
   const { state, setInputVal, setSubmitErrorMsg, setSubmitting } =
     usePhotoTag();
+  const navigate = useNavigate();
+  const errorRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (state.submitErrorMsg.length) {
+    if (state?.submitErrorMsg?.length) {
       errorRef?.current?.focus();
     }
-  }, [state.submitErrorMsg]);
+  }, [state?.submitErrorMsg]);
 
   const handleSubmit = async (
     e: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
     e.preventDefault();
-    if (!state.inputVal.length) {
+    if (state.inputVal.length < 1) {
       setSubmitErrorMsg("Error. Please input a name");
       return;
     }
@@ -45,8 +43,9 @@ const Modal = ({ mapID }: ModalPropData) => {
         timer: state.timer,
         mapID,
       });
-      navigate("/");
+
       setSubmitting(false);
+      navigate("/");
     } catch (e) {
       const err = e as AxiosError;
       setSubmitting(false);
@@ -73,9 +72,7 @@ const Modal = ({ mapID }: ModalPropData) => {
                       id='name'
                       placeholder='Name'
                     />
-                    <button type='submit' disabled={!state.inputVal.length}>
-                      Submit
-                    </button>
+                    <button type='submit'>Submit</button>
                   </div>
                   <div
                     className='errorMsg'
