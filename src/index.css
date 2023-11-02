@@ -1,3 +1,37 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+    .responsive-card {
+        width: clamp(300px, 90vw, 500px)
+    }
+
+    .toggle-child-div-flex {
+        @apply [&>div:hover]:flex
+    }
+
+    .top {
+        top: -5px
+    }
+
+    .bottom {
+        top: -148px;
+
+        @screen md {
+            top: -130px;
+        }
+    }
+
+    .left {
+        left: 33px;
+
+        @screen md {
+            left: 50px;
+        }
+    }
+
+    .right {
+        left: -130px;
+    }
+}
