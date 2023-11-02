@@ -20,6 +20,19 @@ const Modal = ({ mapID }: ModalPropData) => {
     }
   }, [state?.submitErrorMsg]);
 
+  useEffect(() => {
+    //This will close modal and return to home with escape key
+    function keyListener(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        navigate("/");
+      }
+    }
+
+    document.addEventListener("keydown", keyListener);
+
+    return () => document.removeEventListener("keydown", keyListener);
+  }, []);
+
   const handleSubmit = async (
     e: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
