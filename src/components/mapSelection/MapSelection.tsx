@@ -81,7 +81,7 @@ const MapSelection = () => {
   return (
     <div className='flex flex-col justify-center items-center mb-4'>
       <h2 className='text-5xl font-semibold mb-12'>Map Selection</h2>
-      <div className='flex items-start justify-center flex-wrap gap-4 w-full max-w-7xl md:gap-8 md:p-4'>
+      <div className='flex items-start justify-center flex-wrap gap-4 w-full max-w-7xl md:gap-8 md:px-4'>
         {!loading
           ? mapImages?.map((singleMap) => (
               <Link to={`/map/${singleMap?._id}`} key={singleMap?._id}>
