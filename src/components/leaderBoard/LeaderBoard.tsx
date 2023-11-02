@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 
 import LoadingPage from "../loadingPage/LoadingPage";
-// import "./leaderboard.scss";
 import photoTagApi from "../../app/api/photoTagApi";
 import { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
