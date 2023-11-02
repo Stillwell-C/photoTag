@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import LoadingPage from "../loadingPage/LoadingPage";
-import "./leaderboard.scss";
+// import "./leaderboard.scss";
 import photoTagApi from "../../app/api/photoTagApi";
 import { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
@@ -50,25 +50,30 @@ const LeaderBoard = () => {
   }, []);
 
   const leaderBoardMapCards = leaderData?.map((singleBoard) => (
-    <article className='single-leaderboard' key={singleBoard?.mapName}>
-      <table>
-        <caption>{singleBoard?.mapName}</caption>
-        <thead>
-          <tr className='entry-header'>
+    <article
+      className='responsive-card w-full h-80 text-center rounded-lg px-4 shadow-lg '
+      key={singleBoard?.mapName}
+    >
+      <table className='w-full border-collapse mb-8'>
+        <caption className='text-2xl font-semibold mt-4 underline '>
+          {singleBoard?.mapName}
+        </caption>
+        <thead className='flex justify-center'>
+          <tr className='flex-grow flex justify-around items-center text-xl mb-4'>
             <th>Player</th>
             <th>Time</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className='flex flex-col gap-1'>
           {singleBoard?.leaderData?.slice(0, 5).map((entry, index) => (
-            <tr className='entry-div' key={entry._id}>
-              <td className='entryName'>{entry.playerName}</td>
-              <td className='entryTime'>{entry.timer}</td>
+            <tr className='flex justify-center items-center' key={entry._id}>
+              <td className=' text-xl flex-1 '>{entry.playerName}</td>
+              <td className='text-xl flex-1'>{entry.timer}</td>
             </tr>
           ))}
           {!(singleBoard?.leaderData?.length > 0) && (
-            <tr className='entry-div'>
-              <td className='no-data'>No data yet</td>
+            <tr className='flex justify-center items-center'>
+              <td className='text-xl flex-1'>No data yet</td>
             </tr>
           )}
         </tbody>
@@ -80,9 +85,11 @@ const LeaderBoard = () => {
     <>
       {loading && <LoadingPage />}
       {leaderData.length > 0 && (
-        <div className='container'>
-          <h2 className='title'>Leaderboards</h2>
-          <div className='leaderboard-container'>{leaderBoardMapCards}</div>
+        <div className=' w-full flex item-center justify-center flex-col text-center'>
+          <h2 className='text-5xl font-semibold mb-12'>Leaderboards</h2>
+          <div className='flex pb-4 items-start justify-center flex-wrap w-full max-w-7xl gap-7 md:px-4'>
+            {leaderBoardMapCards}
+          </div>
         </div>
       )}
     </>
