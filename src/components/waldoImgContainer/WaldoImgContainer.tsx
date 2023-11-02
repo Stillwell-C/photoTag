@@ -1,8 +1,6 @@
 import { useEffect, MouseEvent, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
-import "./waldoImgContainer.scss";
-
 import { FoundType, usePhotoTag } from "../../Context/PhotoTagContext";
 import LoadingPage from "../loadingPage/LoadingPage";
 import Modal from "../modal/Modal";
@@ -162,7 +160,7 @@ const WaldoImgContainer = () => {
 
   const characterImages = characterArr.map((character) => (
     <div
-      className='character-img-div'
+      className=' max-w-64p max-h-64p h-16 w-16 border-solid border border-slate-800 bg-white rounded-full flex items-center justify-center overflow-hidden'
       style={{
         opacity:
           state.found[character.name as keyof FoundType] === true ? 0.5 : 1,
@@ -170,6 +168,7 @@ const WaldoImgContainer = () => {
       key={character.name}
     >
       <img
+        className='h-15 w-15 max-h-full max-w-full rounded-full object-contain '
         src={character.img}
         alt={`${character.name} has ${
           state.found[character.name as keyof FoundType] === false ? "not" : ""
@@ -191,35 +190,39 @@ const WaldoImgContainer = () => {
     </div>
   );
   const characterImageDiv = (
-    <div className='characterDisplay'>{characterImages}</div>
+    <div className='flex items-center gap-1 pointer-events-none'>
+      {characterImages}
+    </div>
   );
 
   return (
-    <div className='waldo-img-container'>
+    <div className='w-full max-h-full flex flex-col items-center justify-center'>
       {state.mapLoading && <LoadingPage />}
       {!state.mapLoading && (
         <>
-          <div className='gameInfo'>
+          <div className='hidden md:flex items-center justify-between w-full mb-4 flex-shrink-0 [&>*]:flex-1 [&>*]:text-xl [&_.timerDiv]:flex [&_.timerDiv]:items-center [&_.timerDiv]:justify-end [&_.characterDisplay]:justify-start [&_.playerMessage]:text-center '>
             {timer}
             {playerMessage}
             {characterImageDiv}
           </div>
 
-          <div className='imgDiv'>
+          <div className=' flex-1 max-h-full relative flex flex-col items-center justify-center md:mx-4 md:mb-8 '>
             <img
               src={state?.mapData?.imgURL}
               alt={`Map for level: ${state?.mapData?.mapName}`}
               onClick={handleClickCoord}
               id='waldoPic'
+              className='w-full object-contain'
+              //may need point events all
             />
             <ClickPopup characterArr={characterArr} />
-            <div className='gameInfo-layover-top'>
+            <div className='absolute flex justify-between top-0 mb-0 text-white w-full text-xl [&>*]:bg-black/60 md:hidden'>
               {playerMessage}
               {timer}
             </div>
             <div
-              className={`gameInfo-layover-bottom ${
-                shiftLayover ? "shift" : ""
+              className={`absolute bottom-0 cursor-pointer md:hidden ${
+                shiftLayover ? "left-2" : "right-2"
               }`}
               data-testid='layover-bottom'
               onClick={() => {

@@ -47,21 +47,27 @@ const ClickPopup = ({ characterArr }: ClickPopupPropType) => {
     return () => document.removeEventListener("keydown", keyListener);
   }, []);
 
+  useEffect(() => console.log(state.buttonStyle), [state.buttonStyle]);
+
   return (
     <div
-      className='popup'
+      className='absolute hidden gap-1 pointer-events-none'
       style={state.popupStyle}
       data-testid='popup'
       role='dialog'
     >
-      <div className='popupCircle'>
-        <div className={`popupButtons ${state.buttonStyle}`}>
+      <div className='relative justify-self-center self-start rounded-full h-8 w-8 md:h-12 md:w-12 border-4 border-solid border-black'>
+        <div
+          className={`absolute flex flex-col bg-neutral-200/75 py-3 px-4 gap-2 rounded-lg ${state.buttonStyle}`}
+        >
           {characterArr.map((char) => (
             <button
               disabled={state.gameover ? true : false}
               onClick={() => handleButtonClick(char.name)}
               key={char.name}
               aria-label={`click to select ${char.name}`}
+              className=' cursor-pointer px-2 py-1 border-none rounded-md bg-blue-600 text-white'
+              style={{ pointerEvents: "all" }}
             >
               {char.name.slice(0, 1).toUpperCase() + char.name.slice(1)}
             </button>
