@@ -160,7 +160,7 @@ const WaldoImgContainer = () => {
 
   const characterImages = characterArr.map((character) => (
     <div
-      className=' max-w-64p max-h-64p h-16 w-16 border-solid border border-slate-800 bg-white rounded-full flex items-center justify-center overflow-hidden'
+      className=' max-w-64p max-h-64p h-12 w-12 md:h-16 md:w-16 border-solid border border-slate-800 bg-white rounded-full flex items-center justify-center overflow-hidden'
       style={{
         opacity:
           state.found[character.name as keyof FoundType] === true ? 0.5 : 1,
@@ -168,7 +168,7 @@ const WaldoImgContainer = () => {
       key={character.name}
     >
       <img
-        className='h-15 w-15 max-h-full max-w-full rounded-full object-contain '
+        className='h-11 w-11 md:h-15 md:w-15 max-h-full max-w-full rounded-full object-contain '
         src={character.img}
         alt={`${character.name} has ${
           state.found[character.name as keyof FoundType] === false ? "not" : ""
