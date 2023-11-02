@@ -1,4 +1,3 @@
-import "./errorPage.scss";
 import errorImg from "../../assets/wrongPage.jpg";
 import { useLocation } from "react-router-dom";
 
@@ -19,10 +18,10 @@ const ErrorPage = () => {
   }
 
   return (
-    <div className='errorPage'>
-      <h2>Error</h2>
-      <p>{errorMessage}</p>
-      <img src={errorImg} alt='' />
+    <div className='flex flex-col items-center justify-center'>
+      <h2 className='text-4xl font-semibold'>Error</h2>
+      <p className='text-xl'>{errorMessage}</p>
+      <img className='animate-side-to-side max-w-60' src={errorImg} alt='' />
     </div>
   );
 };
