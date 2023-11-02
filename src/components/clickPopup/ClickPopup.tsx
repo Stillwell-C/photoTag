@@ -66,7 +66,7 @@ const ClickPopup = ({ characterArr }: ClickPopupPropType) => {
               onClick={() => handleButtonClick(char.name)}
               key={char.name}
               aria-label={`click to select ${char.name}`}
-              className=' cursor-pointer px-2 py-1 border-none rounded-md bg-blue-600 text-white'
+              className=' cursor-pointer px-2 py-1 border-none rounded-md bg-blue-600 text-white hover:bg-blue-500'
               style={{ pointerEvents: "all" }}
             >
               {char.name.slice(0, 1).toUpperCase() + char.name.slice(1)}
