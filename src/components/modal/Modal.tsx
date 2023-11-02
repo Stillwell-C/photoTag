@@ -55,7 +55,7 @@ const Modal = ({ mapID }: ModalPropData) => {
 
   return (
     <>
-      <div className='fixed top-2/4 left-2/4 -translate-x-2/4 -translate-y-2/4 bg-white border border-solid border-black rounded-lg z-10 w-4/5 max-w-lg h-80 p-4 shadow-md'>
+      <div className='fixed top-2/4 left-2/4 -translate-x-2/4 -translate-y-2/4 bg-neutral-50 dark:bg-zinc-900 border border-solid border-black rounded-lg z-10 w-4/5 max-w-lg h-auto p-4 shadow-md'>
         {!state.submitting && (
           <>
             <h2 className='text-center my-4 text-4xl'>Congratulations!</h2>
@@ -64,26 +64,26 @@ const Modal = ({ mapID }: ModalPropData) => {
               <div>
                 <form
                   onSubmit={handleSubmit}
-                  className='flex items-start justify-center flex-col gap-4'
+                  className='flex items-start justify-center flex-col gap-2'
                 >
                   <label htmlFor='name'>Submit your score:</label>
-                  <div className='flex items-center border border-solid border-gray-300 rounded-lg mb-2 shadow-md pl-3'>
+                  <div className='flex items-center border border-solid bg-neutral-50 border-gray-300 rounded-lg shadow-md pl-3 overflow-hidden'>
                     <input
                       onChange={(e) => setInputVal(e.target.value)}
                       type='text'
                       id='name'
                       placeholder='Name'
-                      className='placeholder:text-xl'
+                      className='placeholder:text-xl bg-neutral-50 text-zinc-900 outline-none'
                     />
                     <button
                       type='submit'
-                      className='py-2 px-4 border-l bg-gray-50/50 border-solid border-gray-300 cursor-pointer disabled:opacity-50 hover:opacity-75'
+                      className='py-2 px-4 border-l text-zinc-900 bg-gray-200 border-solid border-gray-300 cursor-pointer disabled:opacity-50 hover:opacity-75 z-10'
                     >
                       Submit
                     </button>
                   </div>
                   <div
-                    className='text-red-700 self-center'
+                    className='text-red-700 self-center mb-2'
                     aria-live='assertive'
                     ref={errorRef}
                   >
