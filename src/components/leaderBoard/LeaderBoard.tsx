@@ -85,7 +85,7 @@ const LeaderBoard = () => {
     <>
       {loading && <LoadingPage />}
       {leaderData.length > 0 && (
-        <div className=' w-full flex item-center justify-center flex-col text-center'>
+        <div className=' w-full flex  justify-center items-center flex-col text-center'>
           <h2 className='text-5xl font-semibold mb-12'>Leaderboards</h2>
           <div className='flex pb-4 items-start justify-center flex-wrap w-full max-w-7xl gap-7 md:px-4'>
             {leaderBoardMapCards}
