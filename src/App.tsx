@@ -11,7 +11,7 @@ import Layout from "./components/Layout";
 
 function App() {
   return (
-    <div className='App'>
+    <div className='font-serif min-h-screen'>
       <Routes>
         <Route element={<Layout />}>
           <Route path='/'>
