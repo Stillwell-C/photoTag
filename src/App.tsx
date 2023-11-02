@@ -1,6 +1,5 @@
 import { Routes, Route } from "react-router-dom";
 
-import "./App.scss";
 import MapSelection from "./components/mapSelection/MapSelection";
 import WaldoImgContainer from "./components/waldoImgContainer/WaldoImgContainer";
 import ErrorPage from "./components/errorPage/ErrorPage";
