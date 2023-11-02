@@ -1,5 +1,4 @@
 import loadingImg from "../../assets/loading.jpg";
-import "./loadingPage.scss";
 
 const LoadingPage = () => {
   return (
