@@ -1,5 +1,4 @@
 import { Link, useNavigate } from "react-router-dom";
-import "./modal.scss";
 import { useEffect, useRef } from "react";
 import { usePhotoTag } from "../../Context/PhotoTagContext";
 import photoTagApi from "../../app/api/photoTagApi";
