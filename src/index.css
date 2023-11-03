@@ -39,9 +39,4 @@
         max-height: 100vh;
         max-height: 100svh;
     }
-
-    .mobile-flex-inline {
-        display: inline-flex;
-        display: -webkit-inline-flex;
-    }
 }
