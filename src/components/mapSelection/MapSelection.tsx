@@ -48,7 +48,7 @@ const MapSelection = () => {
 
   const loadingDiv = (key: number) => (
     <div
-      className='responsive-card max-h-80 relative cursor-pointer flex items-center justify-center h-80'
+      className='responsive-card max-h-60 md:max-h-80 relative cursor-pointer flex items-center justify-center h-80'
       key={key}
       data-testid='loading-animation'
     >
