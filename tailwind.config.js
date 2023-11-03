@@ -3,6 +3,12 @@ module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
+      inset: {
+        54: "13.5rem",
+      },
+      rotate: {
+        10: "10deg",
+      },
       screens: {
         "2xs": "450px",
         xs: "550px",
