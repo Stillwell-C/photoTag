@@ -3,6 +3,7 @@ import { useEffect, useRef } from "react";
 import { usePhotoTag } from "../../Context/PhotoTagContext";
 import photoTagApi from "../../app/api/photoTagApi";
 import { AxiosError } from "axios";
+import waldoLook from "../../assets/waldo-looking-over.png";
 
 interface ModalPropData {
   mapID: string | undefined;
@@ -70,7 +71,13 @@ const Modal = ({ mapID }: ModalPropData) => {
     <>
       <div className='fixed top-2/4 left-2/4 -translate-x-2/4 -translate-y-2/4 bg-neutral-50 dark:bg-zinc-900 border border-solid border-black rounded-lg z-10 w-4/5 max-w-lg h-auto p-4 shadow-md'>
         {!state.submitting && (
-          <>
+          <div className='relative'>
+            <img
+              src={waldoLook}
+              className='hidden lg:block absolute w-80 left-2/4 -translate-x-2/4 -top-54 rotate-10'
+              alt=''
+              aria-hidden='true'
+            />
             <h2 className='text-center my-4 text-4xl'>Congratulations!</h2>
             <div className='w-full flex flex-col items-center justify-center'>
               <div className='text-2xl my-4'>Your time was {state.timer}</div>
@@ -112,7 +119,7 @@ const Modal = ({ mapID }: ModalPropData) => {
                 Back to home
               </button>
             </div>
-          </>
+          </div>
         )}
         {state.submitting && (
           <div
