@@ -10,7 +10,7 @@ import Layout from "./components/Layout";
 
 function App() {
   return (
-    <div className='font-serif min-h-screen bg-neutral-50 dark:bg-zinc-900 dark:text-neutral-50 '>
+    <div className='font-serif min-h-screen bg-neutral-50 dark:bg-zinc-900 dark:text-neutral-50 min-w-full '>
       <Routes>
         <Route element={<Layout />}>
           <Route path='/'>
