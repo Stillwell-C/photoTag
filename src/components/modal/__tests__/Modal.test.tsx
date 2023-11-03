@@ -249,6 +249,44 @@ describe("Error Page component", () => {
     expect(mockedUseNavigate).toBeCalled();
   });
 
+  it("navigates to a new page if esc key is pressed", async () => {
+    const mockContext = {
+      state: {
+        ...mockInitialState,
+      },
+      ...mockContextFunctions,
+    };
+
+    jest
+      .spyOn(context, "usePhotoTag")
+      .mockImplementationOnce(() => mockContext);
+
+    setup();
+
+    await userEvent.keyboard("{Escape}");
+
+    expect(mockedUseNavigate).toBeCalled();
+  });
+
+  it("does not navigate to a new page if random key is pressed", async () => {
+    const mockContext = {
+      state: {
+        ...mockInitialState,
+      },
+      ...mockContextFunctions,
+    };
+
+    jest
+      .spyOn(context, "usePhotoTag")
+      .mockImplementationOnce(() => mockContext);
+
+    setup();
+
+    await userEvent.keyboard("{Enter}");
+
+    expect(mockedUseNavigate).not.toBeCalled();
+  });
+
   it('navigates to a new page when "Back to Home" button is clicked', async () => {
     const mockContext = {
       state: {
