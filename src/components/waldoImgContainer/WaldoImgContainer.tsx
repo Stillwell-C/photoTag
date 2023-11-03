@@ -160,7 +160,7 @@ const WaldoImgContainer = () => {
 
   const characterImages = characterArr.map((character) => (
     <div
-      className=' max-w-64p max-h-64p h-12 w-12 md:h-16 md:w-16 border-solid border border-slate-800 dark:md:border-amber-500 bg-white rounded-full flex items-center justify-center overflow-hidden'
+      className=' max-w-64p max-h-64p h-12 w-12 md:h-16 md:w-16 border-solid border border-slate-800 dark:lg:border-amber-500 bg-white rounded-full flex items-center justify-center overflow-hidden'
       style={{
         opacity:
           state.found[character.name as keyof FoundType] === true ? 0.5 : 1,
@@ -195,33 +195,41 @@ const WaldoImgContainer = () => {
     </div>
   );
 
+  const smallScreenWarning =
+    "For better functionality turn device sideways or use a larger screen.";
+
   return (
-    <div className='w-full max-h-full flex flex-col items-center justify-center'>
+    <div className='w-full max-lg:h-screen max-h-screen flex flex-col items-center justify-center'>
       {state.mapLoading && <LoadingPage />}
       {!state.mapLoading && (
         <>
-          <div className='hidden md:flex items-center justify-between w-full mb-4 flex-shrink-0 [&>*]:flex-1 [&>*]:text-xl [&_.timerDiv]:flex [&_.timerDiv]:items-center [&_.timerDiv]:justify-end [&_.characterDisplay]:justify-start [&_.playerMessage]:text-center '>
+          <div className='hidden px-2 lg:flex items-center justify-between w-full mb-4 flex-shrink-0 [&>*]:flex-1 [&>*]:text-xl [&_.timerDiv]:flex [&_.timerDiv]:items-center [&_.timerDiv]:justify-end [&_.characterDisplay]:justify-start [&_.playerMessage]:text-center '>
             {timer}
             {playerMessage}
             {characterImageDiv}
           </div>
 
-          <div className=' flex-1 max-h-full relative flex flex-col items-center justify-center md:mx-4 md:mb-8 '>
+          <div className='lg:max-h-imgPlusScreen relative flex flex-col items-center justify-center lg:mx-2 lg:mb-8 '>
             <img
               src={state?.mapData?.imgURL}
               alt={`Map for level: ${state?.mapData?.mapName}`}
               onClick={handleClickCoord}
               id='waldoPic'
-              className='w-full object-contain'
+              className='w-full object-contain max-h-screen lg:max-h-imgPlusScreen'
               //may need point events all
             />
             <ClickPopup characterArr={characterArr} />
-            <div className='absolute flex justify-between top-0 mb-0 text-white w-full text-xl [&>*]:bg-black/60 md:hidden'>
+            <div className='absolute flex justify-between top-0 mb-0 text-white w-full text-xl [&>*]:bg-black/60 lg:hidden'>
               {playerMessage}
               {timer}
             </div>
+            {state.seconds <= 5 && (
+              <div className='sm:hidden absolute top-2/4 left-2/4 -translate-x-2/4 -translate-y-2/4 text-white bg-black/75 text-xl text-center'>
+                {smallScreenWarning}
+              </div>
+            )}
             <div
-              className={`absolute bottom-0 cursor-pointer md:hidden ${
+              className={`absolute bottom-0 cursor-pointer lg:hidden ${
                 shiftLayover ? "left-2" : "right-2"
               }`}
               data-testid='layover-bottom'
