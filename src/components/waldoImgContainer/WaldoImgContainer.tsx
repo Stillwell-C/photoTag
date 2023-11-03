@@ -199,8 +199,12 @@ const WaldoImgContainer = () => {
     "For better functionality turn device sideways or use a larger screen.";
 
   return (
-    <div className='w-full lg:max-h-screen flex flex-col items-center justify-center'>
-      {state.mapLoading && <LoadingPage />}
+    <div className='w-full lg:max-h-screen max-lg:min-h-screen flex flex-col items-center justify-center'>
+      {state.mapLoading && (
+        <div className='max-md:fixed max-md:top-2/4 max-md:left-2/4 max-md:-translate-x-2/4 max-md:-translate-y-2/4'>
+          <LoadingPage />
+        </div>
+      )}
       {!state.mapLoading && (
         <>
           <div className='hidden px-2 lg:flex items-center justify-between w-full mb-4 flex-shrink-0 [&>*]:flex-1 [&>*]:text-xl [&_.timerDiv]:flex [&_.timerDiv]:items-center [&_.timerDiv]:justify-end [&_.characterDisplay]:justify-start [&_.playerMessage]:text-center '>
