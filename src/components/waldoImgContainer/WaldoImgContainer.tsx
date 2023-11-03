@@ -209,13 +209,13 @@ const WaldoImgContainer = () => {
             {characterImageDiv}
           </div>
 
-          <div className='lg:max-h-imgPlusScreen relative flex flex-col items-center justify-center lg:mx-2 lg:mb-8 '>
+          <div className='svh-full lg:max-h-imgPlusScreen relative flex flex-col items-center justify-center lg:mx-2 lg:mb-8 '>
             <img
               src={state?.mapData?.imgURL}
               alt={`Map for level: ${state?.mapData?.mapName}`}
               onClick={handleClickCoord}
               id='waldoPic'
-              className='w-full object-contain max-h-screen lg:max-h-imgPlusScreen'
+              className='w-full object-contain svh-full lg:max-h-imgPlusScreen'
               //may need point events all
             />
             <ClickPopup characterArr={characterArr} />
