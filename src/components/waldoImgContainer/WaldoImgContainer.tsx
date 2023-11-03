@@ -209,7 +209,7 @@ const WaldoImgContainer = () => {
             {characterImageDiv}
           </div>
 
-          <div className='svh-full lg:max-h-imgPlusScreen relative flex flex-col items-center justify-center lg:mx-2 lg:mb-8 '>
+          <div className='svh-full inline-flex lg:max-h-imgPlusScreen relative lg:flex flex-col items-center justify-center lg:mx-2 lg:mb-8 '>
             <img
               src={state?.mapData?.imgURL}
               alt={`Map for level: ${state?.mapData?.mapName}`}
