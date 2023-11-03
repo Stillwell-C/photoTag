@@ -47,8 +47,6 @@ const ClickPopup = ({ characterArr }: ClickPopupPropType) => {
     return () => document.removeEventListener("keydown", keyListener);
   }, []);
 
-  useEffect(() => console.log(state.buttonStyle), [state.buttonStyle]);
-
   return (
     <div
       className='absolute hidden gap-1 pointer-events-none'
