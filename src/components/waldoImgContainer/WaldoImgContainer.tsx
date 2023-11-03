@@ -223,7 +223,7 @@ const WaldoImgContainer = () => {
               //may need point events all
             />
             <ClickPopup characterArr={characterArr} />
-            <div className='fixed flex justify-between top-0 mb-0 text-white w-full text-xl [&>*]:bg-black/60 lg:hidden'>
+            <div className='fixed pointer-events-none flex justify-between top-0 mb-0 text-white w-full text-xl [&>*]:bg-black/60 lg:hidden'>
               {playerMessage}
               {timer}
             </div>
