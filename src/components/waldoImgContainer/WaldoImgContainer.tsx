@@ -199,7 +199,7 @@ const WaldoImgContainer = () => {
     "For better functionality turn device sideways or use a larger screen.";
 
   return (
-    <div className='w-full h-screen flex flex-col items-center justify-center'>
+    <div className='w-full lg:max-h-screen flex flex-col items-center justify-center'>
       {state.mapLoading && <LoadingPage />}
       {!state.mapLoading && (
         <>
