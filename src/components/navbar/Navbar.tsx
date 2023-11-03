@@ -1,9 +1,17 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import waldoSide from "../../assets/waldo-side.png";
 
 const Navbar = () => {
+  const location = useLocation();
+
+  const gameDisplay = location.pathname.includes("/map/");
+
   return (
-    <header className=' h-10 min-h-full bg-stone-300/30 flex items-center justify-between w-full md:mb-8 md:h-12'>
+    <header
+      className={`h-10 min-h-full bg-stone-300/30 items-center justify-between w-full mb-4 md:mb-8 md:h-12 ${
+        gameDisplay ? "hidden lg:flex" : "flex"
+      }`}
+    >
       <div className='flex h-full items-center'>
         <img
           src={waldoSide}
