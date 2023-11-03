@@ -19,6 +19,7 @@ module.exports = {
       },
       maxHeight: {
         "64p": "64px",
+        imgPlusScreen: "calc(100vh - 225px)",
       },
       keyframes: {
         "side-to-side": {
