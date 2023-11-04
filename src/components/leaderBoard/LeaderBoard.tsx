@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import LoadingPage from "../loadingPage/LoadingPage";
 import photoTagApi from "../../app/api/photoTagApi";
 import { AxiosError } from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 type SingleLeader = {
   _id: string;
@@ -15,6 +15,7 @@ type SingleLeader = {
 
 interface SingleMapData {
   mapName: string;
+  mapID: string;
   leaderData: SingleLeader[];
 }
 
@@ -27,6 +28,7 @@ const LeaderBoard = () => {
   const getMapData = async () => {
     try {
       const { data } = await photoTagApi.get("/leaderboard");
+      console.log(data);
       setLeaderData(data);
       setLoading(false);
     } catch (e) {
@@ -54,11 +56,11 @@ const LeaderBoard = () => {
       key={singleBoard?.mapName}
     >
       <table className='w-full border-collapse mb-8'>
-        <caption className='text-2xl font-semibold mt-4 underline '>
+        <caption className='text-3xl font-semibold mt-4 underline '>
           {singleBoard?.mapName}
         </caption>
         <thead className='flex justify-center'>
-          <tr className='flex-grow flex justify-around items-center text-xl mb-4'>
+          <tr className='flex-grow flex justify-around items-center text-xl mt-2 mb-4'>
             <th>Player</th>
             <th>Time</th>
           </tr>
@@ -72,7 +74,11 @@ const LeaderBoard = () => {
           ))}
           {!(singleBoard?.leaderData?.length > 0) && (
             <tr className='flex justify-center items-center'>
-              <td className='text-xl flex-1'>No data yet</td>
+              <td className='text-xl flex-1'>
+                <Link className='underline' to={`/map/${singleBoard?.mapID}`}>
+                  Be the first to set a record
+                </Link>
+              </td>
             </tr>
           )}
         </tbody>
