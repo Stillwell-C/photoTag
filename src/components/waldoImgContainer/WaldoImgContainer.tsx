@@ -263,7 +263,7 @@ const WaldoImgContainer = () => {
                     : "Double image size"
                 }
               >
-                {magnify ? "1XL" : "2XL"}
+                {magnify ? "1X" : "2X"}
               </button>
             </div>
 
