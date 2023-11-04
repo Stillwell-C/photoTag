@@ -2,6 +2,7 @@ export const multiBoardData = {
   data: [
     {
       mapName: "map one",
+      mapID: "1",
       leaderData: [
         {
           _id: 1,
@@ -42,6 +43,7 @@ export const multiBoardData = {
     },
     {
       mapName: "map two",
+      mapID: "2",
       leaderData: [
         {
           _id: 6,
@@ -82,6 +84,7 @@ export const multiBoardData = {
     },
     {
       mapName: "map three",
+      mapID: "3",
       leaderData: [
         {
           _id: 11,
@@ -122,6 +125,7 @@ export const multiBoardData = {
     },
     {
       mapName: "map four",
+      mapID: "4",
       leaderData: [
         {
           _id: 16,
@@ -167,6 +171,7 @@ export const singleBoardData = {
   data: [
     {
       mapName: "map one",
+      mapID: "1",
       leaderData: [
         {
           _id: 21,
@@ -212,6 +217,7 @@ export const emptyBoardData = {
   data: [
     {
       mapName: "map one",
+      mapID: "1",
       leaderData: [],
     },
   ],
@@ -221,6 +227,7 @@ export const tooManyPlayersData = {
   data: [
     {
       mapName: "map four",
+      mapID: "1",
       leaderData: [
         {
           _id: 26,
