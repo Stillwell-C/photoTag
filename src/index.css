@@ -39,4 +39,8 @@
         max-height: 100vh;
         max-height: 100svh;
     }
+
+    .pointer-all {
+        pointer-events: all;
+    }
 }
