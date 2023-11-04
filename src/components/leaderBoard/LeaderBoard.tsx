@@ -28,7 +28,6 @@ const LeaderBoard = () => {
   const getMapData = async () => {
     try {
       const { data } = await photoTagApi.get("/leaderboard");
-      console.log(data);
       setLeaderData(data);
       setLoading(false);
     } catch (e) {
@@ -52,7 +51,7 @@ const LeaderBoard = () => {
 
   const leaderBoardMapCards = leaderData?.map((singleBoard) => (
     <article
-      className='responsive-card w-full h-80 text-center rounded-lg px-4 shadow-lg '
+      className='responsive-card w-full h-80 text-center rounded-lg px-4 shadow-lg dark:shadow-zinc-950'
       key={singleBoard?.mapName}
     >
       <table className='w-full border-collapse mb-8'>
