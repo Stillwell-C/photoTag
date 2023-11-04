@@ -70,11 +70,14 @@ describe("LeaderBoard component", () => {
       const mapCardHeading = await screen.findAllByText(/^map/i);
       expect(mapCardHeading).toHaveLength(1);
     });
-    it("Renders 'No Data Yet' message if map has no player data", async () => {
+    it("Renders a link with text 'Be the first to set a record' if there is no player data", async () => {
       apiGetMock.mockResolvedValue(emptyBoardData);
       setup();
-      const noDataMsg = await screen.findByText(/no data yet/i);
-      expect(noDataMsg).toBeInTheDocument();
+      const noDataLink = await screen.findByRole("link", {
+        name: /Be the first to set a record/i,
+      });
+      expect(noDataLink).toBeInTheDocument();
+      expect(noDataLink).toHaveAttribute("href", "/map/1");
     });
     it("Renders a maximum of 5 players", async () => {
       apiGetMock.mockResolvedValue(tooManyPlayersData);
