@@ -13,6 +13,9 @@ module.exports = {
         "2xs": "450px",
         xs: "550px",
       },
+      width: {
+        "200%": "200%",
+      },
       maxWidth: {
         60: "60%",
         "64p": "64px",
@@ -20,6 +23,7 @@ module.exports = {
       maxHeight: {
         "64p": "64px",
         imgPlusScreen: "calc(100vh - 225px)",
+        "50%": "50vh",
       },
       keyframes: {
         "side-to-side": {
