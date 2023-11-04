@@ -45,6 +45,7 @@ const WaldoImgContainer = () => {
   } = usePhotoTag();
 
   const [shiftLayover, setShiftLayover] = useState(false);
+  const [magnify, setMagnify] = useState(false);
 
   const navigate = useNavigate();
 
@@ -199,43 +200,75 @@ const WaldoImgContainer = () => {
     "For better functionality turn device sideways or use a larger screen.";
 
   return (
-    <div className='w-full lg:max-h-screen max-lg:min-h-screen flex flex-col items-center justify-center'>
+    <>
       {state.mapLoading && (
-        <div className='max-md:fixed max-md:top-2/4 max-md:left-2/4 max-md:-translate-x-2/4 max-md:-translate-y-2/4'>
+        <div className='max-lg:h-screen max-lg:flex max-lg:items-center'>
           <LoadingPage />
         </div>
       )}
       {!state.mapLoading && (
-        <>
-          <div className='hidden px-2 lg:flex items-center justify-between w-full mb-4 flex-shrink-0 [&>*]:flex-1 [&>*]:text-xl [&_.timerDiv]:flex [&_.timerDiv]:items-center [&_.timerDiv]:justify-end [&_.characterDisplay]:justify-start [&_.playerMessage]:text-center '>
-            {timer}
+        <div
+          className={`w-full lg:max-h-screen max-lg:min-h-screen flex flex-col items-center justify-center bg-neutral-50 dark:bg-zinc-900 ${
+            magnify ? "sm:max-lg:w-200%" : "max-lg:w-full"
+          }`}
+        >
+          <>
+            <div className='hidden px-2 lg:flex items-center justify-between w-full mb-4 flex-shrink-0 [&>*]:flex-1 [&>*]:text-xl [&_.timerDiv]:flex [&_.timerDiv]:items-center [&_.timerDiv]:justify-end [&_.characterDisplay]:justify-start [&_.playerMessage]:text-center '>
+              {timer}
+              {playerMessage}
+              {characterImageDiv}
+            </div>
+
+            <div
+              className={`lg:max-h-imgPlusScreen relative flex flex-col items-center justify-center lg:mx-2 lg:mb-8 max-lg:w-full`}
+            >
+              <img
+                src={state?.mapData?.imgURL}
+                alt={`Map for level: ${state?.mapData?.mapName}`}
+                onClick={handleClickCoord}
+                id='waldoPic'
+                className='object-contain w-full lg:max-h-imgPlusScreen'
+                //may need point events all
+              />
+              <ClickPopup characterArr={characterArr} />
+            </div>
+          </>
+        </div>
+      )}
+      {!state.mapLoading && (
+        <div className='relative'>
+          <div className='fixed pointer-events-none flex justify-between top-0 mb-0 text-white w-full text-xl [&>*]:bg-black/60 lg:hidden'>
             {playerMessage}
-            {characterImageDiv}
+            {timer}
           </div>
 
-          <div className='lg:max-h-imgPlusScreen relative flex flex-col items-center justify-center lg:mx-2 lg:mb-8 '>
-            <img
-              src={state?.mapData?.imgURL}
-              alt={`Map for level: ${state?.mapData?.mapName}`}
-              onClick={handleClickCoord}
-              id='waldoPic'
-              className='w-full object-contain lg:max-h-imgPlusScreen'
-              //may need point events all
-            />
-            <ClickPopup characterArr={characterArr} />
-            <div className='fixed pointer-events-none flex justify-between top-0 mb-0 text-white w-full text-xl [&>*]:bg-black/60 lg:hidden'>
-              {playerMessage}
-              {timer}
+          {state.seconds <= 5 && (
+            <div className='sm:hidden fixed top-2/4 left-2/4 -translate-x-2/4 -translate-y-2/4 text-white bg-black/75 text-xl text-center'>
+              {smallScreenWarning}
             </div>
-            {state.seconds <= 5 && (
-              <div className='sm:hidden fixed top-2/4 left-2/4 -translate-x-2/4 -translate-y-2/4 text-white bg-black/75 text-xl text-center'>
-                {smallScreenWarning}
-              </div>
-            )}
+          )}
+
+          <div
+            className={`lg:hidden fixed pointer-events-none flex justify-between bottom-0 w-full p-0.5 ${
+              shiftLayover ? "flex-row-reverse" : "flex-row"
+            }`}
+          >
+            <div className='self-end pointer-all'>
+              <button
+                className='hidden sm:block bg-zinc-800 text-white rounded-md p-1.5 hover:bg-zinc-600'
+                onClick={() => setMagnify((prev) => !prev)}
+                aria-label={
+                  magnify
+                    ? "Decrease image size to normal size"
+                    : "Double image size"
+                }
+              >
+                {magnify ? "1XL" : "2XL"}
+              </button>
+            </div>
+
             <div
-              className={`fixed bottom-0 cursor-pointer lg:hidden ${
-                shiftLayover ? "left-2" : "right-2"
-              }`}
+              className='cursor-pointer pointer-all px-1'
               data-testid='layover-bottom'
               onClick={() => {
                 setShiftLayover((prev) => !prev);
@@ -244,10 +277,10 @@ const WaldoImgContainer = () => {
               {characterImageDiv}
             </div>
           </div>
-        </>
+        </div>
       )}
       {state.gameover && <Modal mapID={mapID} />}
-    </div>
+    </>
   );
 };
 
