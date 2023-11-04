@@ -208,7 +208,7 @@ const WaldoImgContainer = () => {
       )}
       {!state.mapLoading && (
         <div
-          className={`w-full lg:max-h-screen max-lg:min-h-screen flex flex-col items-center justify-center bg-neutral-50 dark:bg-zinc-900 ${
+          className={`w-full lg:max-h-screen max-sm:max-h-screen max-lg:min-h-screen flex flex-col items-center justify-center bg-neutral-50 dark:bg-zinc-900 ${
             magnify ? "sm:max-lg:w-200%" : "max-lg:w-full"
           }`}
         >
