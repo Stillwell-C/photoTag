@@ -18,24 +18,24 @@ const apiGetMock = jest.spyOn(photoTagApi, "get");
 const exampleData = {
   data: [
     {
-      _id: "652f650570b6a54dd23f2f29",
-      mapName: "Ski Slope",
-      imgKey: "h4nm4gu6clhqbrn27vfw.jpg",
+      map_id: "652f650570b6a54dd23f2f29",
+      mapname: "Ski Slope",
+      imgkey: "h4nm4gu6clhqbrn27vfw.jpg",
     },
     {
-      _id: "652f650570b6a54dd23f2f28",
-      mapName: "Ski Slope",
-      imgKey: "h4nm4gu6clhqbrn27vfw.jpg",
+      map_id: "652f650570b6a54dd23f2f28",
+      mapname: "Ski Slope",
+      imgkey: "h4nm4gu6clhqbrn27vfw.jpg",
     },
     {
-      _id: "652f650570b6a54dd23f2f27",
-      mapName: "Ski Slope",
-      imgKey: "h4nm4gu6clhqbrn27vfw.jpg",
+      map_id: "652f650570b6a54dd23f2f27",
+      mapname: "Ski Slope",
+      imgkey: "h4nm4gu6clhqbrn27vfw.jpg",
     },
     {
-      _id: "652f650570b6a54dd23f2f26",
-      mapName: "Ski Slope",
-      imgKey: "h4nm4gu6clhqbrn27vfw.jpg",
+      map_id: "652f650570b6a54dd23f2f26",
+      mapname: "Ski Slope",
+      imgkey: "h4nm4gu6clhqbrn27vfw.jpg",
     },
   ],
 };
@@ -43,14 +43,14 @@ const exampleData = {
 const exampleDataDouble = {
   data: [
     {
-      _id: "652f650570b6a54dd23f2f29",
-      mapName: "Ski Slope",
-      imgKey: "h4nm4gu6clhqbrn27vfw.jpg",
+      map_id: "652f650570b6a54dd23f2f29",
+      mapname: "Ski Slope",
+      imgkey: "h4nm4gu6clhqbrn27vfw.jpg",
     },
     {
-      _id: "652f650570b6a54dd23f2f28",
-      mapName: "Ski Slope",
-      imgKey: "h4nm4gu6clhqbrn27vfw.jpg",
+      map_id: "652f650570b6a54dd23f2f28",
+      mapname: "Ski Slope",
+      imgkey: "h4nm4gu6clhqbrn27vfw.jpg",
     },
   ],
 };
