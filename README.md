@@ -1,70 +1,58 @@
-# Getting Started with Create React App
+# PhotoTag
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This repository is the frontend for Photo-Tag, a MERN stack photo tagging game.
 
-## Available Scripts
+I originally made this while following the React course from [The Odin Project's](https://www.theodinproject.com/) curriculum as a front end only app. I updated it to be a full stack application to practice a number of technologies, notably Typescript, Tailwind CSS, and postgreSQL.
 
-In the project directory, you can run:
+The postgreSQL implementation of this app can be found on the postgreSQL branch [here](https://github.com/Stillwell-C/photoTag/tree/postgreSQL).
 
-### `npm start`
+## Demo
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+The application is live at https://photo-tag.vercel.app/
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Backend code
 
-### `npm test`
+View the backend code [here](https://github.com/Stillwell-C/photoTagApi)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Description
 
-### `npm run build`
+### Overview
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Built using MERN stack / REST API
+- Reponsive, mobile-first UI
+- Tailwind CSS
+- Front/Back end written in Typescript
+- Font end tested with Jest / React Testing Library
+- Find all characters to submit your name and time
+- The fastest 5 times for each map are displayed on the leaderboards page
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Detailed Description
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+This application was as a simple photo tagging puzzle game.
 
-### `npm run eject`
+#### UI
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+The UI was made to be responsive with a mobile-first design and should function on both mobile devices and web browsers with larger screens. Tailwind CSS was used to style all components. There is a dark and light mode that is toggled through the user's system preference.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+#### API
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Once users have finished finding all characters on a given map, they have the option to submit their name. If they are within the 5 fastest times, their time will be displayed on the leaderboards page.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+The [cors](https://www.npmjs.com/package/cors) package is used to only allow requests from specific origins. In this case, I am only allowing requests originating from the frontend.
 
-## Learn More
+## Built with
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Frontend
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- ReactJS
+- Typescript
+- React Router
+- Axios
+- Tailwind CSS
 
-### Code Splitting
+### Backend
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- NodeJS
+- ExpressJS
+- MongoDB/Mongoose
+- Cloudinary (image storage)
