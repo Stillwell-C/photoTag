@@ -30,7 +30,6 @@ const MapSelection = () => {
       const { data } = await photoTagApi.get("/map/frontpage");
       setMapImages(data);
       setLoading(false);
-      console.log(data);
     } catch (e) {
       const err = e as AxiosError;
       console.log(err);
