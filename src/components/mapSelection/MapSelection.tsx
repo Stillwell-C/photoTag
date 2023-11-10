@@ -8,17 +8,17 @@ const MapSelection = () => {
   const navigate = useNavigate();
 
   interface Map {
-    _id: string;
-    mapName: string;
-    imgKey: string;
+    map_id: string;
+    mapname: string;
+    imgkey: string;
   }
   type MapData = Map[];
 
   const [mapImages, setMapImages] = useState<MapData>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const imgURL = (imgKey: string): string =>
-    `https://res.cloudinary.com/danscxcd2/image/upload/w_500,c_fill/${imgKey}`;
+  const imgURL = (imgkey: string): string =>
+    `https://res.cloudinary.com/danscxcd2/image/upload/w_500,c_fill/${imgkey}`;
 
   useEffect(() => {
     if (!mapImages?.length) getMaps();
@@ -30,6 +30,7 @@ const MapSelection = () => {
       const { data } = await photoTagApi.get("/map/frontpage");
       setMapImages(data);
       setLoading(false);
+      console.log(data);
     } catch (e) {
       const err = e as AxiosError;
       console.log(err);
@@ -84,14 +85,14 @@ const MapSelection = () => {
       <div className='flex items-start justify-center flex-wrap gap-4 w-full max-w-7xl md:gap-8 md:px-4'>
         {!loading
           ? mapImages?.map((singleMap) => (
-              <Link to={`/map/${singleMap?._id}`} key={singleMap?._id}>
+              <Link to={`/map/${singleMap?.map_id}`} key={singleMap?.map_id}>
                 <div className='responsive-card max-h-80 relative cursor-pointer flex items-center justify-center rounded-lg overflow-hidden group'>
                   <div className='absolute flex top-0 w-full h-full bg-black/70 z-10 items-center justify-center text-3xl font-semibold text-white rounded-lg opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100'>
-                    <p>{singleMap?.mapName}</p>
+                    <p>{singleMap?.mapname}</p>
                   </div>
                   <img
-                    src={imgURL(singleMap.imgKey)}
-                    alt={singleMap.mapName}
+                    src={imgURL(singleMap.imgkey)}
+                    alt={singleMap.mapname}
                     loading='lazy'
                   />
                 </div>
