@@ -19,9 +19,9 @@ type Coordinate = {
 
 interface MapData {
   data: {
-    _id: string;
-    mapName: string;
-    imgKey: string;
+    map_id: string;
+    mapname: string;
+    imgkey: string;
     coordinates: Coordinate;
   };
 }
@@ -57,10 +57,11 @@ const WaldoImgContainer = () => {
       const { data }: MapData = await photoTagApi.get(`/map/${mapID}`);
       setCharCoords(data.coordinates);
       setMapData({
-        mapName: data.mapName,
-        imgURL: createImgURL(data.imgKey),
+        mapName: data.mapname,
+        imgURL: createImgURL(data.imgkey),
       });
       setMapLoading(false);
+      console.log(data);
     } catch (e) {
       const err = e as AxiosError;
       console.log(err);
