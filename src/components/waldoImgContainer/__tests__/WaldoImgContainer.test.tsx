@@ -34,9 +34,9 @@ const mockContextFunctions = {
 
 const exampleMapData = {
   data: {
-    _id: "652f650570b6a54dd23f2f29",
-    mapName: "Ski Slope",
-    imgKey: "h4nm4gu6clhqbrn27vfw.jpg",
+    map_id: "652f650570b6a54dd23f2f29",
+    mapname: "Ski Slope",
+    imgkey: "h4nm4gu6clhqbrn27vfw.jpg",
     coordinates: {
       odlawMaxX: 32.5,
       odlawMaxY: 41.5,
@@ -190,8 +190,8 @@ describe("WaldoImgContainer component", () => {
       await waitFor(() => {
         expect(setMapDataMock).toBeCalledWith(
           expect.objectContaining({
-            mapName: expect.stringMatching(exampleMapData.data.mapName),
-            imgURL: expect.stringContaining(exampleMapData.data.imgKey),
+            mapName: expect.stringMatching(exampleMapData.data.mapname),
+            imgURL: expect.stringContaining(exampleMapData.data.imgkey),
           })
         );
       });
