@@ -6,17 +6,16 @@ import { AxiosError } from "axios";
 import { Link, useNavigate } from "react-router-dom";
 
 type SingleLeader = {
-  _id: string;
-  playerName: string;
+  leader_id: number;
+  playername: string;
   seconds: number;
-  mapId: string;
   timer: string;
 };
 
 interface SingleMapData {
-  mapName: string;
-  mapID: string;
-  leaderData: SingleLeader[];
+  mapname: string;
+  map_id: string;
+  leaderdata: SingleLeader[];
 }
 
 const LeaderBoard = () => {
@@ -52,11 +51,11 @@ const LeaderBoard = () => {
   const leaderBoardMapCards = leaderData?.map((singleBoard) => (
     <article
       className='responsive-card w-full h-80 text-center rounded-lg px-4 shadow-lg dark:shadow-zinc-950'
-      key={singleBoard?.mapName}
+      key={singleBoard?.mapname}
     >
       <table className='w-full border-collapse mb-8'>
         <caption className='text-3xl font-semibold mt-4 underline '>
-          {singleBoard?.mapName}
+          {singleBoard?.mapname}
         </caption>
         <thead className='flex justify-center'>
           <tr className='flex-grow flex justify-around items-center text-xl mt-2 mb-4'>
@@ -65,16 +64,21 @@ const LeaderBoard = () => {
           </tr>
         </thead>
         <tbody className='flex flex-col gap-1'>
-          {singleBoard?.leaderData?.slice(0, 5).map((entry, index) => (
-            <tr className='flex justify-center items-center' key={entry._id}>
-              <td className=' text-xl flex-1 '>{entry.playerName}</td>
-              <td className='text-xl flex-1'>{entry.timer}</td>
-            </tr>
-          ))}
-          {!(singleBoard?.leaderData?.length > 0) && (
+          {singleBoard?.leaderdata[0] &&
+            singleBoard?.leaderdata?.slice(0, 5).map((entry, index) => (
+              <tr
+                className='flex justify-center items-center'
+                key={entry?.leader_id}
+              >
+                <td className=' text-xl flex-1 '>{entry?.playername}</td>
+                <td className='text-xl flex-1'>{entry?.timer}</td>
+              </tr>
+            ))}
+          {(!(singleBoard?.leaderdata?.length > 0) ||
+            !singleBoard?.leaderdata[0]) && (
             <tr className='flex justify-center items-center'>
               <td className='text-xl flex-1'>
-                <Link className='underline' to={`/map/${singleBoard?.mapID}`}>
+                <Link className='underline' to={`/map/${singleBoard?.map_id}`}>
                   Be the first to set a record
                 </Link>
               </td>
