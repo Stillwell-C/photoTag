@@ -56,3 +56,47 @@ The [cors](https://www.npmjs.com/package/cors) package is used to only allow req
 - ExpressJS
 - MongoDB/Mongoose
 - Cloudinary (image storage)
+
+## Screenshots
+
+### Desktop
+
+#### Homepage
+
+<img src="./ProjectImages/HomePageLight.png" alt="homepage light" >
+<img src="./ProjectImages/HomepageDark.png" alt="homepage dark" >
+
+#### Game
+
+<img src="./ProjectImages/SelectCharacter.png" alt="select character modal during gameplay" >
+
+#### Name Submission
+
+<img src="./ProjectImages/SubmitName.png" alt="submit name for completing game modal" >
+
+#### Leaderboard
+
+<img src="./ProjectImages/LeaderboardsLight.png" alt="leaderboards light mode" >
+<img src="./ProjectImages/LeaderboardsDark.png" alt="leaderboard dark mode" >
+
+### Mobile
+
+#### Homepage
+
+<img src="./ProjectImages/MobileHomepage.PNG" alt="mobile homepage" height="500">
+
+#### Leaderboards
+
+<img src="./ProjectImages/MobileLeaderboards.PNG" alt="mobile leaderboards" height="500">
+
+#### Game Screen Size Warning
+
+<img src="./ProjectImages/MobileScreenSizeWarning.PNG" alt="screen size warning for small screens" height="500">
+
+#### Game in Landscape
+
+<img src="./ProjectImages/MobileGameHorizontal.PNG" alt="game on mobile screen in landscape resolution" >
+
+#### 2X Zoom Option with Game in Landscape
+
+<img src="./ProjectImages/MobileGameHorizontalZoom.PNG" alt="mobile game screen with 2 times zoom option" >
