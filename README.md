@@ -14,6 +14,19 @@ The application is live at https://photo-tag-sql.vercel.app/
 
 View the backend code [here](https://github.com/Stillwell-C/photoTagApi/tree/postgreSQL)
 
+## Contents
+
+- [Description](#description)
+  - [Overview](#overview)
+  - [Detailed Description](#detailed-description)
+    - [UI](#ui)
+    - [Front End](#front-end)
+    - [API](#api)
+- [Built With](#built-with)
+- [Screenshots](#screenshots)
+  - [Desktop](#desktop)
+  - [Mobile](#mobile)
+
 ## Description
 
 ### Overview
@@ -39,7 +52,7 @@ On smaller screens, users are given the option to double the size of the image f
 
 Tailwind CSS was used to style all components. There is a dark and light mode that is toggled through the user's system preference.
 
-##### Front end
+#### Front end
 
 I converted and improved the original Javascript front end to work with Typescript. I also chose to imploy the React Context API for the components involved in the game functionality. It may not be necessary on this scale of application, but it was a good opportunity to practice this feature with Typescript.
 
